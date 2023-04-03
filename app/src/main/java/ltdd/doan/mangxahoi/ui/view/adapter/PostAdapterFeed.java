@@ -9,10 +9,12 @@ import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import ltdd.doan.mangxahoi.R;
 import ltdd.doan.mangxahoi.data.model.Post;
+import ltdd.doan.mangxahoi.data.model.User;
 import ltdd.doan.mangxahoi.databinding.CardPostBinding;
 import ltdd.doan.mangxahoi.ui.view.activity.MainActivity;
 import ltdd.doan.mangxahoi.ui.viewmodel.FeedViewModel;
@@ -38,10 +40,26 @@ public class PostAdapterFeed extends RecyclerView.Adapter<PostAdapterFeed.PostVi
         this.viewModel = viewModel;
     }
 
-    public void setData(List<Post> data){
-        this.posts = data;
+    public void setData(){
+        this.posts = getFeed();
     }
 
+
+    public List<Post> getFeed(){
+        User user1 = new User(1,"user email1","phone 1","phuocDZ 1","123",null,null);
+        User user2 = new User(2,"user email2","phone 2","phuocDZ 2","123",null,null);
+        List<Post> temp = new ArrayList<>();
+        Post pTemp;
+        for (int i = 0; i < 10; i++) {
+            if (i % 2 == 0) {
+                pTemp = new Post(i,user2,i+" ố dè "+i,null,null,"2023/4/1");
+            } else {
+                pTemp = new Post(i,user1,i+" ố dè "+i,null,null,"2023/4/1");
+            }
+            temp.add(pTemp);
+        }
+        return temp;
+    }
 
 
     //TODO

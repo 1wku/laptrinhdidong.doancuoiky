@@ -41,28 +41,17 @@ public class FeedFragment extends Fragment {
         binding = DataBindingUtil.inflate(inflater,R.layout.fragment_feed,container,false);
 
         PostAdapterFeed postAdapter = new PostAdapterFeed(requireContext(), (MainActivity) requireActivity(), mViewModel);
-        postAdapter.setData(getFeed());
+        postAdapter.setData();
         binding.setPostAdapter(postAdapter);
 
         binding.frgFeedRecyclerViewSwipeRefresh.setOnRefreshListener(() -> {
-            postAdapter.setData(getFeed());
+            postAdapter.setData();
             binding.frgFeedRecyclerViewSwipeRefresh.setRefreshing(false);
         });
 
 //        if (posts.size() == 0) binding.frgFeedMsgNoPost.setVisibility(View.VISIBLE);
 //        else binding.frgFeedMsgNoPost.setVisibility(View.GONE);
         return binding.getRoot();
-    }
-
-    public List<Post> getFeed(){
-        User user1 = new User(1,"user email1","phone 1","phuocDZ 1","123",null,null);
-        User user2 = new User(2,"user email2","phone 2","phuocDZ 2","123",null,null);
-        List<Post> temp = new ArrayList<>();
-        for (int i = 0; i < 10; i++) {
-            Post postT = new Post(i,user1,i+" ố dè "+i,null,null,"2023/4/1");
-            temp.add(postT);
-        }
-        return temp;
     }
 
 

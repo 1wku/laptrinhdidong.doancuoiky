@@ -1,0 +1,52 @@
+package ltdd.doan.mangxahoi.ui.view.activity;
+
+import android.content.Context;
+import android.os.Bundle;
+import android.view.MenuItem;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.databinding.DataBindingUtil;
+
+import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
+import androidx.navigation.fragment.NavHostFragment;
+import androidx.navigation.ui.NavigationUI;
+
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.navigation.NavigationBarView;
+
+import ltdd.doan.mangxahoi.R;
+import ltdd.doan.mangxahoi.databinding.ActivityMainBinding;
+import ltdd.doan.mangxahoi.ui.viewmodel.MainViewModel;
+
+public class MainActivity extends AppCompatActivity {
+
+    private Context context;
+    private MainViewModel mainViewModel;
+    private ActivityMainBinding binding;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        context = MainActivity.this;
+        mainViewModel = new ViewModelProvider(this).get(MainViewModel.class);
+
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
+
+        NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.navHostFragment);
+        NavController navController = navHostFragment.getNavController();
+        binding.bottomNavigationView.setOnItemSelectedListener(item -> {
+
+            int id = item.getItemId();
+            if (id == R.id.feedFragment) navController.navigate(R.id.feedFragment);
+            else if (id == R.id.friendsFragment) navController.navigate(R.id.friendsFragment);
+            else if (id == R.id.newPostFragment) navController.navigate(R.id.newPostFragment);
+            else if (id == R.id.notificationsFragment) navController.navigate(R.id.notificationsFragment);
+            else if (id == R.id.menuFragment) navController.navigate(R.id.menuFragment);
+            else return false;
+
+            return true;
+        });
+    }
+}

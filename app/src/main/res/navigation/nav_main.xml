@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_main"
+    app:startDestination="@+id/feedFragment">
+
+    <fragment
+        android:id="@+id/feedFragment"
+        android:name="ltdd.doan.mangxahoi.ui.view.fragment.FeedFragment"
+        android:label="FeedFragment">
+    </fragment>
+    <fragment
+        android:id="@+id/friendsFragment"
+        android:name="ltdd.doan.mangxahoi.ui.view.fragment.FriendFragment"
+        android:label="FriendFragment">
+    </fragment>
+    <fragment
+        android:id="@+id/newPostFragment"
+        android:name="ltdd.doan.mangxahoi.ui.view.fragment.NewPostFragment"
+        android:label="NewPostFragment">
+
+    </fragment>
+    <fragment
+        android:id="@+id/notificationsFragment"
+        android:name="ltdd.doan.mangxahoi.ui.view.fragment.NotificationsFragment"
+        android:label="NotificationsFragment">
+
+    </fragment>
+    <fragment
+        android:id="@+id/menuFragment"
+        android:name="ltdd.doan.mangxahoi.ui.view.fragment.MenuFragment"
+        android:label="MenuFragment">
+
+    </fragment>
+
+
+
+
+
+
+
+
+
+
+</navigation>

@@ -10,7 +10,6 @@ public class ApiClient {
     public static Retrofit getClient(String BASE_URL) {
         if (retrofit == null) {
             OkHttpClient client = new OkHttpClient.Builder()
-                    .addInterceptor(new BasicAuthInterceptor("admin", "123456"))
                     .build();
 
             retrofit = new Retrofit.Builder()

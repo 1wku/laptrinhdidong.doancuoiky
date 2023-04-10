@@ -12,6 +12,7 @@
         <!-- so make this button visible in just follow fragment -->
         <item name="android:visibility">gone</item>
     </style>
+    
 
     <!-- buttons -->
     <style name="Button" parent="">

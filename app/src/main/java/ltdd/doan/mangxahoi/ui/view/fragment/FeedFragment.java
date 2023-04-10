@@ -46,6 +46,7 @@ public class FeedFragment extends Fragment {
 
         binding.frgFeedRecyclerViewSwipeRefresh.setOnRefreshListener(() -> {
             postAdapter.setData();
+            binding.setPostAdapter(postAdapter);
             binding.frgFeedRecyclerViewSwipeRefresh.setRefreshing(false);
         });
 

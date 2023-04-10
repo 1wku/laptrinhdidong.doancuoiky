@@ -1,5 +1,6 @@
 package ltdd.doan.mangxahoi.ui.view.fragment;
 
+import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.os.Bundle;
@@ -13,27 +14,31 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import ltdd.doan.mangxahoi.R;
+import ltdd.doan.mangxahoi.databinding.FragmentPostDetailsBinding;
 import ltdd.doan.mangxahoi.ui.viewmodel.PostDetailsViewModel;
 
 public class PostDetailsFragment extends Fragment {
 
+    private FragmentPostDetailsBinding binding;
+
     private PostDetailsViewModel mViewModel;
 
-    public static PostDetailsFragment newInstance() {
-        return new PostDetailsFragment();
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        mViewModel = new ViewModelProvider(this).get(PostDetailsViewModel.class);
     }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_post_details, container, false);
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_post_details, container, false);
+        binding.setPostDetailsFragment(this);
+
+        int post_id = getArguments().getInt("post_id");
+        binding.setPost(mViewModel.getPostDetailsById(post_id));
+        return binding.getRoot();
     }
 
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        mViewModel = new ViewModelProvider(this).get(PostDetailsViewModel.class);
-        // TODO: Use the ViewModel
-    }
 
 }

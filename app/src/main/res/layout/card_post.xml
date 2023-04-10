@@ -17,12 +17,11 @@
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/md_pink_100"
+        app:cardBackgroundColor="#F2CBD0"
         app:cardCornerRadius="20dp"
         app:cardElevation="8dp"
         app:cardPreventCornerOverlap="false"
         app:cardUseCompatPadding="true"
-        app:cardBackgroundColor="@color/md_pink_200"
         app:contentPadding="8dp">
 
         <LinearLayout
@@ -79,6 +78,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@{post.created_at}"
+                        android:textColor="@color/black"
                         android:textSize="15sp" />
 
                 </LinearLayout>
@@ -104,7 +104,7 @@
                 android:adjustViewBounds="true"
                 android:maxHeight="600dp"
                 android:scaleType="fitXY"
-                android:src="@drawable/content_img" />
+                android:src="@drawable/content_img4" />
 
             <!--content-->
             <!--TODO add onclick event-->
@@ -153,6 +153,7 @@
                     android:id="@+id/cardPostPostCmt"
                     android:layout_width="36dp"
                     android:layout_height="36dp"
+                    android:onClick="@{() -> postAdapterFeed.navToPostDetails(cardPostPostCmt, post.post_id)}"
                     android:src="@drawable/ic_comment"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="@id/cardPostPostShare"

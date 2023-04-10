@@ -8,9 +8,32 @@ import androidx.annotation.NonNull;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
+import java.util.Random;
 
-public class User implements Parcelable {
+import kotlin.random.URandomKt;
+import ltdd.doan.mangxahoi.R;
 
+public class User {
+    private Integer user_id;
+    private String user_email;
+    private String user_phone_No;
+    private String user_full_name;
+    private String user_password;
+    private List<User> followers;
+    private List<User> following;
+
+    public User(Integer user_id, String user_email, String user_phone_No, String user_full_name, String user_password, List<User> followers, List<User> following) {
+        this.user_id = user_id;
+        this.user_email = user_email;
+        this.user_phone_No = user_phone_No;
+        this.user_full_name = user_full_name;
+        this.user_password = user_password;
+        this.followers = followers;
+        this.following = following;
+    }
+
+    public User() {
+    }
 
     public Integer getUser_id() {
         return user_id;
@@ -68,78 +91,19 @@ public class User implements Parcelable {
         this.following = following;
     }
 
-
-    public User(Integer user_id, String user_email, String user_phone_No, String user_full_name, String user_password, List<User> followers, List<User> following) {
-        this.user_id = user_id;
-        this.user_email = user_email;
-        this.user_phone_No = user_phone_No;
-        this.user_full_name = user_full_name;
-        this.user_password = user_password;
-        this.followers = followers;
-        this.following = following;
+    public User getEx(){
+        Random random = new Random();
+        User user = new User(11,"odeee","phone",randomS(),"123",null,null);
+        return user;
     }
-
-    @SerializedName("user_id")
-    private Integer user_id;
-    @SerializedName("user_email")
-    private String user_email;
-    @SerializedName("user_phone_No")
-
-    private String user_phone_No;
-    @SerializedName("user_full_name")
-    private String user_full_name;
-    @SerializedName("user_password")
-    private String user_password;
-    @SerializedName("followers")
-    private List<User> followers;
-    @SerializedName("following")
-    private List<User> following;
-
-
-    protected User(Parcel in) {
-        if (in.readByte() == 0) {
-            user_id = null;
-        } else {
-            user_id = in.readInt();
-        }
-        user_email = in.readString();
-        user_phone_No = in.readString();
-        user_full_name = in.readString();
-        user_password = in.readString();
-        followers = in.createTypedArrayList(User.CREATOR);
-        following = in.createTypedArrayList(User.CREATOR);
-    }
-
-    public static final Creator<User> CREATOR = new Creator<User>() {
-        @Override
-        public User createFromParcel(Parcel in) {
-            return new User(in);
-        }
-
-        @Override
-        public User[] newArray(int size) {
-            return new User[size];
-        }
-    };
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(@NonNull Parcel parcel, int i) {
-        if (user_id == null) {
-            parcel.writeByte((byte) 0);
-        } else {
-            parcel.writeByte((byte) 1);
-            parcel.writeInt(user_id);
-        }
-        parcel.writeString(user_email);
-        parcel.writeString(user_phone_No);
-        parcel.writeString(user_full_name);
-        parcel.writeString(user_password);
-        parcel.writeTypedList(followers);
-        parcel.writeTypedList(following);
+    public String randomS(){
+        int leftLimit = 97; // letter 'a'
+        int rightLimit = 122; // letter 'z'
+        int targetStringLength = 10;
+        Random random = new Random();
+        return random.ints(leftLimit, rightLimit + 1)
+                .limit(targetStringLength)
+                .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
+                .toString();
     }
 }

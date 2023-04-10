@@ -2,20 +2,25 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
+
     <data>
         <import type="android.view.View"/>
 
+        <variable
+            name="postDetailsFragment"
+            type="ltdd.doan.mangxahoi.ui.view.fragment.PostDetailsFragment" />
+        
         <variable
             name="post"
             type="ltdd.doan.mangxahoi.data.model.Post" />
 
         <variable name="commentAdapter"
-            type="ltdd.doan.mangxahoi.ui.view.adapter.CommentAdapter" />
+            type="ltdd.doan.mangxahoi.ui.view.adapter.CommentAdapter"/>
 
     </data>
-
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/frgPostDetailsSwipeRefresh"
+        android:background="#FAE7E9"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -173,7 +178,6 @@
                 <!--comment list -->
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/frgPostDetailsRecyclerView"
-                    android:adapter="@{}"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" />
@@ -185,7 +189,7 @@
                     android:layout_marginHorizontal="8dp"
                     android:layout_marginTop="4dp"
                     android:background="@color/gray" />
-                
+
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/frgPostDetailsTxtComment"
                     android:layout_width="match_parent"
@@ -202,4 +206,5 @@
 
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
 </layout>

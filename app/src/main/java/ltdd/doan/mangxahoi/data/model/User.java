@@ -14,20 +14,30 @@ import kotlin.random.URandomKt;
 import ltdd.doan.mangxahoi.R;
 
 public class User {
-    private Integer user_id;
-    private String user_email;
-    private String user_phone_No;
-    private String user_full_name;
-    private String user_password;
-    private List<User> followers;
-    private List<User> following;
+    private Integer id;
+    private String username;
+    private String email;
+    private String password;
+    private String full_name;
+    private String avatar;
+    private String phone_no;
+    private String address;
+    private String relationship;
+    private String bio;
+    private List<Integer> followers;
+    private List<Integer> following;
 
-    public User(Integer user_id, String user_email, String user_phone_No, String user_full_name, String user_password, List<User> followers, List<User> following) {
-        this.user_id = user_id;
-        this.user_email = user_email;
-        this.user_phone_No = user_phone_No;
-        this.user_full_name = user_full_name;
-        this.user_password = user_password;
+    public User(Integer id, String username, String email, String password, String full_name, String avatar, String phone_no, String address, String relationship, String bio, List<Integer> followers, List<Integer> following) {
+        this.id = id;
+        this.username = username;
+        this.email = email;
+        this.password = password;
+        this.full_name = full_name;
+        this.avatar = avatar;
+        this.phone_no = phone_no;
+        this.address = address;
+        this.relationship = relationship;
+        this.bio = bio;
         this.followers = followers;
         this.following = following;
     }
@@ -35,65 +45,105 @@ public class User {
     public User() {
     }
 
-    public Integer getUser_id() {
-        return user_id;
+    public Integer getId() {
+        return id;
     }
 
-    public void setUser_id(Integer user_id) {
-        this.user_id = user_id;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
-    public String getUser_email() {
-        return user_email;
+    public String getUsername() {
+        return username;
     }
 
-    public void setUser_email(String user_email) {
-        this.user_email = user_email;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
-    public String getUser_phone_No() {
-        return user_phone_No;
+    public String getEmail() {
+        return email;
     }
 
-    public void setUser_phone_No(String user_phone_No) {
-        this.user_phone_No = user_phone_No;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
-    public String getUser_full_name() {
-        return user_full_name;
+    public String getPassword() {
+        return password;
     }
 
-    public void setUser_full_name(String user_full_name) {
-        this.user_full_name = user_full_name;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
-    public String getUser_password() {
-        return user_password;
+    public String getFull_name() {
+        return full_name;
     }
 
-    public void setUser_password(String user_password) {
-        this.user_password = user_password;
+    public void setFull_name(String full_name) {
+        this.full_name = full_name;
     }
 
-    public List<User> getFollowers() {
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
+    }
+
+    public String getPhone_no() {
+        return phone_no;
+    }
+
+    public void setPhone_no(String phone_no) {
+        this.phone_no = phone_no;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getRelationship() {
+        return relationship;
+    }
+
+    public void setRelationship(String relationship) {
+        this.relationship = relationship;
+    }
+
+    public String getBio() {
+        return bio;
+    }
+
+    public void setBio(String bio) {
+        this.bio = bio;
+    }
+
+    public List<Integer> getFollowers() {
         return followers;
     }
 
-    public void setFollowers(List<User> followers) {
+    public void setFollowers(List<Integer> followers) {
         this.followers = followers;
     }
 
-    public List<User> getFollowing() {
+    public List<Integer> getFollowing() {
         return following;
     }
 
-    public void setFollowing(List<User> following) {
+    public void setFollowing(List<Integer> following) {
         this.following = following;
     }
 
     public User getEx(){
-        Random random = new Random();
-        User user = new User(11,"odeee","phone",randomS(),"123",null,null);
+        Integer random = new Random().nextInt(100);
+        User user = new User(random,randomS(),randomS(),randomS(),randomS(),null,null,null,null,null,null,null);
         return user;
     }
     public String randomS(){

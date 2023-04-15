@@ -18,8 +18,8 @@
         android:icon="@drawable/ic_notifications_empty"
         android:title="Notifications" />
     <item
-        android:id="@+id/menuFragment"
-        android:icon="@drawable/ic_menu"
-        android:title="Menu" />
+        android:id="@+id/profileFragment"
+        android:icon="@drawable/ic_user"
+        android:title="Profile" />
 
 </menu>

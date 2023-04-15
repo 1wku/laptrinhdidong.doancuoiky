@@ -69,7 +69,7 @@
                         android:id="@+id/cardPostUserName"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@{post.post_owner.user_full_name}"
+                        android:text="@{post.owner.full_name}"
                         android:textSize="20sp"
                         android:textStyle="bold" />
                     <!--thời gian tạo-->
@@ -97,6 +97,9 @@
 
             <!--ảnh-->
             <!--TODO add onclick event-->
+
+            <!--content-->
+            <!--TODO add onclick event-->
             <ImageView
                 android:id="@+id/cardPostPostImg"
                 android:layout_width="match_parent"
@@ -104,16 +107,14 @@
                 android:adjustViewBounds="true"
                 android:maxHeight="600dp"
                 android:scaleType="fitXY"
-                android:src="@drawable/content_img4" />
+                android:src="@drawable/content_img3" />
 
-            <!--content-->
-            <!--TODO add onclick event-->
             <TextView
                 android:id="@+id/cardPostPostContent"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="8dp"
-                android:text="@{post.post_content}"
+                android:text="@{post.content}"
                 android:textSize="16sp"
                 android:textStyle="bold" />
 
@@ -142,32 +143,33 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:paddingStart="8dp"
-                    android:text="@{@string/card_post_likes(post.post_likers.size())}"
+                    android:text="@{@string/card_post_likes(post.like.size())}"
                     android:textSize="16sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/cardPostPostlike"
                     app:layout_constraintTop_toTopOf="parent" />
 
+                <!--lượng bình luận-->
+                <TextView
+                    android:id="@+id/cardPostPostCommentAmount"
+                    android:layout_width="14dp"
+                    android:layout_height="39dp"
+                    android:padding="8dp"
+                    android:text="@{@string/card_post_likes(post.like.size())}"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/cardPostPostCmt"
+                    app:layout_constraintTop_toTopOf="parent" />
                 <!--bình luận-->
                 <ImageView
                     android:id="@+id/cardPostPostCmt"
                     android:layout_width="36dp"
                     android:layout_height="36dp"
-                    android:onClick="@{() -> postAdapterFeed.navToPostDetails(cardPostPostCmt, post.post_id)}"
+                    android:onClick="@{() -> postAdapterFeed.navToPostDetails(cardPostPostCmt, post.id)}"
                     android:src="@drawable/ic_comment"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="@id/cardPostPostShare"
-                    app:layout_constraintStart_toEndOf="@id/cardPostPostlikeAmount"
-                    app:layout_constraintTop_toTopOf="parent" />
-                <!-- share -->
-                <ImageView
-                    android:id="@+id/cardPostPostShare"
-                    android:layout_width="36dp"
-                    android:layout_height="36dp"
-                    android:src="@drawable/ic_share"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
+
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

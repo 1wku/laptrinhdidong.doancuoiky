@@ -13,62 +13,64 @@ import java.util.List;
 import java.util.Random;
 
 public class Post  {
-    private Integer post_id;
-    private User post_owner;
-    private String post_content;
-    private List<Comment> post_commnents;
-    private List<User> post_likers;
+    private Integer id;
+    private Integer owner;
+    private String photo;
+    private String content;
+    private List<Integer> like;
     private String created_at;
 
-    public Post(Integer post_id, User post_owner, String post_content, List<Comment> post_commnents, List<User> post_likers, String created_at) {
-        this.post_id = post_id;
-        this.post_owner = post_owner;
-        this.post_content = post_content;
-        this.post_commnents = post_commnents;
-        this.post_likers = post_likers;
+    public Post(Integer id, Integer owner, String photo, String content, List<Integer> like, String created_at) {
+        this.id = id;
+        this.owner = owner;
+        this.photo = photo;
+        this.content = content;
+        this.like = like;
         this.created_at = created_at;
     }
+
     public Post() {
     }
 
-    public Integer getPost_id() {
-        return post_id;
+    public Integer getId() {
+        return id;
     }
 
-    public void setPost_id(Integer post_id) {
-        this.post_id = post_id;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
-    public User getPost_owner() {
-        return post_owner;
+    public User getOwner() {
+        User owner = new User(this.owner,randomS(10),null,null,randomS(10),null,null,null,null,null,null,null);
+        return owner;
     }
 
-    public void setPost_owner(User post_owner) {
-        this.post_owner = post_owner;
+    public void setOwner(Integer owner) {
+        this.owner = owner;
     }
 
-    public String getPost_content() {
-        return post_content;
+    public String getPhoto() {
+        return photo;
     }
 
-    public void setPost_content(String post_content) {
-        this.post_content = post_content;
+    public void setPhoto(String photo) {
+        this.photo = photo;
     }
 
-    public List<Comment> getPost_commnents() {
-        return post_commnents;
+    public String getContent() {
+        return content;
     }
 
-    public void setPost_commnents(List<Comment> post_commnents) {
-        this.post_commnents = post_commnents;
+    public void setContent(String content) {
+        this.content = content;
     }
 
-    public List<User> getPost_likers() {
-        return post_likers;
+    public List<Integer> getLike() {
+        return like;
     }
 
-    public void setPost_likers(List<User> post_likers) {
-        this.post_likers = post_likers;
+    public void setLike(List<Integer> like) {
+        this.like = like;
     }
 
     public String getCreated_at() {
@@ -80,8 +82,8 @@ public class Post  {
     }
 
     public Post getEx(User user){
-        Random random = new Random();
-        Post post = new Post(11,user.getEx(),randomS(50),null,null, Date.from(Instant.now()).toString());
+        Integer random = new Random().nextInt(100);
+        Post post = new Post(random,user.getId(),null,randomS(50),null, Date.from(Instant.now()).toString());
         return post;
     }
 

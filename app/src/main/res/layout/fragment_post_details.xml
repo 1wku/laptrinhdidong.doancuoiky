@@ -82,7 +82,7 @@
                                 android:textStyle="bold"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text="@{post.post_owner.user_full_name}" />
+                                android:text="@{post.owner.full_name}" />
 
                             <TextView
                                 android:id="@+id/frgPostDetailsLblPostDate"
@@ -155,7 +155,7 @@
                             android:textStyle="bold"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="@{@string/card_post_likes(post.post_likers.size())}" />
+                            android:text="@{@string/card_post_likes(post.like.size())}" />
 
                         <!--content -->
                         <TextView
@@ -163,7 +163,7 @@
                             android:textSize="16sp"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text='@{post.post_owner.user_full_name + " " + post.post_content}' />
+                            android:text='@{post.owner.full_name + " " + post.content}' />
                     </LinearLayout>
 
                 </LinearLayout>

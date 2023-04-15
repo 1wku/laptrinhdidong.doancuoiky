@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <import type="android.view.View"/>
+        
+        <variable
+            name="profileFragment"
+            type="ltdd.doan.mangxahoi.ui.view.fragment.ProfileFragment" />
+
+        <variable
+            name="postAdapter"
+            type="ltdd.doan.mangxahoi.ui.view.adapter.PostAdapterProfile" />
+
+        <variable
+            name="user"
+            type="ltdd.doan.mangxahoi.data.model.User"/>
+    </data>
+
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/frgProfileSwipeRefresh"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:context=".ui.view.fragment.ProfileFragment">
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <!-- Header -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginHorizontal="16dp"
+                    android:layout_marginTop="8dp">
+                    
+                    <LinearLayout
+                        android:id="@+id/frgProfileUserImg"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:weightSum="3"
+                        android:orientation="horizontal">
+                        <!-- avatar -->
+                        <com.google.android.material.imageview.ShapeableImageView
+                            android:layout_width="100dp"
+                            android:layout_height="100dp"
+                            android:adjustViewBounds="true"
+                            android:padding="2dp"
+                            android:scaleType="fitXY"
+                            app:shapeAppearanceOverlay="@style/ShapeAppearance.App.CircleImageView"
+                            app:strokeColor="@color/black"
+                            app:strokeWidth="2dp"
+                            android:src="@drawable/avatar_img"/>
+
+                        <!-- số lượng post -->
+                        <!--todo-->
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:orientation="vertical">
+                            <TextView
+                                android:id="@+id/frgProfileLblPosts"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textSize="22sp"
+                                android:textStyle="bold"
+                                android:text="100"/>
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Post"
+                                android:textSize="16sp"/>
+                        </LinearLayout>
+
+                        <!--số người theo dõi-->
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/frgProfileLblFollowers"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textSize="22sp"
+                                android:textStyle="bold"
+                                android:text="@{String.valueOf(user.followers.size())}" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Follower"
+                                android:textSize="16sp" />
+                        </LinearLayout>
+
+                        <!--sớ người đang theo dõi-->
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/frgProfileLblFollowing"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textSize="22sp"
+                                android:textStyle="bold"
+                                android:text="@{String.valueOf(user.following.size())}" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textSize="16sp"
+                                android:text="Following" />
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <!--todo Tên người dùng -->
+                    <TextView
+                        android:id="@+id/frgProfileLblUserName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="ố dè"
+                        android:textColor="@color/black"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                    <!--todo m6 tả-->
+                    <TextView
+                        android:id="@+id/frgProfileLblUserBio"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="ố dèeeeeeeeeeeeeeeeeeeee"
+                        android:textSize="16sp" />
+
+                    <!--todo nút theo dõi -->
+                    <Button
+                        android:id="@+id/frgProfileBtnFollow"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="follow"
+                        style="@style/ButtonBlue" />
+                </LinearLayout>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/frgProfileRecyclerView"
+                    android:layout_marginTop="8dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:adapter="@{postAdapter}" />
+
+            </LinearLayout>
+
+        </androidx.core.widget.NestedScrollView>
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+
+</layout>

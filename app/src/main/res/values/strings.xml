@@ -66,7 +66,8 @@
     <string name="fragment_sign_up_lbl_sign_in">Sign In</string>
 
     <!-- card post & post details fragment -->
-    <string name="card_post_likes">%1$d</string>
+    <string name="card_post_likes">%1$d lượt thích</string>
+    <string name="card_post_comments">%1$d lượt bình luận</string>
     <string name="card_post_msg_delete">Are you sure to delete this post?</string>
     <string name="fragment_post_details_ph_add_a_comment">Add a comment</string>
     <string name="fragment_post_details_msg_comment_cannot_be_empty">Comment can not be empty.</string>

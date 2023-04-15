@@ -10,60 +10,60 @@ import com.google.gson.annotations.SerializedName;
 import java.util.List;
 
 public class Comment {
-    private Integer comment_id;
-    private User comment_owner;
-    private String comment_content;
-    private List<Comment> comment_repliers;
-    private List<User> comment_likers;
+    private Integer id;
+    private Integer post_id;
+    private Integer owner;
+    private String  text;
+    private String created_at;
 
-    public Comment(Integer comment_id, User comment_owner, String comment_content, List<Comment> comment_repliers, List<User> comment_likers) {
-        this.comment_id = comment_id;
-        this.comment_owner = comment_owner;
-        this.comment_content = comment_content;
-        this.comment_repliers = comment_repliers;
-        this.comment_likers = comment_likers;
+    public Comment(Integer id, Integer post_id, Integer owner, String text, String created_at) {
+        this.id = id;
+        this.post_id = post_id;
+        this.owner = owner;
+        this.text = text;
+        this.created_at = created_at;
     }
 
     public Comment() {
     }
 
-    public Integer getComment_id() {
-        return comment_id;
+    public Integer getId() {
+        return id;
     }
 
-    public void setComment_id(Integer comment_id) {
-        this.comment_id = comment_id;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
-    public User getComment_owner() {
-        return comment_owner;
+    public Integer getPost_id() {
+        return post_id;
     }
 
-    public void setComment_owner(User comment_owner) {
-        this.comment_owner = comment_owner;
+    public void setPost_id(Integer post_id) {
+        this.post_id = post_id;
     }
 
-    public String getComment_content() {
-        return comment_content;
+    public Integer getOwner() {
+        return owner;
     }
 
-    public void setComment_content(String comment_content) {
-        this.comment_content = comment_content;
+    public void setOwner(Integer owner) {
+        this.owner = owner;
     }
 
-    public List<Comment> getComment_repliers() {
-        return comment_repliers;
+    public String getText() {
+        return text;
     }
 
-    public void setComment_repliers(List<Comment> comment_repliers) {
-        this.comment_repliers = comment_repliers;
+    public void setText(String text) {
+        this.text = text;
     }
 
-    public List<User> getComment_likers() {
-        return comment_likers;
+    public String getCreated_at() {
+        return created_at;
     }
 
-    public void setComment_likers(List<User> comment_likers) {
-        this.comment_likers = comment_likers;
+    public void setCreated_at(String created_at) {
+        this.created_at = created_at;
     }
 }

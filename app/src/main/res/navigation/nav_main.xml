@@ -31,9 +31,12 @@
 
     </fragment>
     <fragment
-        android:id="@+id/menuFragment"
-        android:name="ltdd.doan.mangxahoi.ui.view.fragment.MenuFragment"
-        android:label="MenuFragment">
+        android:id="@+id/profileFragment"
+        android:name="ltdd.doan.mangxahoi.ui.view.fragment.ProfileFragment"
+        android:label="ProfileFragment">
+        <action
+            android:id="@+id/profileToPostDetails"
+            app:destination="@id/postDetailsFragment" />
     </fragment>
     <fragment
         android:id="@+id/postDetailsFragment"

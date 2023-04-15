@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
+import androidx.navigation.NavArgument;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 

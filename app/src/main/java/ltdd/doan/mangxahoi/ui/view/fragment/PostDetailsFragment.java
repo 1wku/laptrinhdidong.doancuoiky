@@ -13,10 +13,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import dagger.hilt.android.AndroidEntryPoint;
 import ltdd.doan.mangxahoi.R;
 import ltdd.doan.mangxahoi.databinding.FragmentPostDetailsBinding;
 import ltdd.doan.mangxahoi.ui.viewmodel.PostDetailsViewModel;
-
+@AndroidEntryPoint
 public class PostDetailsFragment extends Fragment {
 
     private FragmentPostDetailsBinding binding;

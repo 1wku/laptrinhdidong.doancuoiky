@@ -14,12 +14,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import dagger.hilt.android.AndroidEntryPoint;
 import ltdd.doan.mangxahoi.R;
 import ltdd.doan.mangxahoi.databinding.FragmentPostDetailsBinding;
 import ltdd.doan.mangxahoi.databinding.FragmentProfileBinding;
 import ltdd.doan.mangxahoi.ui.view.adapter.PostAdapterProfile;
 import ltdd.doan.mangxahoi.ui.viewmodel.ProfileViewModel;
-
+@AndroidEntryPoint
 public class ProfileFragment extends Fragment {
 
     private FragmentProfileBinding binding;

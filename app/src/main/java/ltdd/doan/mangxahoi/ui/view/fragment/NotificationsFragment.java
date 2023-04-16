@@ -10,9 +10,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import dagger.hilt.android.AndroidEntryPoint;
 import ltdd.doan.mangxahoi.R;
 import ltdd.doan.mangxahoi.ui.viewmodel.NotificationsViewModel;
-
+@AndroidEntryPoint
 public class NotificationsFragment extends Fragment {
 
     private NotificationsViewModel mViewModel;

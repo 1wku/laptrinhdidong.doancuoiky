@@ -1,6 +1,7 @@
 plugins {
     id 'com.android.application'
     id 'androidx.navigation.safeargs'
+    id 'dagger.hilt.android.plugin'
 }
 
 android {
@@ -36,6 +37,8 @@ android {
 
 dependencies {
 
+    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.6.1'
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.1'
     constraints {
         implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.8.0") {
             because("kotlin-stdlib-jdk7 is now a part of kotlin-stdlib")
@@ -48,9 +51,9 @@ dependencies {
     // viewmodel
     implementation 'androidx.lifecycle:lifecycle-viewmodel:2.6.1'
 
-    // dependency injection
-//    implementation 'com.google.dagger:hilt-android:2.45'
-//    annotationProcessor 'com.google.dagger:hilt-android-compiler:2.45'
+    //dependency injection
+    implementation 'com.google.dagger:hilt-android:2.45'
+    annotationProcessor 'com.google.dagger:hilt-android-compiler:2.45'
 
     // swipe refresh
     implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'

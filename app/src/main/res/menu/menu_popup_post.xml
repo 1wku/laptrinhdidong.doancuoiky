@@ -5,8 +5,8 @@
     <item
         android:id="@+id/actionEditPost"
         android:icon="@drawable/ic_edit"
-        android:title="@string/menu_popup_post_lbl_edit" />
+        android:title="Edit Post" />
     <item
         android:id="@+id/actionDeletePost"
-        android:title="@string/menu_popup_post_lbl_delete" />
+        android:title="Delete Post" />
 </menu>

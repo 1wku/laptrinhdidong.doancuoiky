@@ -5,9 +5,9 @@ import androidx.lifecycle.ViewModel;
 
 import java.io.Closeable;
 
+import dagger.hilt.android.lifecycle.HiltViewModel;
 import ltdd.doan.mangxahoi.data.model.Post;
 import ltdd.doan.mangxahoi.data.model.User;
-
 public class PostDetailsViewModel extends ViewModel {
 
     public PostDetailsViewModel() {

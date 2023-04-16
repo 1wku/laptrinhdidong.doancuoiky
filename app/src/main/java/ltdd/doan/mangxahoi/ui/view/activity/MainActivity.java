@@ -16,10 +16,12 @@ import androidx.navigation.ui.NavigationUI;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 
+import dagger.hilt.android.AndroidEntryPoint;
 import ltdd.doan.mangxahoi.R;
 import ltdd.doan.mangxahoi.databinding.ActivityMainBinding;
 import ltdd.doan.mangxahoi.ui.viewmodel.MainViewModel;
 
+@AndroidEntryPoint
 public class MainActivity extends AppCompatActivity {
 
     private Context context;

@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import java.util.ArrayList;
 import java.util.List;
 
+import dagger.hilt.android.AndroidEntryPoint;
 import ltdd.doan.mangxahoi.R;
 import ltdd.doan.mangxahoi.data.model.Post;
 import ltdd.doan.mangxahoi.data.model.User;
@@ -23,7 +24,7 @@ import ltdd.doan.mangxahoi.databinding.FragmentFeedBinding;
 import ltdd.doan.mangxahoi.ui.view.activity.MainActivity;
 import ltdd.doan.mangxahoi.ui.view.adapter.PostAdapterFeed;
 import ltdd.doan.mangxahoi.ui.viewmodel.FeedViewModel;
-
+@AndroidEntryPoint
 public class FeedFragment extends Fragment {
 
     private FeedViewModel mViewModel;

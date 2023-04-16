@@ -7,10 +7,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 
+import javax.inject.Inject;
+
+import dagger.hilt.android.lifecycle.HiltViewModel;
 import ltdd.doan.mangxahoi.data.model.Post;
 import ltdd.doan.mangxahoi.data.model.User;
 import ltdd.doan.mangxahoi.data.repository.PostRepository;
-
 public class FeedViewModel extends ViewModel {
     public FeedViewModel() {
     }

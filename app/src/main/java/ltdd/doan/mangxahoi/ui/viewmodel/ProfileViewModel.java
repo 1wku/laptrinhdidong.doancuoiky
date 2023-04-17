@@ -1,28 +1,57 @@
 package ltdd.doan.mangxahoi.ui.viewmodel;
 
 import androidx.annotation.Nullable;
+import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import dagger.hilt.android.lifecycle.HiltViewModel;
 import ltdd.doan.mangxahoi.data.model.Post;
 import ltdd.doan.mangxahoi.data.model.User;
-public class ProfileViewModel extends ViewModel {
-    // TODO: Implement the ViewModel
+import ltdd.doan.mangxahoi.data.repository.PostRepository;
+import ltdd.doan.mangxahoi.data.repository.UserRepository;
 
-    public User getUserByID(@Nullable int user_id){
-        User user = new User().getEx();
+@HiltViewModel
+public class ProfileViewModel extends ViewModel {
+    private UserRepository uRepo;
+    private PostRepository pRepo;
+    private MutableLiveData<User> user;
+    private MutableLiveData<List<Post>> posts;
+
+    @Inject
+    public ProfileViewModel(UserRepository uRepo, PostRepository pRepo) {
+        this.uRepo = uRepo;
+        this.pRepo = pRepo;
+
+        user = uRepo.getUser();
+        posts = pRepo.getPosts();
+    }
+
+    public MutableLiveData<User> getUser() {
         return user;
     }
 
-    public List<Post> getPostByUserID(){
-        User user = new User();
-        List<Post> temp = new ArrayList<>();
-        Post post = new Post();
-        for (int i = 0; i < 20; i++) {
-            temp.add(post.getEx(user.getEx()));
-        }
-        return temp;
-    }}
+    public MutableLiveData<List<Post>> getPosts() {
+        return posts;
+    }
+
+    public void getUserDetailsById(int user_id) {
+        uRepo.getUserDetailsById(user_id);
+    }
+
+    public void getPostsByUserId(int user_id) {
+        pRepo.getPostsByUserId(user_id);
+    }
+
+    public void follow(int user_id) {
+        uRepo.follow(user_id);
+    }
+
+    public void unfollow(int user_id) {
+        uRepo.unfollow(user_id);
+    }
+}

@@ -19,7 +19,7 @@ public class RegisterViewModel extends ViewModel {
     }
 
     public void register(String user_name, String user_password) {
-        uRepo.login(user_name, user_password);
+        uRepo.register(user_name, user_password);
     }
 
 }

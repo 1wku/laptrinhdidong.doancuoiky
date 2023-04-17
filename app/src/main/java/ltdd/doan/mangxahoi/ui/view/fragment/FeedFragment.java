@@ -13,13 +13,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import dagger.hilt.android.AndroidEntryPoint;
 import ltdd.doan.mangxahoi.R;
-import ltdd.doan.mangxahoi.data.model.Post;
-import ltdd.doan.mangxahoi.data.model.User;
 import ltdd.doan.mangxahoi.databinding.FragmentFeedBinding;
 import ltdd.doan.mangxahoi.ui.view.activity.MainActivity;
 import ltdd.doan.mangxahoi.ui.view.adapter.PostAdapterFeed;
@@ -41,18 +36,21 @@ public class FeedFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater,R.layout.fragment_feed,container,false);
 
-        PostAdapterFeed postAdapter = new PostAdapterFeed(requireContext(), (MainActivity) requireActivity(), mViewModel);
-        postAdapter.setData();
-        binding.setPostAdapter(postAdapter);
+        mViewModel.getFeed();
 
         binding.frgFeedRecyclerViewSwipeRefresh.setOnRefreshListener(() -> {
-            postAdapter.setData();
-            binding.setPostAdapter(postAdapter);
+            mViewModel.getFeed();
             binding.frgFeedRecyclerViewSwipeRefresh.setRefreshing(false);
         });
 
-//        if (posts.size() == 0) binding.frgFeedMsgNoPost.setVisibility(View.VISIBLE);
-//        else binding.frgFeedMsgNoPost.setVisibility(View.GONE);
+        mViewModel.getPosts().observe(getViewLifecycleOwner(), posts -> {
+            PostAdapterFeed postAdapter = new PostAdapterFeed(requireContext(), (MainActivity) requireActivity(), posts, mViewModel);
+            binding.setPostAdapter(postAdapter);
+
+            if (posts.size() == 0) binding.frgFeedLblMsgNoPost.setVisibility(View.VISIBLE);
+            else binding.frgFeedLblMsgNoPost.setVisibility(View.GONE);
+        });
+
         return binding.getRoot();
     }
 

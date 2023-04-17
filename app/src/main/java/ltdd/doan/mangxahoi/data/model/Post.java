@@ -1,31 +1,27 @@
 package ltdd.doan.mangxahoi.data.model;
 
-import android.os.Parcel;
-import android.os.Parcelable;
-
-import androidx.annotation.NonNull;
-
-import com.google.gson.annotations.SerializedName;
-
 import java.time.Instant;
 import java.util.Date;
 import java.util.List;
-import java.util.Random;
+
+import ltdd.doan.mangxahoi.data.Utils;
 
 public class Post  {
     private Integer id;
     private Integer owner;
     private String photo;
     private String content;
-    private List<Integer> like;
+    private List<Integer> likers;
+    private List<Integer> comments;
     private String created_at;
 
-    public Post(Integer id, Integer owner, String photo, String content, List<Integer> like, String created_at) {
+    public Post(Integer id, Integer owner, String photo, String content, List<Integer> likers, List<Integer> comments, String created_at) {
         this.id = id;
         this.owner = owner;
         this.photo = photo;
         this.content = content;
-        this.like = like;
+        this.likers = likers;
+        this.comments = comments;
         this.created_at = created_at;
     }
 
@@ -40,8 +36,9 @@ public class Post  {
         this.id = id;
     }
 
+    // TODO: 4/18/2023
     public User getOwner() {
-        User owner = new User(this.owner,randomS(10),null,null,randomS(10),null,null,null,null,null,null,null);
+        User owner = new User(this.owner,Utils.randomS(10),null,null,Utils.randomS(10),null,null,null,null,null,null,null);
         return owner;
     }
 
@@ -65,12 +62,20 @@ public class Post  {
         this.content = content;
     }
 
-    public List<Integer> getLike() {
-        return like;
+    public List<Integer> getLikers() {
+        return likers;
     }
 
-    public void setLike(List<Integer> like) {
-        this.like = like;
+    public void setLikers(List<Integer> likers) {
+        this.likers = likers;
+    }
+
+    public List<Integer> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<Integer> comments) {
+        this.comments = comments;
     }
 
     public String getCreated_at() {
@@ -82,19 +87,8 @@ public class Post  {
     }
 
     public Post getEx(User user){
-        Integer random = new Random().nextInt(100);
-        Post post = new Post(random,user.getId(),null,randomS(50),null, Date.from(Instant.now()).toString());
-        return post;
+        return new Post(Utils.random(),user.getId(),null,Utils.randomS(50),null, null, Date.from(Instant.now()).toString());
     }
 
-    public String randomS(int length ){
-        int leftLimit = 97; // letter 'a'
-        int rightLimit = 122; // letter 'z'
-        int targetStringLength = length;
-        Random random = new Random();
-        return random.ints(leftLimit, rightLimit + 1)
-                .limit(targetStringLength)
-                .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
-                .toString();
-    }
+
 }

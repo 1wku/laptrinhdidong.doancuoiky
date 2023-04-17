@@ -12,6 +12,9 @@
         <action
             android:id="@+id/feedToPostDetails"
             app:destination="@+id/postDetailsFragment"/>
+        <action
+            android:id="@+id/feedToProfile"
+            app:destination="@+id/profileFragment" />
     </fragment>
     <fragment
         android:id="@+id/friendsFragment"

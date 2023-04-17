@@ -37,7 +37,6 @@
                 android:padding="8dp">
 
                 <!--avatar-->
-                <!--TODO add onclick event -->
                 <com.google.android.material.imageview.ShapeableImageView
                     android:id="@+id/cardPostUserImg"
                     android:layout_width="50dp"
@@ -45,6 +44,7 @@
                     android:padding="2dp"
                     android:scaleType="fitXY"
                     android:src="@drawable/avatar_img"
+                    android:onClick="@{() -> postAdapterFeed.navToPostOwnersProfile(cardPostUserImg, post.owner.id)}"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
@@ -64,12 +64,12 @@
                     app:layout_constraintTop_toTopOf="parent">
 
                     <!--tên người tạo-->
-                    <!--TODO add onclick event-->
                     <TextView
                         android:id="@+id/cardPostUserName"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@{post.owner.full_name}"
+                        android:onClick="@{() -> postAdapterFeed.navToPostOwnersProfile(cardPostUserImg, post.owner.id)}"
                         android:textSize="20sp"
                         android:textStyle="bold" />
                     <!--thời gian tạo-->
@@ -97,9 +97,6 @@
 
             <!--ảnh-->
             <!--TODO add onclick event-->
-
-            <!--content-->
-            <!--TODO add onclick event-->
             <ImageView
                 android:id="@+id/cardPostPostImg"
                 android:layout_width="match_parent"
@@ -109,6 +106,8 @@
                 android:scaleType="fitXY"
                 android:src="@drawable/content_img3" />
 
+            <!--content-->
+            <!--TODO add onclick event-->
             <TextView
                 android:id="@+id/cardPostPostContent"
                 android:layout_width="match_parent"
@@ -131,7 +130,8 @@
                     android:id="@+id/cardPostPostlike"
                     android:layout_width="36dp"
                     android:layout_height="36dp"
-                    android:src="@drawable/ic_like"
+                    android:src="@{postAdapterFeed.isPostLiked(post) ? @drawable/ic_liked : @drawable/ic_like}"
+                    android:onClick="@{() -> postAdapterFeed.isPostLiked(post) ? postAdapterFeed.unlikePost(post.id) : postAdapterFeed.likePost(post.id)}"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -143,7 +143,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:paddingStart="8dp"
-                    android:text="@{@string/card_post_likes(post.like.size())}"
+                    android:text="@{@string/card_post_likes(post.likers.size())}"
                     android:textSize="16sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/cardPostPostlike"
@@ -155,7 +155,7 @@
                     android:layout_width="14dp"
                     android:layout_height="39dp"
                     android:padding="8dp"
-                    android:text="@{@string/card_post_likes(post.like.size())}"
+                    android:text="@{@string/card_post_comments(post.comments.size())}"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/cardPostPostCmt"
                     app:layout_constraintTop_toTopOf="parent" />

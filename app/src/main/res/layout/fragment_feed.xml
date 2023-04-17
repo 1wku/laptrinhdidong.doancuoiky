@@ -15,7 +15,7 @@
         tools:context=".ui.view.fragment.FeedFragment">
 
         <TextView
-            android:id="@+id/frgFeedMsgNoPost"
+            android:id="@+id/frgFeedLblMsgNoPost"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Khong co gi het aaaaa"

@@ -8,17 +8,16 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
-import androidx.navigation.NavArgument;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import ltdd.doan.mangxahoi.R;
 import ltdd.doan.mangxahoi.data.model.Post;
-import ltdd.doan.mangxahoi.data.model.User;
 import ltdd.doan.mangxahoi.databinding.CardPostBinding;
+import ltdd.doan.mangxahoi.session.Session;
 import ltdd.doan.mangxahoi.ui.view.activity.MainActivity;
 import ltdd.doan.mangxahoi.ui.view.fragment.FeedFragmentDirections;
 import ltdd.doan.mangxahoi.ui.viewmodel.FeedViewModel;
@@ -38,26 +37,51 @@ public class PostAdapterFeed extends RecyclerView.Adapter<PostAdapterFeed.PostVi
     private List<Post> posts;
     private FeedViewModel viewModel;
 
-    public PostAdapterFeed(Context context, MainActivity mainActivity, FeedViewModel viewModel) {
+    public PostAdapterFeed(Context context, MainActivity mainActivity, List<Post> posts, FeedViewModel viewModel) {
         this.context = context;
         this.mainActivity = mainActivity;
+        this.posts = posts;
         this.viewModel = viewModel;
     }
 
-    public void setData(){
-        this.posts = viewModel.getFeed();
-    }
-
-    //TODO
     public void navToPostOwnersProfile(View view, int user_id){
+        Bundle bundle = new Bundle();
+        bundle.putInt("user_id",user_id);
+        Navigation.findNavController(view).navigate(FeedFragmentDirections.feedToProfile().getActionId(), bundle);
     }
 
-    //TODO
     public void navToPostDetails(View view, int post_id){
         Bundle bundle = new Bundle();
         bundle.putInt("post_id",post_id);
         Navigation.findNavController(view).navigate(FeedFragmentDirections.feedToPostDetails().getActionId(), bundle);
     }
+
+    public void likePost(int post_id) {
+        viewModel.like(post_id);
+
+        // update ui
+        viewModel.getFeed();
+    }
+
+    public void unlikePost(int post_id) {
+        viewModel.unlike(post_id);
+
+        // update ui
+        viewModel.getFeed();
+    }
+    public boolean isPostLiked(Post post) {
+
+        if (post.getLikers() == null) return false;
+
+        for (Integer u : post.getLikers()) {
+            if (u.equals(Session.ACTIVE_USER.getId())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+
 
     @NonNull
     @Override

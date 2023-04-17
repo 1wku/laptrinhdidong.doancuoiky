@@ -1,13 +1,10 @@
 package ltdd.doan.mangxahoi.data.model;
 
-import android.os.Parcel;
-import android.os.Parcelable;
 
-import androidx.annotation.NonNull;
+import java.time.Instant;
+import java.util.Date;
 
-import com.google.gson.annotations.SerializedName;
-
-import java.util.List;
+import ltdd.doan.mangxahoi.data.Utils;
 
 public class Comment {
     private Integer id;
@@ -65,5 +62,9 @@ public class Comment {
 
     public void setCreated_at(String created_at) {
         this.created_at = created_at;
+    }
+
+    public Comment getEx(int post_id){
+        return new Comment(Utils.random(),post_id,Utils.random(),Utils.randomS(40), Date.from(Instant.now()).toString());
     }
 }

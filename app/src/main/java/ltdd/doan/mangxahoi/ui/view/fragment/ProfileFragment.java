@@ -8,16 +8,21 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.GridLayoutManager;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.List;
+
 import dagger.hilt.android.AndroidEntryPoint;
 import ltdd.doan.mangxahoi.R;
+import ltdd.doan.mangxahoi.data.model.User;
 import ltdd.doan.mangxahoi.databinding.FragmentPostDetailsBinding;
 import ltdd.doan.mangxahoi.databinding.FragmentProfileBinding;
+import ltdd.doan.mangxahoi.session.Session;
 import ltdd.doan.mangxahoi.ui.view.adapter.PostAdapterProfile;
 import ltdd.doan.mangxahoi.ui.viewmodel.ProfileViewModel;
 @AndroidEntryPoint
@@ -44,16 +49,50 @@ public class ProfileFragment extends Fragment {
         binding.setProfileFragment(this);
 
         Bundle bundle = getArguments();
-        int profile_id = (bundle == null ) ? 1 : bundle.getInt("profile_id");
-        binding.setUser(mViewModel.getUserByID(profile_id));
+        int user_id = (bundle == null ) ? 1 : bundle.getInt("user_id");
 
-        PostAdapterProfile postAdapterProfile = new PostAdapterProfile(requireContext(), mViewModel);
-        postAdapterProfile.setData(profile_id);
-        binding.setPostAdapter(postAdapterProfile);
-        binding.frgProfileRecyclerView.setLayoutManager(new GridLayoutManager(requireContext(),3));
+        binding.frgProfileSwipeRefresh.setOnRefreshListener(() -> {
+            mViewModel.getUserDetailsById(user_id);
+            mViewModel.getPostsByUserId(user_id);
 
+            binding.frgProfileSwipeRefresh.setRefreshing(false);
+        });
+
+        mViewModel.getUser().observe(getViewLifecycleOwner(), user -> {
+            binding.setUser(user);
+            // TODO: 4/18/2023 ảnh
+        });
+
+        mViewModel.getPosts().observe(getViewLifecycleOwner(), posts -> {
+            binding.setPostCount(posts.size());
+
+            PostAdapterProfile postAdapter = new PostAdapterProfile(requireContext(), posts);
+            binding.setPostAdapter(postAdapter);
+            binding.frgProfileRecyclerView.setLayoutManager(new GridLayoutManager(requireContext(), 3));
+        });
+
+        mViewModel.getUserDetailsById(user_id);
+        mViewModel.getPostsByUserId(user_id);
 
         return binding.getRoot();
+    }
+
+    // TODO: 4/18/2023
+    public void navToFollow(View view, List<User> users) {
+    }
+
+    public void follow(User user) {
+        mViewModel.follow(user.getId());
+
+        // update ui
+        mViewModel.getUserDetailsById(user.getId());
+    }
+
+    public void unfollow(int user_id) {
+        mViewModel.unfollow(user_id);
+
+        // update ui
+        mViewModel.getUserDetailsById(user_id);
     }
 
 }

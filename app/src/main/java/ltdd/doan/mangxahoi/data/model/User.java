@@ -1,17 +1,7 @@
 package ltdd.doan.mangxahoi.data.model;
 
-import android.os.Parcel;
-import android.os.Parcelable;
-
-import androidx.annotation.NonNull;
-
-import com.google.gson.annotations.SerializedName;
-
 import java.util.List;
-import java.util.Random;
-
-import kotlin.random.URandomKt;
-import ltdd.doan.mangxahoi.R;
+import ltdd.doan.mangxahoi.data.Utils;
 
 public class User {
     private Integer id;
@@ -142,18 +132,10 @@ public class User {
     }
 
     public User getEx(){
-        Integer random = new Random().nextInt(100);
-        User user = new User(random,randomS(),randomS(),randomS(),randomS(),null,null,null,null,null,null,null);
-        return user;
+        return new User(Utils.random(), Utils.randomS(), Utils.randomS(), Utils.randomS(), Utils.randomS(),null,null,null,null,null,null,null);
     }
-    public String randomS(){
-        int leftLimit = 97; // letter 'a'
-        int rightLimit = 122; // letter 'z'
-        int targetStringLength = 10;
-        Random random = new Random();
-        return random.ints(leftLimit, rightLimit + 1)
-                .limit(targetStringLength)
-                .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
-                .toString();
+    public User getEx(int id){
+
+        return new User(id, Utils.randomS(), Utils.randomS(), Utils.randomS(), Utils.randomS(),null,null,null,null,null,null,null);
     }
 }

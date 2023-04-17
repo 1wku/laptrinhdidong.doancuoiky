@@ -23,22 +23,6 @@ import ltdd.doan.mangxahoi.ui.viewmodel.ProfileViewModel;
 
 //TODO
 public class PostAdapterProfile extends RecyclerView.Adapter<PostAdapterProfile.PostThumbnailViewHolder>{
-
-    private Context context;
-
-    private ProfileViewModel viewModel;
-
-    private List<Post> posts;
-
-    public PostAdapterProfile(Context context, ProfileViewModel viewModel) {
-        this.context = context;
-        this.viewModel = viewModel;
-    }
-
-    public void setData(@Nullable int id){
-        this.posts = viewModel.getPostByUserID();
-    }
-
     public class PostThumbnailViewHolder extends RecyclerView.ViewHolder{
         public CardPostThumbnailBinding binding;
 
@@ -47,6 +31,20 @@ public class PostAdapterProfile extends RecyclerView.Adapter<PostAdapterProfile.
             this.binding = binding;
         }
     }
+    private Context context;
+    private List<Post> posts;
+
+    public PostAdapterProfile(Context context, List<Post> posts) {
+        this.context = context;
+        this.posts = posts;
+    }
+
+    public void navToPostDetails(View view, int post_id) {
+        Bundle bundle = new Bundle();
+        bundle.putInt("post_id",post_id);
+        Navigation.findNavController(view).navigate(ProfileFragmentDirections.profileToPostDetails().getActionId(), bundle);
+    }
+
     @NonNull
     @Override
     public PostThumbnailViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -67,9 +65,5 @@ public class PostAdapterProfile extends RecyclerView.Adapter<PostAdapterProfile.
         return posts.size();
     }
 
-    public void navToPostDetails(View view, int post_id) {
-        Bundle bundle = new Bundle();
-        bundle.putInt("post_id",post_id);
-        Navigation.findNavController(view).navigate(ProfileFragmentDirections.profileToPostDetails().getActionId(), bundle);
-    }
+
 }

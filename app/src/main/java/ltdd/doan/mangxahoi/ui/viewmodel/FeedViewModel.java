@@ -13,17 +13,47 @@ import dagger.hilt.android.lifecycle.HiltViewModel;
 import ltdd.doan.mangxahoi.data.model.Post;
 import ltdd.doan.mangxahoi.data.model.User;
 import ltdd.doan.mangxahoi.data.repository.PostRepository;
+@HiltViewModel
 public class FeedViewModel extends ViewModel {
-    public FeedViewModel() {
+    private PostRepository pRepo;
+
+    private MutableLiveData<List<Post>> posts;
+    private MutableLiveData<String> message;
+
+    @Inject
+    public FeedViewModel(PostRepository pRepo) {
+        this.pRepo = pRepo;
+
+        posts = pRepo.getPosts();
+        message = pRepo.getMessage();
     }
 
-    public List<Post> getFeed(){
-        User user = new User();
-        List<Post> temp = new ArrayList<>();
-        Post post = new Post();
-        for (int i = 0; i < 20; i++) {
-            temp.add(post.getEx(user.getEx()));
-        }
-        return temp;
+    public MutableLiveData<List<Post>> getPosts() {
+        return posts;
+    }
+
+
+    public MutableLiveData<String> getMessage() {
+        return message;
+    }
+
+    public void getFeed() {
+        pRepo.getFeed();
+    }
+
+    public void updatePost(Post post) {
+        pRepo.updatePost(post);
+    }
+
+    public void deletePost(int post_id) {
+        pRepo.deletePost(post_id);
+    }
+
+    public void like(int post_id) {
+        pRepo.like(post_id);
+    }
+
+    public void unlike(int post_id) {
+        pRepo.un_like(post_id);
     }
 }

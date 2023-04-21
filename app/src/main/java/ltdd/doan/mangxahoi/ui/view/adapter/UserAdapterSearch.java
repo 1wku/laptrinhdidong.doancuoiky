@@ -17,11 +17,12 @@ import ltdd.doan.mangxahoi.R;
 import ltdd.doan.mangxahoi.data.model.User;
 import ltdd.doan.mangxahoi.databinding.CardUserBinding;
 
-public class UserAdapterFollow extends RecyclerView.Adapter<UserAdapterFollow.UserViewHolder> {
+public class UserAdapterSearch extends RecyclerView.Adapter<UserAdapterSearch.UserViewHolder> {
+
     private Context context;
     private List<User> users;
 
-    public UserAdapterFollow(Context context, List<User> users) {
+    public UserAdapterSearch(Context context, List<User> users) {
         this.context = context;
         this.users = users;
     }
@@ -35,10 +36,10 @@ public class UserAdapterFollow extends RecyclerView.Adapter<UserAdapterFollow.Us
         }
     }
 
-    public void navToUserProfile(View view, int user_id) {
+    public void navToUserProfile(View view, int user_id){
         Bundle bundle = new Bundle();
         bundle.putInt("user_id",user_id);
-        Navigation.findNavController(view).navigate(ltdd.doan.mangxahoi.ui.view.fragment.FollowFragmentDirections.followToProfile().getActionId(), bundle);
+        Navigation.findNavController(view).navigate(ltdd.doan.mangxahoi.ui.view.fragment.FriendFragmentDirections.friendToProfile().getActionId(), bundle);
     }
 
     @NonNull
@@ -52,7 +53,7 @@ public class UserAdapterFollow extends RecyclerView.Adapter<UserAdapterFollow.Us
     public void onBindViewHolder(@NonNull UserViewHolder holder, int position) {
         User user = users.get(position);
 
-        holder.binding.setUserAdapterFollow(this);
+        holder.binding.setUserAdapterFriend(this);
         holder.binding.setUser(user);
 
         // TODO: 4/21/2023 ảnh

@@ -4,6 +4,7 @@ import android.content.Context;
 
 import androidx.lifecycle.MutableLiveData;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -96,4 +97,12 @@ public class UserRepository {
     public void unfollow(int user_id){
     }
 
+    // TODO: 4/21/2023
+    public void filterUsersByName(String user_name){
+        List<User> temp = new ArrayList<>();
+        for (int i = 0; i < 10; i++) {
+            temp.add(new User().getEx());
+        }
+        users.setValue(temp);
+    }
 }

@@ -36,7 +36,15 @@ public class NotificationsFragment extends Fragment {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_notifications, container, false);
         binding.setNotificationsFragment(this);
 
+        mViewModel.getNotifications().observe(getViewLifecycleOwner(), notifications -> {
+            NotificationAdapter notificationAdapter = new NotificationAdapter(requireContext(), notifications);
+            binding.setNotificationAdapter(notificationAdapter);
 
+            mViewModel.markSeenAllNotifications();
+
+        });
+
+        mViewModel.getAllNotifications();
         return binding.getRoot();
     }
 

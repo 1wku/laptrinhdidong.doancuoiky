@@ -47,6 +47,11 @@ dependencies {
             because("kotlin-stdlib-jdk8 is now a part of kotlin-stdlib")
         }
     }
+    // Splash Scren
+    implementation 'androidx.core:core-splashscreen:1.0.0-beta02'
+
+    // GIF
+    implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.25'
 
     // viewmodel
     implementation 'androidx.lifecycle:lifecycle-viewmodel:2.6.1'

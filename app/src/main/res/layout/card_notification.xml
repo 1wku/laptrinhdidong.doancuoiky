@@ -19,7 +19,8 @@
         android:orientation="horizontal"
         android:onClick="@{() -> notificationAdapter.navToResource(cardNotification, notification)}"
         android:background="@{(notification.is_seen == true) ? @color/white : @color/gray}"
-        android:padding="8dp">
+        android:padding="8dp"
+        android:layout_margin="1dp">
 
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/cardNotificationImgNotificationPhoto"

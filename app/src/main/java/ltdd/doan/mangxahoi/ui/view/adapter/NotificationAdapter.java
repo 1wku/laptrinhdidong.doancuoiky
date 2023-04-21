@@ -55,7 +55,8 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
         holder.binding.setNotificationAdapter(this);
         holder.binding.setNotification(notification);
 
-        //todo lấy tên user
+        //todo lấy tên user, ảnh
+
         if(Objects.equals(notification.getType(), "1")){
             holder.binding.cardNotificationLblNotificationText.setText("Bạn có tin nhắn từ "+notification.getFrom());
         } else if (Objects.equals(notification.getType(), "2")) {

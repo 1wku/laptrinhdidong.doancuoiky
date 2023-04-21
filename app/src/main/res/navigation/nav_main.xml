@@ -11,7 +11,8 @@
         android:label="FeedFragment">
         <action
             android:id="@+id/feedToPostDetails"
-            app:destination="@+id/postDetailsFragment"/>
+            app:destination="@+id/postDetailsFragment"
+            app:launchSingleTop="true" />
         <action
             android:id="@+id/feedToProfile"
             app:destination="@+id/profileFragment" />
@@ -20,6 +21,9 @@
         android:id="@+id/friendsFragment"
         android:name="ltdd.doan.mangxahoi.ui.view.fragment.FriendFragment"
         android:label="FriendFragment">
+        <action
+            android:id="@+id/friendToProfile"
+            app:destination="@id/profileFragment" />
     </fragment>
     <fragment
         android:id="@+id/newPostFragment"
@@ -45,5 +49,14 @@
         android:id="@+id/postDetailsFragment"
         android:name="ltdd.doan.mangxahoi.ui.view.fragment.PostDetailsFragment"
         tools:layout="PostDetailsFragment">
+    </fragment>
+    <fragment
+        android:id="@+id/followFragment"
+        android:name="ltdd.doan.mangxahoi.ui.view.fragment.FollowFragment"
+        android:label="fragment_follow"
+        tools:layout="@layout/fragment_follow" >
+        <action
+            android:id="@+id/followToProfile"
+            app:destination="@id/profileFragment" />
     </fragment>
 </navigation>

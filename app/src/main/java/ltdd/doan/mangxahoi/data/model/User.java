@@ -135,7 +135,6 @@ public class User {
         return new User(Utils.random(), Utils.randomS(), Utils.randomS(), Utils.randomS(), Utils.randomS(),null,null,null,null,null,null,null);
     }
     public User getEx(int id){
-
         return new User(id, Utils.randomS(), Utils.randomS(), Utils.randomS(), Utils.randomS(),null,null,null,null,null,null,null);
     }
 }

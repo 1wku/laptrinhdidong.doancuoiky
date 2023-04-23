@@ -59,10 +59,16 @@ public class LoginFragment extends Fragment {
         if (username.isEmpty()||password.isEmpty())
             Toast.makeText(requireContext(), "Vui long điền dầy đủ thông tin", Toast.LENGTH_SHORT).show();
         else {
-            mViewModel.login(username,password);
-            Intent intent = new Intent(requireContext(), MainActivity.class);
-            startActivity(intent);
-            requireActivity().finish();
+            Boolean result =  mViewModel.login(username,password);
+            if (result){
+                Intent intent = new Intent(requireContext(), MainActivity.class);
+                startActivity(intent);
+                requireActivity().finish();
+            }else{
+                System.out.println("Login failse");
+
+            }
+
         }
     }
 

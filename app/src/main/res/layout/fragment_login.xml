@@ -27,7 +27,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             android:layout_marginTop="64dp"/>
-
         <!--tài khoản: username - email - phoneNo -->
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/textInputLayout"

@@ -23,7 +23,7 @@ public class LoginViewModel extends ViewModel {
         uRepo.getLastSessionUser();
     }
 
-    public void login(String user_name, String user_password) {
-        uRepo.login(user_name, user_password);
+    public boolean login(String user_name, String user_password) {
+        return uRepo.login(user_name, user_password);
     }
 }

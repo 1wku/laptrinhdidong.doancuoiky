@@ -1,6 +1,7 @@
 package ltdd.doan.mangxahoi.data.repository;
 
 import android.content.Context;
+import android.util.Log;
 
 import androidx.lifecycle.MutableLiveData;
 
@@ -9,8 +10,12 @@ import java.util.List;
 import java.util.Objects;
 
 import ltdd.doan.mangxahoi.api.ApiInterface;
+import ltdd.doan.mangxahoi.data.dto.request.LoginRequest;
 import ltdd.doan.mangxahoi.data.model.User;
 import ltdd.doan.mangxahoi.session.Session;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class UserRepository {
     private final ApiInterface apiService;
@@ -65,11 +70,27 @@ public class UserRepository {
     }
 
     // TODO: 4/18/2023
-    public void login(String user_name, String user_password){
-        if (Objects.equals(user_name, "phuoc") || Objects.equals(user_password, "123")){
-            Session.ACTIVE_USER = new User().getEx();
-            setLastSessionUser(user_name,user_password);
-        }
+    public boolean login(String user_name, String user_password){
+        apiService.login(new LoginRequest(user_name, user_password)).enqueue(new Callback<User>() {
+            @Override
+            public void onResponse(Call<User> call, Response<User> response) {
+                if(response.isSuccessful()) {
+                    Session.ACTIVE_USER = response.body();
+                    setLastSessionUser(user_name,user_password);
+                    Log.d("LoginActivity", "LOGIN SUCCESS");
+                }else {
+                    int statusCode  = response.code();
+                    Log.d("LoginActivity", response.message());
+
+                }
+            }
+            @Override
+            public void onFailure(Call<User> call, Throwable t) {
+                System.out.println(t);
+                Log.d("LoginActivity", "LOGIN FAILSE");
+            }
+        });;
+        return Session.ACTIVE_USER != null;
     }
 
     // TODO: 4/18/2023

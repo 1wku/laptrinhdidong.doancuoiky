@@ -42,7 +42,7 @@ public class PostDetailsViewModel extends ViewModel {
         return status;
     }
 
-    public void getPostDetailsById(int post_id) {
+    public void getPostDetailsById(String post_id) {
         pRepo.getPostsByUserId(post_id);
     }
 
@@ -50,19 +50,19 @@ public class PostDetailsViewModel extends ViewModel {
         pRepo.updatePost(post);
     }
 
-    public void deletePost(int post_id) {
+    public void deletePost(String post_id) {
         pRepo.deletePost(post_id);
     }
 
-    public void like(int post_id) {
+    public void like(String post_id) {
         pRepo.like(post_id);
     }
 
-    public void unlike(int post_id) {
+    public void unlike(String post_id) {
         pRepo.unlike(post_id);
     }
 
-    public void createComment(int post_id, String text) {
+    public void createComment(String post_id, String text) {
         pRepo.createComment(post_id, text);
     }
 
@@ -70,7 +70,7 @@ public class PostDetailsViewModel extends ViewModel {
         pRepo.updateComment(comment);
     }
 
-    public void deleteComment(int comment_id) {
+    public void deleteComment(String comment_id) {
         pRepo.deleteComment(comment_id);
     }
 }

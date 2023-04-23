@@ -49,7 +49,7 @@ public class ProfileFragment extends Fragment {
         binding.setProfileFragment(this);
 
         Bundle bundle = getArguments();
-        int user_id = (bundle == null ) ? 1 : bundle.getInt("user_id");
+        String user_id = (bundle == null ) ? "" : bundle.getString("user_id");
 
         binding.frgProfileSwipeRefresh.setOnRefreshListener(() -> {
             mViewModel.getUserDetailsById(user_id);
@@ -88,7 +88,7 @@ public class ProfileFragment extends Fragment {
         mViewModel.getUserDetailsById(user.getId());
     }
 
-    public void unfollow(int user_id) {
+    public void unfollow(String user_id) {
         mViewModel.unfollow(user_id);
 
         // update ui

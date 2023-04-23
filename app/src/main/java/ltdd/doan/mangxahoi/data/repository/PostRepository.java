@@ -2,14 +2,15 @@ package ltdd.doan.mangxahoi.data.repository;
 
 import androidx.lifecycle.MutableLiveData;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import ltdd.doan.mangxahoi.api.ApiInterface;
-import ltdd.doan.mangxahoi.data.Utils;
 import ltdd.doan.mangxahoi.data.model.Comment;
 import ltdd.doan.mangxahoi.data.model.Post;
-import ltdd.doan.mangxahoi.data.model.User;
+import ltdd.doan.mangxahoi.session.Session;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class PostRepository {
     private final ApiInterface apiService;
@@ -46,20 +47,26 @@ public class PostRepository {
 
     // TODO: 4/18/2023
     public void getFeed(){
-        List<Post> temp = new ArrayList<>();
-        for (int i = 0; i < 20; i++) {
-            temp.add(new Post().getEx(new User().getEx()));
-        }
-        posts.setValue(temp);
+        apiService.getPostTimelineByUser(Session.ACTIVE_USER.getId()).enqueue(new Callback<List<Post>>() {
+            @Override
+            public void onResponse(Call<List<Post>> call, Response<List<Post>> response) {
+                if(response.code()==200) {
+                    posts.setValue(response.body());
+                }
+            }
+            @Override
+            public void onFailure(Call<List<Post>> call, Throwable t) {
+            }
+        });
     }
 
     // TODO: 4/18/2023
-    public void getPostsByUserId(int user_id){
-        List<Post> temp = new ArrayList<>();
-        for (int i = 0; i < 20; i++) {
-            temp.add(new Post().getEx(new User().getEx(user_id)));
-        }
-        posts.setValue(temp);
+    public void getPostsByUserId(String user_id){
+//        List<Post> temp = new ArrayList<>();
+//        for (int i = 0; i < 20; i++) {
+//            temp.add(new Post().getEx(new User().getEx(user_id)));
+//        }
+//        posts.setValue(temp);
     }
 
     // TODO: 4/18/2023
@@ -73,22 +80,22 @@ public class PostRepository {
     }
 
     // TODO: 4/18/2023
-    public void deletePost(int post_id){
+    public void deletePost(String post_id){
 
     }
 
     // TODO: 4/18/2023
-    public void like(int post_id){
+    public void like(String post_id){
 
     }
 
     // TODO: 4/18/2023
-    public void unlike(int post_id){
+    public void unlike(String post_id){
 
     }
 
     // TODO: 4/18/2023
-    public void createComment(int post_id, String text){
+    public void createComment(String post_id, String text){
 
     }
 
@@ -98,7 +105,7 @@ public class PostRepository {
     }
 
     // TODO: 4/18/2023
-    public void deleteComment(int comment_id){
+    public void deleteComment(String comment_id){
 
     }
 }

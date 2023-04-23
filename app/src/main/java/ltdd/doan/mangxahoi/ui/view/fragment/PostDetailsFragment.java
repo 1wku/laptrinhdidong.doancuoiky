@@ -42,7 +42,7 @@ public class PostDetailsFragment extends Fragment {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_post_details, container, false);
         binding.setPostDetailsFragment(this);
 
-        int post_id = getArguments().getInt("post_id");
+        String post_id = getArguments().getString("post_id");
 
         binding.frgPostDetailsSwipeRefresh.setOnRefreshListener(() -> {
             mViewModel.getPostDetailsById(post_id);
@@ -67,14 +67,14 @@ public class PostDetailsFragment extends Fragment {
         return binding.getRoot();
     }
 
-    public void likePost(int post_id) {
+    public void likePost(String post_id) {
         mViewModel.like(post_id);
 
         // update ui
         mViewModel.getPostDetailsById(post_id);
     }
 
-    public void unlikePost(int post_id) {
+    public void unlikePost(String post_id) {
         mViewModel.unlike(post_id);
 
         // update ui

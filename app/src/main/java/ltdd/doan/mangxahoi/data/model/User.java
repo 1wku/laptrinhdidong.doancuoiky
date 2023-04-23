@@ -1,23 +1,34 @@
 package ltdd.doan.mangxahoi.data.model;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
 import java.util.List;
 import ltdd.doan.mangxahoi.data.Utils;
 
 public class User {
-    private Integer id;
+
+    @SerializedName("_id")
+    private String id;
+    @Expose
     private String username;
+    @Expose
     private String email;
+    @Expose
     private String password;
     private String full_name;
+    @Expose
     private String avatar;
     private String phone_no;
+    @SerializedName("from")
     private String address;
     private String relationship;
+    @SerializedName("description")
     private String bio;
     private List<Integer> followers;
     private List<Integer> following;
 
-    public User(Integer id, String username, String email, String password, String full_name, String avatar, String phone_no, String address, String relationship, String bio, List<Integer> followers, List<Integer> following) {
+    public User(String id, String username, String email, String password, String full_name, String avatar, String phone_no, String address, String relationship, String bio, List<Integer> followers, List<Integer> following) {
         this.id = id;
         this.username = username;
         this.email = email;
@@ -35,11 +46,11 @@ public class User {
     public User() {
     }
 
-    public Integer getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -132,9 +143,9 @@ public class User {
     }
 
     public User getEx(){
-        return new User(Utils.random(), Utils.randomS(), Utils.randomS(), Utils.randomS(), Utils.randomS(),null,null,null,null,null,null,null);
+        return new User("0", Utils.randomS(), Utils.randomS(), Utils.randomS(), Utils.randomS(),null,null,null,null,null,null,null);
     }
-    public User getEx(int id){
+    public User getEx(String id){
         return new User(id, Utils.randomS(), Utils.randomS(), Utils.randomS(), Utils.randomS(),null,null,null,null,null,null,null);
     }
 }

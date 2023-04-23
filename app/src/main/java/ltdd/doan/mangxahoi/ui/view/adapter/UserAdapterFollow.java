@@ -35,9 +35,9 @@ public class UserAdapterFollow extends RecyclerView.Adapter<UserAdapterFollow.Us
         }
     }
 
-    public void navToUserProfile(View view, int user_id) {
+    public void navToUserProfile(View view, String user_id) {
         Bundle bundle = new Bundle();
-        bundle.putInt("user_id",user_id);
+        bundle.putString("user_id",user_id);
         Navigation.findNavController(view).navigate(ltdd.doan.mangxahoi.ui.view.fragment.FollowFragmentDirections.followToProfile().getActionId(), bundle);
     }
 

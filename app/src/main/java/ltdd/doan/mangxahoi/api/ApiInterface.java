@@ -43,7 +43,7 @@ public interface ApiInterface {
     @GET("api/posts/{id}/save")
     Call<LikePostResponse> savePost(@Body Post request, @Path("id") String id);
     @GET("api/posts/all/{userId}")
-    Call<List<User>> getPostsByUserId(@Path("userId") String userId);
+    Call<List<Post>> getPostsByUserId(@Path("userId") String userId);
     @GET("api/posts/timeline/{userId}")
-    Call<List<User>> getPostTimelineByUser(@Path("userId") String userId);
+    Call<List<Post>> getPostTimelineByUser(@Path("userId") String userId);
 }

@@ -129,7 +129,7 @@ public class UserRepository {
     }
 
     // TODO: 4/18/2023
-    public void getUserDetailsById(int user_id){
+    public void getUserDetailsById(String user_id){
         user.setValue(new User().getEx(user_id));
     }
 
@@ -138,11 +138,11 @@ public class UserRepository {
     }
 
     // TODO: 4/18/2023
-    public void follow(int user_id){
+    public void follow(String user_id){
     }
 
     // TODO: 4/18/2023
-    public void unfollow(int user_id){
+    public void unfollow(String user_id){
     }
 
     // TODO: 4/21/2023

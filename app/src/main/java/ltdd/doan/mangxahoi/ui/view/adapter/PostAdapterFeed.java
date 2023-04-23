@@ -44,26 +44,26 @@ public class PostAdapterFeed extends RecyclerView.Adapter<PostAdapterFeed.PostVi
         this.viewModel = viewModel;
     }
 
-    public void navToPostOwnersProfile(View view, int user_id){
+    public void navToPostOwnersProfile(View view, String user_id){
         Bundle bundle = new Bundle();
-        bundle.putInt("user_id",user_id);
+        bundle.putString("user_id",user_id);
         Navigation.findNavController(view).navigate(FeedFragmentDirections.feedToProfile().getActionId(), bundle);
     }
 
-    public void navToPostDetails(View view, int post_id){
+    public void navToPostDetails(View view, String post_id){
         Bundle bundle = new Bundle();
-        bundle.putInt("post_id",post_id);
+        bundle.putString("post_id",post_id);
         Navigation.findNavController(view).navigate(FeedFragmentDirections.feedToPostDetails().getActionId(), bundle);
     }
 
-    public void likePost(int post_id) {
+    public void likePost(String post_id) {
         viewModel.like(post_id);
 
         // update ui
         viewModel.getFeed();
     }
 
-    public void unlikePost(int post_id) {
+    public void unlikePost(String post_id) {
         viewModel.unlike(post_id);
 
         // update ui

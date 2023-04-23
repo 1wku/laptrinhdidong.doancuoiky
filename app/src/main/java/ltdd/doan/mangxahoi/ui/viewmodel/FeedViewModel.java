@@ -45,15 +45,15 @@ public class FeedViewModel extends ViewModel {
         pRepo.updatePost(post);
     }
 
-    public void deletePost(int post_id) {
+    public void deletePost(String post_id) {
         pRepo.deletePost(post_id);
     }
 
-    public void like(int post_id) {
+    public void like(String post_id) {
         pRepo.like(post_id);
     }
 
-    public void unlike(int post_id) {
+    public void unlike(String post_id) {
         pRepo.unlike(post_id);
     }
 }

@@ -19,6 +19,7 @@ import android.widget.Toast;
 import dagger.hilt.android.AndroidEntryPoint;
 import ltdd.doan.mangxahoi.R;
 import ltdd.doan.mangxahoi.databinding.FragmentLoginBinding;
+import ltdd.doan.mangxahoi.interfaces.OnLoggedInResult;
 import ltdd.doan.mangxahoi.session.Session;
 import ltdd.doan.mangxahoi.ui.view.activity.MainActivity;
 import ltdd.doan.mangxahoi.ui.viewmodel.LoginViewModel;
@@ -39,36 +40,41 @@ public class LoginFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater,R.layout.fragment_login, container, false);
         binding.setLoginFragment(this);
+       mViewModel.getLastSessionUser(new OnLoggedInResult() {
+           @Override
+           public void onSuccess() {
+               Intent intent = new Intent(requireContext(), MainActivity.class);
+               startActivity(intent);
+               requireActivity().finish();
+           }
+           @Override
+           public void onError() {
 
-        mViewModel.getLastSessionUser();
-
-        if (Session.ACTIVE_USER != null){
-            Intent intent = new Intent(requireContext(), MainActivity.class);
-            startActivity(intent);
-            requireActivity().finish();
-        }
-
-
+           }
+       });
         return binding.getRoot();
     }
 
     public void Login(){
-        String username = binding.frgLoginTxtUserName.toString();
-        String password = binding.frgLoginLblForgotPassword.toString();
+        String email = binding.frgLoginTxtMail.getEditableText().toString();
+        String password = (String) binding.frgLoginTxtUserPassword.getEditableText().toString();
 
-        if (username.isEmpty()||password.isEmpty())
-            Toast.makeText(requireContext(), "Vui long điền dầy đủ thông tin", Toast.LENGTH_SHORT).show();
+        if (email.isEmpty()||password.isEmpty())
+            Toast.makeText(requireContext(), "Vui lòng điền dầy đủ thông tin", Toast.LENGTH_SHORT).show();
         else {
-            Boolean result =  mViewModel.login(username,password);
-            if (result){
-                Intent intent = new Intent(requireContext(), MainActivity.class);
-                startActivity(intent);
-                requireActivity().finish();
-            }else{
-                System.out.println("Login failse");
-
-            }
-
+             mViewModel.login(email, password, new OnLoggedInResult() {
+                 @Override
+                 public void onSuccess() {
+                     Intent intent = new Intent(requireContext(), MainActivity.class);
+                     startActivity(intent);
+                     requireActivity().finish();
+                     Toast.makeText(requireContext(), "Đăng nhập thành công.", Toast.LENGTH_SHORT).show();
+                 }
+                 @Override
+                 public void onError() {
+                     Toast.makeText(requireContext(), "Email hoặc mật khẩu không tồn tại. Vui lòng thử lại sau.", Toast.LENGTH_SHORT).show();
+                 }
+             });
         }
     }
 

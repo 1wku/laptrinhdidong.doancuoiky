@@ -85,7 +85,7 @@ public class PostDetailsFragment extends Fragment {
 
         if (post.getLikers() == null) return false;
 
-        for (Integer u : post.getLikers()) {
+        for (String u : post.getLikers()) {
             if (u.equals(Session.ACTIVE_USER.getId())) {
                 return true;
             }

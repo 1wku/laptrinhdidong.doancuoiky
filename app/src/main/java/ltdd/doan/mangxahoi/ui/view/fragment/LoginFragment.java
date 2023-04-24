@@ -58,7 +58,6 @@ public class LoginFragment extends Fragment {
     public void Login(){
         String email = binding.frgLoginTxtMail.getEditableText().toString();
         String password = (String) binding.frgLoginTxtUserPassword.getEditableText().toString();
-
         if (email.isEmpty()||password.isEmpty())
             Toast.makeText(requireContext(), "Vui lòng điền dầy đủ thông tin", Toast.LENGTH_SHORT).show();
         else {

@@ -21,8 +21,8 @@ public class Post  {
     @Expose
     private String content;
     @SerializedName("likes")
-    private List<Integer> likers;
-    private List<Integer> comments;
+    private List<String> likers;
+    private List<String> comments;
     private String created_at;
     private String updated_at;
 
@@ -34,7 +34,7 @@ public class Post  {
         this.updated_at = updated_at;
     }
 
-    public Post(String id, String owner, String photo, String content, List<Integer> likers, List<Integer> comments, String created_at, String updated_at) {
+    public Post(String id, String owner, String photo, String content, List<String> likers, List<String> comments, String created_at, String updated_at) {
         this.id = id;
         this.owner = owner;
         this.photo = photo;
@@ -82,19 +82,19 @@ public class Post  {
         this.content = content;
     }
 
-    public List<Integer> getLikers() {
+    public List<String> getLikers() {
         return likers;
     }
 
-    public void setLikers(List<Integer> likers) {
+    public void setLikers(List<String> likers) {
         this.likers = likers;
     }
 
-    public List<Integer> getComments() {
+    public List<String> getComments() {
         return comments;
     }
 
-    public void setComments(List<Integer> comments) {
+    public void setComments(List<String> comments) {
         this.comments = comments;
     }
 

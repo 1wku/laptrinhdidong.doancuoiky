@@ -13,6 +13,8 @@ import dagger.hilt.android.lifecycle.HiltViewModel;
 import ltdd.doan.mangxahoi.data.model.Post;
 import ltdd.doan.mangxahoi.data.model.User;
 import ltdd.doan.mangxahoi.data.repository.PostRepository;
+import ltdd.doan.mangxahoi.interfaces.OnGetPostResult;
+
 @HiltViewModel
 public class FeedViewModel extends ViewModel {
     private PostRepository pRepo;
@@ -38,7 +40,17 @@ public class FeedViewModel extends ViewModel {
     }
 
     public void getFeed() {
-        pRepo.getFeed();
+        pRepo.getFeed(new OnGetPostResult() {
+            @Override
+            public void onSuccess() {
+                posts = pRepo.getPosts();
+            }
+
+            @Override
+            public void onError() {
+                System.out.println("Error : ");
+            }
+        });
     }
 
     public void updatePost(Post post) {

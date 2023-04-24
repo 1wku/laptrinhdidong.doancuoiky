@@ -27,8 +27,8 @@ public class AppModule {
 
     @Provides
     @Singleton
-    public PostRepository providePostRepository(ApiInterface apiService) {
-        return new PostRepository(apiService);
+    public PostRepository providePostRepository(@ApplicationContext Context context,ApiInterface apiService) {
+        return new PostRepository(context,apiService);
     }
 
     @Provides

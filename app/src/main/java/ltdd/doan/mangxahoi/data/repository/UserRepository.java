@@ -12,6 +12,7 @@ import java.util.Objects;
 import ltdd.doan.mangxahoi.api.ApiInterface;
 import ltdd.doan.mangxahoi.data.dto.request.LoginRequest;
 import ltdd.doan.mangxahoi.data.dto.request.RegisterRequest;
+import ltdd.doan.mangxahoi.data.dto.response.SuccessfullResponse;
 import ltdd.doan.mangxahoi.data.model.User;
 import ltdd.doan.mangxahoi.interfaces.OnLoggedInResult;
 import ltdd.doan.mangxahoi.interfaces.OnRegisterResult;
@@ -60,34 +61,37 @@ public class UserRepository {
     }
 
     public void getLastSessionUser(OnLoggedInResult onLoggedInResult) {
-        removeSessionUser();
-
         String user_email = Session.getSharedPreference(context, "user_email", "");
         String user_password = Session.getSharedPreference(context, "user_password", "");
+        String user_id = Session.getSharedPreference(context, "user_id", "");
 
-        if (!user_email.isEmpty() && !user_password.isEmpty()) {
+        if (!user_email.isEmpty() && !user_password.isEmpty() && !user_id.isEmpty()) {
             login(user_email, user_password,onLoggedInResult);
         }
 
     }
 
-    private void setLastSessionUser(String user_name, String user_password) {
+    private void setLastSessionUser(String user_id , String user_name, String user_password) {
         Session.setSharedPreference(context, "user_email", user_name);
+        Session.setSharedPreference(context, "user_id", user_id);
         Session.setSharedPreference(context, "user_password", user_password);
     }
     private  void removeSessionUser(){
         Session.removeSharedPreference(context,"user_email");
+        Session.removeSharedPreference(context,"user_id");
         Session.removeSharedPreference(context,"user_password");
     }
 
     // TODO: 4/18/2023
     public void login(String user_email, String user_password, OnLoggedInResult onLoggedInResult){
-        apiService.login(new LoginRequest(user_email, user_password)).enqueue(new Callback<User>() {
+        Log.d("LoginActivity", "Login with "+ user_email + " and "+ user_password);
+        LoginRequest loginRequest = new LoginRequest(user_email, user_password);
+        apiService.login(loginRequest).enqueue(new Callback<SuccessfullResponse<User>>() {
             @Override
-            public void onResponse(Call<User> call, Response<User> response) {
+            public void onResponse(Call<SuccessfullResponse<User>> call, Response<SuccessfullResponse<User>> response) {
                 if(response.code()==200) {
-                    Session.ACTIVE_USER = response.body();
-                    setLastSessionUser(user_email,user_password);
+                    Session.ACTIVE_USER = response.body().data;
+                    setLastSessionUser(response.body().data.getId(),user_email,user_password);
                     Log.d("LoginActivity", "LOGIN SUCCESS");
                     onLoggedInResult.onSuccess();
                 }else {
@@ -97,8 +101,8 @@ public class UserRepository {
                 }
             }
             @Override
-            public void onFailure(Call<User> call, Throwable t) {
-                Log.d("LoginActivity", "LOGIN FAILSE");
+            public void onFailure(Call<SuccessfullResponse<User>> call, Throwable t) {
+                Log.d("LoginActivity", "Đã xảy ra lỗi trong đường truyền: " + t.getMessage());
                 onLoggedInResult.onError();
             }
         });
@@ -106,12 +110,12 @@ public class UserRepository {
 
     // TODO: 4/18/2023
     public void register(String user_name, String user_password, String user_mail, OnRegisterResult onRegisterResult){
-            apiService.register(new RegisterRequest(user_mail,user_name, user_password)).enqueue(new Callback<User>() {
+            apiService.register(new RegisterRequest(user_mail,user_name, user_password)).enqueue(new Callback<SuccessfullResponse<User>>() {
                 @Override
-                public void onResponse(Call<User> call, Response<User> response) {
+                public void onResponse(Call<SuccessfullResponse<User>> call, Response<SuccessfullResponse<User>> response) {
                     if(response.isSuccessful()) {
-                        Session.ACTIVE_USER = response.body();
-                        setLastSessionUser(user_mail,user_password);
+                        Session.ACTIVE_USER = response.body().data;
+                        setLastSessionUser(response.body().data.getId(),user_mail,user_password);
                         Log.d("Authentication", "REGISTER SUCCESS");
                         onRegisterResult.onSuccess();
                     }else {
@@ -120,7 +124,7 @@ public class UserRepository {
                     }
                 }
                 @Override
-                public void onFailure(Call<User> call, Throwable t) {
+                public void onFailure(Call<SuccessfullResponse<User>> call, Throwable t) {
                     Log.d("Authentication", "REGISTER FAILE");
                     onRegisterResult.onError();
                 }

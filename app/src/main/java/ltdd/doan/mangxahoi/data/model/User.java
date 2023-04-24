@@ -25,10 +25,10 @@ public class User {
     private String relationship;
     @SerializedName("description")
     private String bio;
-    private List<Integer> followers;
-    private List<Integer> following;
+    private List<String> followers;
+    private List<String> following;
 
-    public User(String id, String username, String email, String password, String full_name, String avatar, String phone_no, String address, String relationship, String bio, List<Integer> followers, List<Integer> following) {
+    public User(String id, String username, String email, String password, String full_name, String avatar, String phone_no, String address, String relationship, String bio, List<String> followers, List<String> following) {
         this.id = id;
         this.username = username;
         this.email = email;
@@ -126,19 +126,19 @@ public class User {
         this.bio = bio;
     }
 
-    public List<Integer> getFollowers() {
+    public List<String> getFollowers() {
         return followers;
     }
 
-    public void setFollowers(List<Integer> followers) {
+    public void setFollowers(List<String> followers) {
         this.followers = followers;
     }
 
-    public List<Integer> getFollowing() {
+    public List<String> getFollowing() {
         return following;
     }
 
-    public void setFollowing(List<Integer> following) {
+    public void setFollowing(List<String> following) {
         this.following = following;
     }
 

@@ -1,12 +1,16 @@
 package ltdd.doan.mangxahoi.data.repository;
 
+import android.content.Context;
+
 import androidx.lifecycle.MutableLiveData;
 
 import java.util.List;
 
 import ltdd.doan.mangxahoi.api.ApiInterface;
+import ltdd.doan.mangxahoi.data.dto.response.ListFeedResponse;
 import ltdd.doan.mangxahoi.data.model.Comment;
 import ltdd.doan.mangxahoi.data.model.Post;
+import ltdd.doan.mangxahoi.interfaces.OnGetPostResult;
 import ltdd.doan.mangxahoi.session.Session;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -16,11 +20,12 @@ public class PostRepository {
     private final ApiInterface apiService;
     private MutableLiveData<List<Post>> posts;
     private MutableLiveData<Post> post;
+    private final Context context;
     private MutableLiveData<String> message; // messages from response
     private MutableLiveData<Boolean> status; // status for navigation
-    public PostRepository(ApiInterface apiService) {
+    public PostRepository(Context context,ApiInterface apiService) {
         this.apiService = apiService;
-
+        this.context = context ;
         posts = new MutableLiveData<>();
         post = new MutableLiveData<>();
         message = new MutableLiveData<>();
@@ -46,16 +51,24 @@ public class PostRepository {
     }
 
     // TODO: 4/18/2023
-    public void getFeed(){
-        apiService.getPostTimelineByUser(Session.ACTIVE_USER.getId()).enqueue(new Callback<List<Post>>() {
+    public void getFeed(OnGetPostResult onGetPostResult){
+        String userId = Session.getSharedPreference(context, "user_id", "");
+        System.out.println(userId);
+        apiService.getPostTimelineByUser(userId).enqueue(new Callback<ListFeedResponse>() {
             @Override
-            public void onResponse(Call<List<Post>> call, Response<List<Post>> response) {
+            public void onResponse(Call<ListFeedResponse> call, Response<ListFeedResponse> response) {
+                System.out.println(response);
+
                 if(response.code()==200) {
-                    posts.setValue(response.body());
+                    posts.setValue(response.body().timeline);
+                    onGetPostResult.onSuccess();
                 }
+                else onGetPostResult.onError();
             }
             @Override
-            public void onFailure(Call<List<Post>> call, Throwable t) {
+            public void onFailure(Call<ListFeedResponse> call, Throwable t) {
+                System.out.println(t.getMessage());
+                onGetPostResult.onError();
             }
         });
     }

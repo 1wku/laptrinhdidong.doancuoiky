@@ -17,6 +17,7 @@ import java.util.List;
 import ltdd.doan.mangxahoi.R;
 import ltdd.doan.mangxahoi.data.model.Post;
 import ltdd.doan.mangxahoi.databinding.CardPostBinding;
+import ltdd.doan.mangxahoi.interfaces.OnGetPostResult;
 import ltdd.doan.mangxahoi.session.Session;
 import ltdd.doan.mangxahoi.ui.view.activity.MainActivity;
 import ltdd.doan.mangxahoi.ui.view.fragment.FeedFragmentDirections;
@@ -68,12 +69,13 @@ public class PostAdapterFeed extends RecyclerView.Adapter<PostAdapterFeed.PostVi
 
         // update ui
         viewModel.getFeed();
+
     }
     public boolean isPostLiked(Post post) {
 
         if (post.getLikers() == null) return false;
 
-        for (Integer u : post.getLikers()) {
+        for (String u : post.getLikers()) {
             if (u.equals(Session.ACTIVE_USER.getId())) {
                 return true;
             }

@@ -8,6 +8,8 @@ import javax.inject.Inject;
 
 import dagger.hilt.android.lifecycle.HiltViewModel;
 import ltdd.doan.mangxahoi.data.repository.UserRepository;
+import ltdd.doan.mangxahoi.interfaces.OnRegisterResult;
+
 @HiltViewModel
 public class RegisterViewModel extends ViewModel {
 
@@ -18,8 +20,8 @@ public class RegisterViewModel extends ViewModel {
         this.uRepo = uRepo;
     }
 
-    public void register(String user_name, String user_password) {
-        uRepo.register(user_name, user_password);
+    public void register(String user_name, String user_password, String user_mail, OnRegisterResult onRegisterResult) {
+         uRepo.register(user_name, user_password,user_mail,onRegisterResult);
     }
 
 }

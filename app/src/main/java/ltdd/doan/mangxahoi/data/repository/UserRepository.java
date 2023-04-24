@@ -11,8 +11,13 @@ import java.util.Objects;
 
 import ltdd.doan.mangxahoi.api.ApiInterface;
 import ltdd.doan.mangxahoi.data.dto.request.LoginRequest;
+import ltdd.doan.mangxahoi.data.dto.request.RegisterRequest;
+import ltdd.doan.mangxahoi.data.dto.response.SuccessfullResponse;
 import ltdd.doan.mangxahoi.data.model.User;
+import ltdd.doan.mangxahoi.interfaces.OnLoggedInResult;
+import ltdd.doan.mangxahoi.interfaces.OnRegisterResult;
 import ltdd.doan.mangxahoi.session.Session;
+import ltdd.doan.mangxahoi.ui.view.fragment.RegisterFragment;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -55,54 +60,80 @@ public class UserRepository {
         return status;
     }
 
-    public void getLastSessionUser() {
-        String user_name = Session.getSharedPreference(context, "user_name", "");
+    public void getLastSessionUser(OnLoggedInResult onLoggedInResult) {
+        String user_email = Session.getSharedPreference(context, "user_email", "");
         String user_password = Session.getSharedPreference(context, "user_password", "");
+        String user_id = Session.getSharedPreference(context, "user_id", "");
 
-        if (!user_name.isEmpty() && !user_password.isEmpty()) {
-            login(user_name, user_password);
+        if (!user_email.isEmpty() && !user_password.isEmpty() && !user_id.isEmpty()) {
+            login(user_email, user_password,onLoggedInResult);
         }
+
     }
 
-    private void setLastSessionUser(String user_name, String user_password) {
-        Session.setSharedPreference(context, "user_name", user_name);
+    private void setLastSessionUser(String user_id , String user_name, String user_password) {
+        Session.setSharedPreference(context, "user_email", user_name);
+        Session.setSharedPreference(context, "user_id", user_id);
         Session.setSharedPreference(context, "user_password", user_password);
+    }
+    private  void removeSessionUser(){
+        Session.removeSharedPreference(context,"user_email");
+        Session.removeSharedPreference(context,"user_id");
+        Session.removeSharedPreference(context,"user_password");
     }
 
     // TODO: 4/18/2023
-    public boolean login(String user_name, String user_password){
-        apiService.login(new LoginRequest(user_name, user_password)).enqueue(new Callback<User>() {
+    public void login(String user_email, String user_password, OnLoggedInResult onLoggedInResult){
+        Log.d("LoginActivity", "Login with "+ user_email + " and "+ user_password);
+        LoginRequest loginRequest = new LoginRequest(user_email, user_password);
+        apiService.login(loginRequest).enqueue(new Callback<SuccessfullResponse<User>>() {
             @Override
-            public void onResponse(Call<User> call, Response<User> response) {
-                if(response.isSuccessful()) {
-                    Session.ACTIVE_USER = response.body();
-                    setLastSessionUser(user_name,user_password);
+            public void onResponse(Call<SuccessfullResponse<User>> call, Response<SuccessfullResponse<User>> response) {
+                if(response.code()==200) {
+                    Session.ACTIVE_USER = response.body().data;
+                    setLastSessionUser(response.body().data.getId(),user_email,user_password);
                     Log.d("LoginActivity", "LOGIN SUCCESS");
+                    onLoggedInResult.onSuccess();
                 }else {
                     int statusCode  = response.code();
                     Log.d("LoginActivity", response.message());
-
+                    onLoggedInResult.onError();
                 }
             }
             @Override
-            public void onFailure(Call<User> call, Throwable t) {
-                System.out.println(t);
-                Log.d("LoginActivity", "LOGIN FAILSE");
+            public void onFailure(Call<SuccessfullResponse<User>> call, Throwable t) {
+                Log.d("LoginActivity", "Đã xảy ra lỗi trong đường truyền: " + t.getMessage());
+                onLoggedInResult.onError();
             }
-        });;
-        return Session.ACTIVE_USER != null;
+        });
     }
 
     // TODO: 4/18/2023
-    public void register(String user_name, String user_password){
-        if (Objects.equals(user_name, "phuoc") || Objects.equals(user_password, "123")){
-            Session.ACTIVE_USER = new User().getEx();
-            setLastSessionUser(user_name,user_password);
-        }
+    public void register(String user_name, String user_password, String user_mail, OnRegisterResult onRegisterResult){
+            apiService.register(new RegisterRequest(user_mail,user_name, user_password)).enqueue(new Callback<SuccessfullResponse<User>>() {
+                @Override
+                public void onResponse(Call<SuccessfullResponse<User>> call, Response<SuccessfullResponse<User>> response) {
+                    if(response.isSuccessful()) {
+                        Session.ACTIVE_USER = response.body().data;
+                        setLastSessionUser(response.body().data.getId(),user_mail,user_password);
+                        Log.d("Authentication", "REGISTER SUCCESS");
+                        onRegisterResult.onSuccess();
+                    }else {
+                        Log.d("Authentication", response.message());
+                        onRegisterResult.onError();
+                    }
+                }
+                @Override
+                public void onFailure(Call<SuccessfullResponse<User>> call, Throwable t) {
+                    Log.d("Authentication", "REGISTER FAILE");
+                    onRegisterResult.onError();
+                }
+            });
+
     }
 
     // TODO: 4/18/2023
-    public void getUserDetailsById(int user_id){
+    public void getUserDetailsById(String user_id){
         user.setValue(new User().getEx(user_id));
     }
 
@@ -111,11 +142,11 @@ public class UserRepository {
     }
 
     // TODO: 4/18/2023
-    public void follow(int user_id){
+    public void follow(String user_id){
     }
 
     // TODO: 4/18/2023
-    public void unfollow(int user_id){
+    public void unfollow(String user_id){
     }
 
     // TODO: 4/21/2023

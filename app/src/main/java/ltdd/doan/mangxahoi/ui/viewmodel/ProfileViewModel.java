@@ -39,19 +39,19 @@ public class ProfileViewModel extends ViewModel {
         return posts;
     }
 
-    public void getUserDetailsById(int user_id) {
+    public void getUserDetailsById(String user_id) {
         uRepo.getUserDetailsById(user_id);
     }
 
-    public void getPostsByUserId(int user_id) {
+    public void getPostsByUserId(String user_id) {
         pRepo.getPostsByUserId(user_id);
     }
 
-    public void follow(int user_id) {
+    public void follow(String user_id) {
         uRepo.follow(user_id);
     }
 
-    public void unfollow(int user_id) {
+    public void unfollow(String user_id) {
         uRepo.unfollow(user_id);
     }
 }

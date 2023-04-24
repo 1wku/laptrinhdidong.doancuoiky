@@ -6,6 +6,8 @@ import ltdd.doan.mangxahoi.data.dto.request.LikePostRequest;
 import ltdd.doan.mangxahoi.data.dto.request.LoginRequest;
 import ltdd.doan.mangxahoi.data.dto.request.RegisterRequest;
 import ltdd.doan.mangxahoi.data.dto.response.LikePostResponse;
+import ltdd.doan.mangxahoi.data.dto.response.ListFeedResponse;
+import ltdd.doan.mangxahoi.data.dto.response.SuccessfullResponse;
 import ltdd.doan.mangxahoi.data.model.Post;
 import ltdd.doan.mangxahoi.data.model.User;
 import retrofit2.Call;
@@ -21,10 +23,9 @@ public interface ApiInterface {
     // Authenticaiton
 
     @POST("api/auth/register")
-    Call<User> register(@Body RegisterRequest request);
+    Call<SuccessfullResponse<User>> register(@Body RegisterRequest request);
     @POST("api/auth/login")
-    Call<User> login(@Body LoginRequest request);
-
+    Call<SuccessfullResponse<User>> login(@Body LoginRequest request);
 
     //user
     @GET("api/users/search/user")
@@ -43,7 +44,7 @@ public interface ApiInterface {
     @GET("api/posts/{id}/save")
     Call<LikePostResponse> savePost(@Body Post request, @Path("id") String id);
     @GET("api/posts/all/{userId}")
-    Call<List<User>> getPostsByUserId(@Path("userId") String userId);
+    Call<List<Post>> getPostsByUserId(@Path("userId") String userId);
     @GET("api/posts/timeline/{userId}")
-    Call<List<User>> getPostTimelineByUser(@Path("userId") String userId);
+    Call<ListFeedResponse> getPostTimelineByUser(@Path("userId") String userId);
 }

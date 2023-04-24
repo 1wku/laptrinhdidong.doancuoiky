@@ -39,9 +39,9 @@ public class PostAdapterProfile extends RecyclerView.Adapter<PostAdapterProfile.
         this.posts = posts;
     }
 
-    public void navToPostDetails(View view, int post_id) {
+    public void navToPostDetails(View view, String post_id) {
         Bundle bundle = new Bundle();
-        bundle.putInt("post_id",post_id);
+        bundle.putString("post_id",post_id);
         Navigation.findNavController(view).navigate(ProfileFragmentDirections.profileToPostDetails().getActionId(), bundle);
     }
 

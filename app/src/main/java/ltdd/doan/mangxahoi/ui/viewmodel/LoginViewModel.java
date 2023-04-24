@@ -8,6 +8,8 @@ import javax.inject.Inject;
 
 import dagger.hilt.android.lifecycle.HiltViewModel;
 import ltdd.doan.mangxahoi.data.repository.UserRepository;
+import ltdd.doan.mangxahoi.interfaces.OnLoggedInResult;
+
 @HiltViewModel
 public class LoginViewModel extends ViewModel {
 
@@ -19,11 +21,11 @@ public class LoginViewModel extends ViewModel {
         this.uRepo = uRepo;
     }
 
-    public void getLastSessionUser() {
-        uRepo.getLastSessionUser();
+    public void getLastSessionUser(OnLoggedInResult onLoggedInResult) {
+          uRepo.getLastSessionUser(onLoggedInResult);
     }
 
-    public boolean login(String user_name, String user_password) {
-        return uRepo.login(user_name, user_password);
+    public void login(String email, String user_password, OnLoggedInResult onLoggedInResult) {
+          uRepo.login(email, user_password,onLoggedInResult);
     }
 }

@@ -1,5 +1,7 @@
 package ltdd.doan.mangxahoi.ui.viewmodel;
 
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -14,6 +16,8 @@ import ltdd.doan.mangxahoi.data.model.Comment;
 import ltdd.doan.mangxahoi.data.model.Post;
 import ltdd.doan.mangxahoi.data.model.User;
 import ltdd.doan.mangxahoi.data.repository.PostRepository;
+import ltdd.doan.mangxahoi.interfaces.OnGetPostByIdResult;
+
 @HiltViewModel
 public class PostDetailsViewModel extends ViewModel {
     private PostRepository pRepo;
@@ -43,7 +47,17 @@ public class PostDetailsViewModel extends ViewModel {
     }
 
     public void getPostDetailsById(String post_id) {
-        pRepo.getPostsByUserId(post_id);
+        pRepo.getPostDetailsById(post_id, new OnGetPostByIdResult() {
+            @Override
+            public void onSuccess(Post resultPost) {
+                post.setValue(resultPost);
+            }
+
+            @Override
+            public void onError(String error) {
+                Log.e("Get post by ID", error);
+            }
+        });
     }
 
     public void updatePost(Post post) {

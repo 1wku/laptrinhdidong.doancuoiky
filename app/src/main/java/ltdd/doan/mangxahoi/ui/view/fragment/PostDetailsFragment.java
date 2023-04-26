@@ -19,6 +19,7 @@ import dagger.hilt.android.AndroidEntryPoint;
 import ltdd.doan.mangxahoi.R;
 import ltdd.doan.mangxahoi.data.model.Post;
 import ltdd.doan.mangxahoi.databinding.FragmentPostDetailsBinding;
+import ltdd.doan.mangxahoi.interfaces.OnGetPostByIdResult;
 import ltdd.doan.mangxahoi.session.Session;
 import ltdd.doan.mangxahoi.ui.view.activity.MainActivity;
 import ltdd.doan.mangxahoi.ui.view.adapter.CommentAdapter;

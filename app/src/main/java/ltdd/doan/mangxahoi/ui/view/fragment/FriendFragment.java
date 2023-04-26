@@ -34,13 +34,14 @@ public class FriendFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_friend, container, false);
         binding.setFriendFragment(this);
+        binding.setFriendFragment(this);
 
         mViewModel.getUsers().observe(getViewLifecycleOwner(), users -> {
             UserAdapterSearch userAdapter = new UserAdapterSearch(requireContext(), users);
             binding.setUserAdapter(userAdapter);
         });
 
-        mViewModel.filterUsersByName(binding.frgSearchTxtUserName.getText().toString().trim());
+        mViewModel.filterUsersByName(binding.frgSearchTxtUserName.getEditableText().toString());
 
         // TODO: 4/21/2023 chat
 

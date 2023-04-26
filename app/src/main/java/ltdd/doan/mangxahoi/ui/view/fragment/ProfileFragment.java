@@ -22,6 +22,7 @@ import ltdd.doan.mangxahoi.R;
 import ltdd.doan.mangxahoi.data.model.User;
 import ltdd.doan.mangxahoi.databinding.FragmentPostDetailsBinding;
 import ltdd.doan.mangxahoi.databinding.FragmentProfileBinding;
+import ltdd.doan.mangxahoi.interfaces.OnToogleFollowResult;
 import ltdd.doan.mangxahoi.session.Session;
 import ltdd.doan.mangxahoi.ui.view.adapter.PostAdapterProfile;
 import ltdd.doan.mangxahoi.ui.viewmodel.ProfileViewModel;
@@ -49,7 +50,7 @@ public class ProfileFragment extends Fragment {
         binding.setProfileFragment(this);
 
         Bundle bundle = getArguments();
-        String user_id = (bundle == null ) ? "" : bundle.getString("user_id");
+        String user_id = (bundle == null ) ? Session.getSharedPreference(getContext(),"user_id","") : bundle.getString("user_id") ;
 
         binding.frgProfileSwipeRefresh.setOnRefreshListener(() -> {
             mViewModel.getUserDetailsById(user_id);
@@ -67,8 +68,10 @@ public class ProfileFragment extends Fragment {
             binding.setPostCount(posts.size());
 
             PostAdapterProfile postAdapter = new PostAdapterProfile(requireContext(), posts);
-            binding.setPostAdapter(postAdapter);
             binding.frgProfileRecyclerView.setLayoutManager(new GridLayoutManager(requireContext(), 3));
+
+            binding.setPostAdapter(postAdapter);
+
         });
 
         mViewModel.getUserDetailsById(user_id);
@@ -82,14 +85,33 @@ public class ProfileFragment extends Fragment {
     }
 
     public void follow(User user) {
-        mViewModel.follow(user.getId());
-
+        mViewModel.follow(user.getId(), new OnToogleFollowResult() {
+            @Override
+            public void onSuccess(String result) {
+                System.out.println(result);
+            }
+            @Override
+            public void onError(String error) {
+                System.out.println(error);
+            }
+        });
         // update ui
         mViewModel.getUserDetailsById(user.getId());
     }
 
     public void unfollow(String user_id) {
-        mViewModel.unfollow(user_id);
+        mViewModel.unfollow(user_id, new OnToogleFollowResult() {
+            @Override
+            public void onSuccess(String result) {
+                System.out.println(result);
+            }
+
+            @Override
+            public void onError(String error) {
+                System.out.println(error);
+
+            }
+        });
 
         // update ui
         mViewModel.getUserDetailsById(user_id);

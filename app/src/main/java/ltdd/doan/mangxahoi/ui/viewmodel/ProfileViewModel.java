@@ -14,6 +14,7 @@ import ltdd.doan.mangxahoi.data.model.Post;
 import ltdd.doan.mangxahoi.data.model.User;
 import ltdd.doan.mangxahoi.data.repository.PostRepository;
 import ltdd.doan.mangxahoi.data.repository.UserRepository;
+import ltdd.doan.mangxahoi.interfaces.OnGetPostsByUserResult;
 
 @HiltViewModel
 public class ProfileViewModel extends ViewModel {
@@ -44,7 +45,17 @@ public class ProfileViewModel extends ViewModel {
     }
 
     public void getPostsByUserId(String user_id) {
-        pRepo.getPostsByUserId(user_id);
+        pRepo.getPostsByUserId(user_id, new OnGetPostsByUserResult() {
+            @Override
+            public void onSuccess(List<Post> result) {
+                posts.setValue(result);
+            }
+
+            @Override
+            public void onError(String error) {
+                System.out.println(error);
+            }
+        });
     }
 
     public void follow(String user_id) {

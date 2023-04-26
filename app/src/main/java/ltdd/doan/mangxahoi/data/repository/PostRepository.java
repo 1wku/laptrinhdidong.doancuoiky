@@ -13,6 +13,7 @@ import ltdd.doan.mangxahoi.data.model.Comment;
 import ltdd.doan.mangxahoi.data.model.Post;
 import ltdd.doan.mangxahoi.interfaces.OnGetPostByIdResult;
 import ltdd.doan.mangxahoi.interfaces.OnGetPostResult;
+import ltdd.doan.mangxahoi.interfaces.OnGetPostsByUserResult;
 import ltdd.doan.mangxahoi.session.Session;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -76,14 +77,24 @@ public class PostRepository {
     }
 
     // TODO: 4/18/2023
-    public void getPostsByUserId(String user_id){
-//        List<Post> temp = new ArrayList<>();
-//        for (int i = 0; i < 20; i++) {
-//            temp.add(new Post().getEx(new User().getEx(user_id)));
-//        }
-//        posts.setValue(temp);
+    public void getPostsByUserId(String user_id, OnGetPostsByUserResult onGetPostsByUserResult){
+        apiService.getPostsByUserId(user_id).enqueue(new Callback<SuccessfullResponse<List<Post>>>() {
+            @Override
+            public void onResponse(Call<SuccessfullResponse<List<Post>>> call, Response<SuccessfullResponse<List<Post>>> response) {
+                if(response.code()==200) {
+                    onGetPostsByUserResult.onSuccess(response.body().data);
+                }
+                else onGetPostsByUserResult.onError(response.message());
+            }
+            @Override
+            public void onFailure(Call<SuccessfullResponse<List<Post>>> call, Throwable t) {
+                System.out.println(t.getMessage());
+                onGetPostsByUserResult.onError(t.getMessage());
+            }
+        });
     }
     public void getPostDetailsById(String post_id , OnGetPostByIdResult onGetPostByIdResult){
+        System.out.println("Đang lấy post detail");
         apiService.getPost(post_id).enqueue(new Callback<SuccessfullResponse<Post>>() {
             @Override
             public void onResponse(Call<SuccessfullResponse<Post>> call, Response<SuccessfullResponse<Post>> response) {

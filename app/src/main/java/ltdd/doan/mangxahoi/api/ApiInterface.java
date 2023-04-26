@@ -2,6 +2,7 @@ package ltdd.doan.mangxahoi.api;
 
 import java.util.List;
 
+import ltdd.doan.mangxahoi.data.dto.request.FollowUserRequest;
 import ltdd.doan.mangxahoi.data.dto.request.LikePostRequest;
 import ltdd.doan.mangxahoi.data.dto.request.LoginRequest;
 import ltdd.doan.mangxahoi.data.dto.request.RegisterRequest;
@@ -20,18 +21,24 @@ import retrofit2.http.Path;
 
 public interface ApiInterface {
 
-    // Authenticaiton
+    // Authenticaiton--------------------------------------------------------------------------------------------------------
 
     @POST("api/auth/register")
     Call<SuccessfullResponse<User>> register(@Body RegisterRequest request);
     @POST("api/auth/login")
     Call<SuccessfullResponse<User>> login(@Body LoginRequest request);
 
-    //user
+    //user --------------------------------------------------------------------------------------------------------
     @GET("api/users/search/user")
     Call<List<User>> getAllUser();
+    @PUT("api/users/{id}")
+    Call<SuccessfullResponse<User>> updateUser(@Path("id") String id);
+    @DELETE("api/users/{id}")
+    Call<String> deleteUser(@Path("id") String id);
+    @GET("api/users/{id}/follow")
+    Call<SuccessfullResponse<String>> getUser(@Path("id") String id, @Body FollowUserRequest request);
 
-    // post
+    // post--------------------------------------------------------------------------------------------------------
     @POST("api/posts")
     Call<Post> createPost(@Body Post request);
     @GET("api/posts/{id}")
@@ -42,11 +49,11 @@ public interface ApiInterface {
     Call<String> deletePost(@Path("id") String id);
     @PUT("api/posts/{id}/like")
     Call<LikePostResponse> likePost(@Body LikePostRequest request, @Path("id") String id);
-
     @GET("api/posts/{id}/save")
     Call<LikePostResponse> savePost(@Body Post request, @Path("id") String id);
     @GET("api/posts/all/{userId}")
-    Call<List<Post>> getPostsByUserId(@Path("userId") String userId);
+    Call<SuccessfullResponse<List<Post>>> getPostsByUserId(@Path("userId") String userId);
     @GET("api/posts/timeline/{userId}")
     Call<ListFeedResponse> getPostTimelineByUser(@Path("userId") String userId);
+
 }

@@ -15,6 +15,8 @@ import ltdd.doan.mangxahoi.data.model.User;
 import ltdd.doan.mangxahoi.data.repository.PostRepository;
 import ltdd.doan.mangxahoi.data.repository.UserRepository;
 import ltdd.doan.mangxahoi.interfaces.OnGetPostsByUserResult;
+import ltdd.doan.mangxahoi.interfaces.OnGetUserDetailResult;
+import ltdd.doan.mangxahoi.interfaces.OnToogleFollowResult;
 
 @HiltViewModel
 public class ProfileViewModel extends ViewModel {
@@ -41,7 +43,16 @@ public class ProfileViewModel extends ViewModel {
     }
 
     public void getUserDetailsById(String user_id) {
-        uRepo.getUserDetailsById(user_id);
+        uRepo.getUserDetailsById(user_id, new OnGetUserDetailResult() {
+            @Override
+            public void onSuccess(User result) {
+                user.setValue(result);
+            }
+            @Override
+            public void onError(String error) {
+                System.out.println(error);
+            }
+        });
     }
 
     public void getPostsByUserId(String user_id) {
@@ -50,7 +61,6 @@ public class ProfileViewModel extends ViewModel {
             public void onSuccess(List<Post> result) {
                 posts.setValue(result);
             }
-
             @Override
             public void onError(String error) {
                 System.out.println(error);
@@ -58,11 +68,11 @@ public class ProfileViewModel extends ViewModel {
         });
     }
 
-    public void follow(String user_id) {
-        uRepo.follow(user_id);
+    public void follow(String user_id, OnToogleFollowResult onToogleFollowResult) {
+        uRepo.toggleFollow(user_id,onToogleFollowResult);
     }
 
-    public void unfollow(String user_id) {
-        uRepo.unfollow(user_id);
+    public void unfollow(String user_id, OnToogleFollowResult onToogleFollowResult) {
+        uRepo.toggleFollow(user_id,onToogleFollowResult);
     }
 }

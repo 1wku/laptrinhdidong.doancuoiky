@@ -51,6 +51,7 @@
                         android:weightSum="3"
                         android:orientation="horizontal">
                         <!-- avatar -->
+
                         <com.google.android.material.imageview.ShapeableImageView
                             android:layout_width="100dp"
                             android:layout_height="100dp"
@@ -60,7 +61,7 @@
                             app:shapeAppearanceOverlay="@style/ShapeAppearance.App.CircleImageView"
                             app:strokeColor="@color/black"
                             app:strokeWidth="2dp"
-                            android:src="@drawable/avatar_img"/>
+                            android:src="@{user.avatar}"/>
 
                         <!-- số lượng post -->
                         <!--todo-->
@@ -137,7 +138,7 @@
                         android:id="@+id/frgProfileLblUserName"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="ố dè"
+                        android:text="@{user.email }"
                         android:textColor="@color/black"
                         android:textSize="16sp"
                         android:textStyle="bold" />
@@ -147,7 +148,7 @@
                         android:id="@+id/frgProfileLblUserBio"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="ố dèeeeeeeeeeeeeeeeeeeee"
+                        android:text="@{user.bio}"
                         android:textSize="16sp" />
 
                     <!--todo nút theo dõi -->

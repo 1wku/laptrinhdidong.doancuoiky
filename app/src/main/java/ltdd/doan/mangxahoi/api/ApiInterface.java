@@ -18,6 +18,7 @@ import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 public interface ApiInterface {
 
@@ -29,14 +30,17 @@ public interface ApiInterface {
     Call<SuccessfullResponse<User>> login(@Body LoginRequest request);
 
     //user --------------------------------------------------------------------------------------------------------
-    @GET("api/users/search/user")
-    Call<List<User>> getAllUser();
+    @GET("api/search/user")
+    Call<List<User>> filterUser(@Query("username") String username);
     @PUT("api/users/{id}")
     Call<SuccessfullResponse<User>> updateUser(@Path("id") String id);
+
+    @GET("api/users/{id}")
+    Call<SuccessfullResponse<User>> getUser(@Path("id") String id);
     @DELETE("api/users/{id}")
     Call<String> deleteUser(@Path("id") String id);
-    @GET("api/users/{id}/follow")
-    Call<SuccessfullResponse<String>> getUser(@Path("id") String id, @Body FollowUserRequest request);
+    @PUT("api/users/{id}/follow")
+    Call<String> followUser(@Path("id") String id, @Body FollowUserRequest request);
 
     // post--------------------------------------------------------------------------------------------------------
     @POST("api/posts")

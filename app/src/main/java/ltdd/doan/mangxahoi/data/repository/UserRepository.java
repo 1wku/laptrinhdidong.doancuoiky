@@ -10,12 +10,16 @@ import java.util.List;
 import java.util.Objects;
 
 import ltdd.doan.mangxahoi.api.ApiInterface;
+import ltdd.doan.mangxahoi.data.dto.request.FollowUserRequest;
 import ltdd.doan.mangxahoi.data.dto.request.LoginRequest;
 import ltdd.doan.mangxahoi.data.dto.request.RegisterRequest;
 import ltdd.doan.mangxahoi.data.dto.response.SuccessfullResponse;
 import ltdd.doan.mangxahoi.data.model.User;
+import ltdd.doan.mangxahoi.interfaces.OnFilterUserResult;
+import ltdd.doan.mangxahoi.interfaces.OnGetUserDetailResult;
 import ltdd.doan.mangxahoi.interfaces.OnLoggedInResult;
 import ltdd.doan.mangxahoi.interfaces.OnRegisterResult;
+import ltdd.doan.mangxahoi.interfaces.OnToogleFollowResult;
 import ltdd.doan.mangxahoi.session.Session;
 import ltdd.doan.mangxahoi.ui.view.fragment.RegisterFragment;
 import retrofit2.Call;
@@ -133,28 +137,72 @@ public class UserRepository {
     }
 
     // TODO: 4/18/2023
-    public void getUserDetailsById(String user_id){
-        user.setValue(new User().getEx(user_id));
+    public void getUserDetailsById(String user_id, OnGetUserDetailResult onGetUserDetailResult){
+        apiService.getUser(user_id).enqueue(new Callback<SuccessfullResponse<User>>() {
+            @Override
+            public void onResponse(Call<SuccessfullResponse<User>> call, Response<SuccessfullResponse<User>> response) {
+                if(response.isSuccessful()) {
+
+                    onGetUserDetailResult.onSuccess(response.body().data);
+                }else {
+                    Log.d("getUserDetailsById", response.message());
+                    onGetUserDetailResult.onError(response.message());
+                }
+            }
+            @Override
+            public void onFailure(Call<SuccessfullResponse<User>> call, Throwable t) {
+                onGetUserDetailResult.onError(t.getMessage());
+
+            }
+        });
     }
 
     // TODO: 4/18/2023
     public void updateUser(User user_update){
     }
 
-    // TODO: 4/18/2023
-    public void follow(String user_id){
-    }
+
 
     // TODO: 4/18/2023
-    public void unfollow(String user_id){
+    public void toggleFollow(String user_id, OnToogleFollowResult onToogleFollowResult){
+        String userId = Session.getSharedPreference(context, "user_id", "");
+        apiService.followUser(user_id , new FollowUserRequest(userId)).enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                if(response.isSuccessful()) {
+                    onToogleFollowResult.onSuccess(response.body());
+                }else {
+                    Log.d("ToogleFollow", response.message());
+                    onToogleFollowResult.onError(response.message());
+                }
+            }
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+                Log.d("ToogleFollow", t.getMessage());
+
+                onToogleFollowResult.onError(t.getMessage());
+            }
+        });
     }
+
 
     // TODO: 4/21/2023
-    public void filterUsersByName(String user_name){
-        List<User> temp = new ArrayList<>();
-        for (int i = 0; i < 10; i++) {
-            temp.add(new User().getEx());
-        }
-        users.setValue(temp);
+    public void filterUsersByName(String user_name, OnFilterUserResult onFilterUserResult){
+        apiService.filterUser(user_name).enqueue(new Callback<List<User>>() {
+            @Override
+            public void onResponse(Call<List<User>> call, Response<List<User>> response) {
+                if(response.isSuccessful()) {
+                    onFilterUserResult.onSuccess(response.body());
+                }else {
+                    Log.d("FilterUser", response.message());
+                    onFilterUserResult.onError(response.message());
+                }
+            }
+            @Override
+            public void onFailure(Call<List<User>> call, Throwable t) {
+                onFilterUserResult.onError(t.getMessage());
+                Log.d("FilterUser "+ user_name, t.getMessage());
+            }
+        });
     }
 }

@@ -40,15 +40,18 @@ public class FeedViewModel extends ViewModel {
     }
 
     public void getFeed() {
-        pRepo.getFeed(new OnGetPostResult() {
+        pRepo.getFeed(1,10,new OnGetPostResult() {
             @Override
             public void onSuccess() {
                 posts = pRepo.getPosts();
+                message.setValue("Đã lấy thành công dữ liệu");
+
             }
 
             @Override
             public void onError() {
                 System.out.println("Error : ");
+                message.setValue("Lõi trong quá trình lấy feed");
             }
         });
     }

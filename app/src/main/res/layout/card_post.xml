@@ -44,7 +44,7 @@
                     android:padding="2dp"
                     android:scaleType="fitXY"
                     android:src="@drawable/avatar_img"
-                    android:onClick="@{() -> postAdapterFeed.navToPostOwnersProfile(cardPostUserImg, post.owner.id)}"
+                    android:onClick="@{() -> postAdapterFeed.navToPostOwnersProfile(cardPostUserImg, post.ownerData.id)}"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
@@ -68,8 +68,8 @@
                         android:id="@+id/cardPostUserName"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@{post.owner.full_name}"
-                        android:onClick="@{() -> postAdapterFeed.navToPostOwnersProfile(cardPostUserImg, post.owner.id)}"
+                        android:text="@{post.ownerData.email}"
+                        android:onClick="@{() -> postAdapterFeed.navToPostOwnersProfile(cardPostUserImg, post.ownerData.id)}"
                         android:textSize="20sp"
                         android:textStyle="bold" />
                     <!--thời gian tạo-->
@@ -104,7 +104,7 @@
                 android:adjustViewBounds="true"
                 android:maxHeight="600dp"
                 android:scaleType="fitXY"
-                android:src="@drawable/content_img3" />
+                android:src="@{post.photo}" />
 
             <!--content-->
             <!--TODO add onclick event-->

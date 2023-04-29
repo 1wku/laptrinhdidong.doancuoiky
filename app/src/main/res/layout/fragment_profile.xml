@@ -53,6 +53,7 @@
                         <!-- avatar -->
 
                         <com.google.android.material.imageview.ShapeableImageView
+                            android:id="@+id/frgProfileUserAvatar"
                             android:layout_width="100dp"
                             android:layout_height="100dp"
                             android:adjustViewBounds="true"
@@ -61,7 +62,7 @@
                             app:shapeAppearanceOverlay="@style/ShapeAppearance.App.CircleImageView"
                             app:strokeColor="@color/black"
                             app:strokeWidth="2dp"
-                            android:src="@{user.avatar}"/>
+                            android:src="@drawable/avatar_img"/>
 
                         <!-- số lượng post -->
                         <!--todo-->
@@ -157,7 +158,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
-                        android:text="follow"
+                        android:onClick="@{() -> profileFragment.toggleFollow(user)}"
+                        android:text="FOLLOW"
                         style="@style/ButtonBlue" />
                 </LinearLayout>
 

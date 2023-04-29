@@ -1,5 +1,7 @@
 package ltdd.doan.mangxahoi.ui.view.fragment;
 
+import static android.view.View.GONE;
+
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -14,14 +16,19 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
+
+import com.bumptech.glide.Glide;
 
 import java.util.List;
+import java.util.Objects;
 
 import dagger.hilt.android.AndroidEntryPoint;
 import ltdd.doan.mangxahoi.R;
 import ltdd.doan.mangxahoi.data.model.User;
 import ltdd.doan.mangxahoi.databinding.FragmentPostDetailsBinding;
 import ltdd.doan.mangxahoi.databinding.FragmentProfileBinding;
+import ltdd.doan.mangxahoi.interfaces.OnGetCheckIsFollowUserResult;
 import ltdd.doan.mangxahoi.interfaces.OnToogleFollowResult;
 import ltdd.doan.mangxahoi.session.Session;
 import ltdd.doan.mangxahoi.ui.view.adapter.PostAdapterProfile;
@@ -55,13 +62,36 @@ public class ProfileFragment extends Fragment {
         binding.frgProfileSwipeRefresh.setOnRefreshListener(() -> {
             mViewModel.getUserDetailsById(user_id);
             mViewModel.getPostsByUserId(user_id);
-
             binding.frgProfileSwipeRefresh.setRefreshing(false);
         });
+
 
         mViewModel.getUser().observe(getViewLifecycleOwner(), user -> {
             binding.setUser(user);
             // TODO: 4/18/2023 ảnh
+            if (!Objects.equals(user.getAvatar() , "none image")){
+                Glide.with(requireContext())
+                        .load(user.getAvatar() )
+                        .into(binding.frgProfileUserAvatar);
+            }
+            if (user_id == Session.getSharedPreference(getContext(),"user_id","") ){
+                binding.frgProfileBtnFollow.setVisibility(GONE);
+            }
+            mViewModel.onCheckIsFollowUser(user_id, new OnGetCheckIsFollowUserResult() {
+                @Override
+                public void onSuccess(String result) {
+                    System.out.println(result);
+
+                    if ( Objects.equals(result,"YES"))  binding.frgProfileBtnFollow.setText("UNFOLLOW");
+                    else  binding.frgProfileBtnFollow.setText("FOLLOW");
+
+                }
+                @Override
+                public void onError(String error) {
+                    System.out.println(error);
+                }
+            });
+
         });
 
         mViewModel.getPosts().observe(getViewLifecycleOwner(), posts -> {
@@ -84,11 +114,14 @@ public class ProfileFragment extends Fragment {
     public void navToFollow(View view, List<User> users) {
     }
 
-    public void follow(User user) {
+
+    public void toggleFollow(User user) {
         mViewModel.follow(user.getId(), new OnToogleFollowResult() {
             @Override
             public void onSuccess(String result) {
-                System.out.println(result);
+                if ( Objects.equals(result,"user have been unfollowed"))  binding.frgProfileBtnFollow.setText("FOLLOW");
+                else  binding.frgProfileBtnFollow.setText("UNFOLLOW");
+
             }
             @Override
             public void onError(String error) {
@@ -97,24 +130,6 @@ public class ProfileFragment extends Fragment {
         });
         // update ui
         mViewModel.getUserDetailsById(user.getId());
-    }
-
-    public void unfollow(String user_id) {
-        mViewModel.unfollow(user_id, new OnToogleFollowResult() {
-            @Override
-            public void onSuccess(String result) {
-                System.out.println(result);
-            }
-
-            @Override
-            public void onError(String error) {
-                System.out.println(error);
-
-            }
-        });
-
-        // update ui
-        mViewModel.getUserDetailsById(user_id);
     }
 
 }

@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import dagger.hilt.android.AndroidEntryPoint;
 import ltdd.doan.mangxahoi.R;
@@ -49,6 +50,12 @@ public class FeedFragment extends Fragment {
 
             if (posts.size() == 0) binding.frgFeedLblMsgNoPost.setVisibility(View.VISIBLE);
             else binding.frgFeedLblMsgNoPost.setVisibility(View.GONE);
+
+
+        });
+
+        mViewModel.getMessage().observe(getViewLifecycleOwner(),message ->{
+            Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
         });
 
         return binding.getRoot();

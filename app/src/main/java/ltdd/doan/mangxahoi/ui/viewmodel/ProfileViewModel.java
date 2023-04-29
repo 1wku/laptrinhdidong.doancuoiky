@@ -1,10 +1,8 @@
 package ltdd.doan.mangxahoi.ui.viewmodel;
 
-import androidx.annotation.Nullable;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -14,6 +12,7 @@ import ltdd.doan.mangxahoi.data.model.Post;
 import ltdd.doan.mangxahoi.data.model.User;
 import ltdd.doan.mangxahoi.data.repository.PostRepository;
 import ltdd.doan.mangxahoi.data.repository.UserRepository;
+import ltdd.doan.mangxahoi.interfaces.OnGetCheckIsFollowUserResult;
 import ltdd.doan.mangxahoi.interfaces.OnGetPostsByUserResult;
 import ltdd.doan.mangxahoi.interfaces.OnGetUserDetailResult;
 import ltdd.doan.mangxahoi.interfaces.OnToogleFollowResult;
@@ -32,11 +31,14 @@ public class ProfileViewModel extends ViewModel {
 
         user = uRepo.getUser();
         posts = pRepo.getPosts();
+
     }
 
     public MutableLiveData<User> getUser() {
         return user;
     }
+
+
 
     public MutableLiveData<List<Post>> getPosts() {
         return posts;
@@ -68,11 +70,15 @@ public class ProfileViewModel extends ViewModel {
         });
     }
 
+    public void onCheckIsFollowUser(String user_id, OnGetCheckIsFollowUserResult onGetCheckIsFollowUserResult) {
+        uRepo.checkIsFollowUser(user_id,onGetCheckIsFollowUserResult);
+
+
+    }
+
     public void follow(String user_id, OnToogleFollowResult onToogleFollowResult) {
         uRepo.toggleFollow(user_id,onToogleFollowResult);
     }
 
-    public void unfollow(String user_id, OnToogleFollowResult onToogleFollowResult) {
-        uRepo.toggleFollow(user_id,onToogleFollowResult);
-    }
+
 }

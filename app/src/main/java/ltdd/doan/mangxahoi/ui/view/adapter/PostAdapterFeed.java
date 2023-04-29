@@ -5,17 +5,23 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 
 import ltdd.doan.mangxahoi.R;
 import ltdd.doan.mangxahoi.data.model.Post;
+import ltdd.doan.mangxahoi.data.model.User;
+import ltdd.doan.mangxahoi.data.repository.UserRepository;
 import ltdd.doan.mangxahoi.databinding.CardPostBinding;
 import ltdd.doan.mangxahoi.interfaces.OnGetPostResult;
 import ltdd.doan.mangxahoi.session.Session;
@@ -96,8 +102,20 @@ public class PostAdapterFeed extends RecyclerView.Adapter<PostAdapterFeed.PostVi
     public void onBindViewHolder(@NonNull PostViewHolder holder, int position) {
         Post post = posts.get(position);
 
+
         holder.binding.setPostAdapterFeed(this);
         holder.binding.setPost(post);
+        if (!Objects.equals(post.getPhoto() , "none image")){
+            Glide.with(context)
+                    .load(post.getPhoto())
+                    .into(holder.binding.cardPostPostImg);
+        }
+
+        if (!Objects.equals(post.getOwnerData().getAvatar() , "none image")){
+            Glide.with(context)
+                    .load(post.getOwnerData().getAvatar())
+                    .into(holder.binding.cardPostUserImg);
+        }
 
     }
 

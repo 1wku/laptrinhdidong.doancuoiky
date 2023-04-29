@@ -51,7 +51,6 @@ public class FeedFragment extends Fragment {
             if (posts.size() == 0) binding.frgFeedLblMsgNoPost.setVisibility(View.VISIBLE);
             else binding.frgFeedLblMsgNoPost.setVisibility(View.GONE);
 
-
         });
 
         mViewModel.getMessage().observe(getViewLifecycleOwner(),message ->{

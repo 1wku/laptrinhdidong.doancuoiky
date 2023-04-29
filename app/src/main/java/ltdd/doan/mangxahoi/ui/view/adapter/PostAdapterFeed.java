@@ -19,11 +19,13 @@ import java.util.List;
 import java.util.Objects;
 
 import ltdd.doan.mangxahoi.R;
+import ltdd.doan.mangxahoi.data.dto.response.LikePostResponse;
 import ltdd.doan.mangxahoi.data.model.Post;
 import ltdd.doan.mangxahoi.data.model.User;
 import ltdd.doan.mangxahoi.data.repository.UserRepository;
 import ltdd.doan.mangxahoi.databinding.CardPostBinding;
 import ltdd.doan.mangxahoi.interfaces.OnGetPostResult;
+import ltdd.doan.mangxahoi.interfaces.OnLikePostResult;
 import ltdd.doan.mangxahoi.session.Session;
 import ltdd.doan.mangxahoi.ui.view.activity.MainActivity;
 import ltdd.doan.mangxahoi.ui.view.fragment.FeedFragmentDirections;
@@ -63,26 +65,29 @@ public class PostAdapterFeed extends RecyclerView.Adapter<PostAdapterFeed.PostVi
         Navigation.findNavController(view).navigate(FeedFragmentDirections.feedToPostDetails().getActionId(), bundle);
     }
 
-    public void likePost(String post_id) {
-        viewModel.like(post_id);
+    public void toggleLikePost(String post_id) {
+        viewModel.like(post_id, new OnLikePostResult() {
+            @Override
+            public void onSuccess(LikePostResponse result) {
+                System.out.println(result.likes);
+                viewModel.getFeed();
+            }
 
+            @Override
+            public void onError(String error) {
+                System.out.println(error);
+
+            }
+        });
         // update ui
-        viewModel.getFeed();
     }
 
-    public void unlikePost(String post_id) {
-        viewModel.unlike(post_id);
-
-        // update ui
-        viewModel.getFeed();
-
-    }
     public boolean isPostLiked(Post post) {
 
         if (post.getLikers() == null) return false;
 
         for (String u : post.getLikers()) {
-            if (u.equals(Session.ACTIVE_USER.getId())) {
+            if (u.equals(Session.getSharedPreference(context,"user_id",""))) {
                 return true;
             }
         }

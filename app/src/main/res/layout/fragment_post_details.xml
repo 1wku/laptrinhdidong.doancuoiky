@@ -103,7 +103,14 @@
                             app:layout_constraintVertical_bias="0.5"
                             app:srcCompat="@drawable/ic_popup_menu" />
                     </androidx.constraintlayout.widget.ConstraintLayout>
+                    <!--content -->
 
+                    <TextView
+                        android:id="@+id/frgPostDetailsLblPostDescription"
+                        android:textSize="16sp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text='@{post.content}' />
                     <!--ảnh và content-->
                     <ImageView
                         android:id="@+id/frgPostDetailsImgPostImage"
@@ -122,14 +129,7 @@
                         android:orientation="vertical"
                         android:paddingHorizontal="8dp">
 
-                        <!--content -->
 
-                        <TextView
-                            android:id="@+id/frgPostDetailsLblPostDescription"
-                            android:textSize="16sp"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text='@{post.content}' />
 
                         <!--thống kê lượt like-->
                         <TextView

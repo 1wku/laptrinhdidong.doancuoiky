@@ -98,22 +98,16 @@ public class PostDetailsFragment extends Fragment {
         mViewModel.getPostDetailsById(post_id);
     }
 
-    public void unlikePost(String post_id) {
-        mViewModel.unlike(post_id);
-
-        // update ui
-        mViewModel.getPostDetailsById(post_id);
-    }
 
     public boolean isPostLiked(Post post) {
 
         if (post.getLikers() == null) return false;
 
-//        for (String u : post.getLikers()) {
-//            if (u.equals(Session.ACTIVE_USER.getId())) {
-//                return true;
-//            }
-//        }
+        for (String u : post.getLikers()) {
+            if (u.equals(Session.getSharedPreference(requireContext(),"user_id",""))) {
+                return true;
+            }
+        }
         return false;
     }
 

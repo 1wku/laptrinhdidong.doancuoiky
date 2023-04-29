@@ -12,11 +12,13 @@ import java.util.List;
 import javax.inject.Inject;
 
 import dagger.hilt.android.lifecycle.HiltViewModel;
+import ltdd.doan.mangxahoi.data.dto.response.LikePostResponse;
 import ltdd.doan.mangxahoi.data.model.Comment;
 import ltdd.doan.mangxahoi.data.model.Post;
 import ltdd.doan.mangxahoi.data.model.User;
 import ltdd.doan.mangxahoi.data.repository.PostRepository;
 import ltdd.doan.mangxahoi.interfaces.OnGetPostByIdResult;
+import ltdd.doan.mangxahoi.interfaces.OnLikePostResult;
 
 @HiltViewModel
 public class PostDetailsViewModel extends ViewModel {
@@ -71,12 +73,22 @@ public class PostDetailsViewModel extends ViewModel {
     }
 
     public void like(String post_id) {
-        pRepo.like(post_id);
+        pRepo.like(post_id, new OnLikePostResult() {
+            @Override
+            public void onSuccess(LikePostResponse result) {
+                System.out.println(result);
+                getPost();
+            }
+
+            @Override
+            public void onError(String error) {
+                System.out.println(error);
+
+
+            }
+        });
     }
 
-    public void unlike(String post_id) {
-        pRepo.unlike(post_id);
-    }
 
     public void createComment(String post_id, String text) {
         pRepo.createComment(post_id, text);

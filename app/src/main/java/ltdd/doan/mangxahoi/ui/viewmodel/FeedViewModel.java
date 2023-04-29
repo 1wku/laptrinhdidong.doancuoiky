@@ -10,10 +10,12 @@ import java.util.List;
 import javax.inject.Inject;
 
 import dagger.hilt.android.lifecycle.HiltViewModel;
+import ltdd.doan.mangxahoi.data.dto.response.LikePostResponse;
 import ltdd.doan.mangxahoi.data.model.Post;
 import ltdd.doan.mangxahoi.data.model.User;
 import ltdd.doan.mangxahoi.data.repository.PostRepository;
 import ltdd.doan.mangxahoi.interfaces.OnGetPostResult;
+import ltdd.doan.mangxahoi.interfaces.OnLikePostResult;
 
 @HiltViewModel
 public class FeedViewModel extends ViewModel {
@@ -64,11 +66,8 @@ public class FeedViewModel extends ViewModel {
         pRepo.deletePost(post_id);
     }
 
-    public void like(String post_id) {
-        pRepo.like(post_id);
+    public void like(String post_id, OnLikePostResult onLikePostResult) {
+        pRepo.like(post_id,onLikePostResult);
     }
 
-    public void unlike(String post_id) {
-        pRepo.unlike(post_id);
-    }
 }

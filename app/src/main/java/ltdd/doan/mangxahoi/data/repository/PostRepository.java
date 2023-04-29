@@ -7,6 +7,8 @@ import androidx.lifecycle.MutableLiveData;
 import java.util.List;
 
 import ltdd.doan.mangxahoi.api.ApiInterface;
+import ltdd.doan.mangxahoi.data.dto.request.LikePostRequest;
+import ltdd.doan.mangxahoi.data.dto.response.LikePostResponse;
 import ltdd.doan.mangxahoi.data.dto.response.ListFeedResponse;
 import ltdd.doan.mangxahoi.data.dto.response.SuccessfullResponse;
 import ltdd.doan.mangxahoi.data.model.Comment;
@@ -14,6 +16,7 @@ import ltdd.doan.mangxahoi.data.model.Post;
 import ltdd.doan.mangxahoi.interfaces.OnGetPostByIdResult;
 import ltdd.doan.mangxahoi.interfaces.OnGetPostResult;
 import ltdd.doan.mangxahoi.interfaces.OnGetPostsByUserResult;
+import ltdd.doan.mangxahoi.interfaces.OnLikePostResult;
 import ltdd.doan.mangxahoi.session.Session;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -129,7 +132,24 @@ public class PostRepository {
     }
 
     // TODO: 4/18/2023
-    public void like(String post_id){
+    public void like(String post_id, OnLikePostResult onLikePostResult){
+        String userId = Session.getSharedPreference(context, "user_id", "");
+
+        apiService.likePost(new LikePostRequest(userId),post_id).enqueue(new Callback<LikePostResponse>() {
+            @Override
+            public void onResponse(Call<LikePostResponse> call, Response<LikePostResponse> response) {
+                System.out.println(response);
+                if(response.code()==200) {
+                    onLikePostResult.onSuccess(response.body());
+                }
+                else onLikePostResult.onError(response.message());
+            }
+            @Override
+            public void onFailure(Call<LikePostResponse> call, Throwable t) {
+                System.out.println(t.getMessage());
+                onLikePostResult.onError(t.getMessage());
+            }
+        });
 
     }
 

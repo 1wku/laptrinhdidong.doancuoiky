@@ -26,6 +26,7 @@ public class PostRepository {
     private final Context context;
     private MutableLiveData<String> message; // messages from response
     private MutableLiveData<Boolean> status; // status for navigation
+    private UserRepository userRepository;
     public PostRepository(Context context,ApiInterface apiService) {
         this.apiService = apiService;
         this.context = context ;
@@ -33,6 +34,7 @@ public class PostRepository {
         post = new MutableLiveData<>();
         message = new MutableLiveData<>();
         status = new MutableLiveData<>();
+        userRepository = new UserRepository(context, apiService);
     }
     public MutableLiveData<List<Post>> getPosts() {
         posts = new MutableLiveData<>();
@@ -54,10 +56,9 @@ public class PostRepository {
     }
 
     // TODO: 4/18/2023
-    public void getFeed(OnGetPostResult onGetPostResult){
+    public void getFeed( Integer page , Integer limit ,OnGetPostResult onGetPostResult){
         String userId = Session.getSharedPreference(context, "user_id", "");
-        System.out.println(userId);
-        apiService.getPostTimelineByUser(userId).enqueue(new Callback<ListFeedResponse>() {
+        apiService.getPostTimelineByUser(userId,page,limit ).enqueue(new Callback<ListFeedResponse>() {
             @Override
             public void onResponse(Call<ListFeedResponse> call, Response<ListFeedResponse> response) {
                 System.out.println(response);

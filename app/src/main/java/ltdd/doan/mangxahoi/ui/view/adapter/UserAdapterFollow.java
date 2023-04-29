@@ -11,7 +11,10 @@ import androidx.databinding.DataBindingUtil;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+
 import java.util.List;
+import java.util.Objects;
 
 import ltdd.doan.mangxahoi.R;
 import ltdd.doan.mangxahoi.data.model.User;
@@ -56,6 +59,11 @@ public class UserAdapterFollow extends RecyclerView.Adapter<UserAdapterFollow.Us
         holder.binding.setUser(user);
 
         // TODO: 4/21/2023 ảnh
+        if (  user.getAvatar() != "none image" && !Objects.equals(user.getAvatar() , "")){
+            Glide.with(context)
+                    .load(user.getAvatar())
+                    .into(holder.binding.cardUserImgUserPhoto);
+        }
     }
 
     @Override

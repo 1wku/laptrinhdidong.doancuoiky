@@ -82,7 +82,7 @@
                                 android:textStyle="bold"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text="@{post.owner.full_name}" />
+                                android:text="@{post.ownerData.email}" />
 
                             <TextView
                                 android:id="@+id/frgPostDetailsLblPostDate"
@@ -114,39 +114,22 @@
                         android:scaleType="fitXY"
                         android:src="@drawable/content_img2"/>
 
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:paddingHorizontal="8dp"
-                        android:paddingTop="8dp">
 
-                        <!--todo onclick-->
-                        <ImageView
-                            android:id="@+id/frgPostDetailsImgLike"
-                            android:layout_width="36dp"
-                            android:layout_height="36dp"
-                            android:src="@drawable/ic_like"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:layout_constraintVertical_bias="0.5" />
-
-                        <!--todo onclick-->
-                        <ImageView
-                            android:id="@+id/frgPostDetailsImgShare"
-                            android:layout_width="36dp"
-                            android:layout_height="36dp"
-                            android:src="@drawable/ic_share"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-                    </androidx.constraintlayout.widget.ConstraintLayout>
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
                         android:paddingHorizontal="8dp">
+
+                        <!--content -->
+
+                        <TextView
+                            android:id="@+id/frgPostDetailsLblPostDescription"
+                            android:textSize="16sp"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text='@{post.content}' />
 
                         <!--thống kê lượt like-->
                         <TextView
@@ -157,13 +140,34 @@
                             android:layout_height="wrap_content"
                             android:text="@{@string/card_post_likes(post.likers.size())}" />
 
-                        <!--content -->
-                        <TextView
-                            android:id="@+id/frgPostDetailsLblPostDescription"
-                            android:textSize="16sp"
+                        <androidx.constraintlayout.widget.ConstraintLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text='@{post.owner.full_name + " " + post.content}' />
+                            android:paddingHorizontal="8dp"
+                            android:paddingTop="8dp">
+
+                            <!--todo onclick-->
+                            <ImageView
+                                android:id="@+id/frgPostDetailsImgLike"
+                                android:layout_width="36dp"
+                                android:layout_height="36dp"
+                                android:src="@drawable/ic_like"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:layout_constraintVertical_bias="0.5" />
+
+                            <!--todo onclick-->
+                            <ImageView
+                                android:id="@+id/frgPostDetailsImgShare"
+                                android:layout_width="36dp"
+                                android:layout_height="36dp"
+                                android:src="@drawable/ic_share"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
                     </LinearLayout>
 
                 </LinearLayout>

@@ -51,6 +51,8 @@ public class PostDetailsViewModel extends ViewModel {
             @Override
             public void onSuccess(Post resultPost) {
                 post.setValue(resultPost);
+                System.out.println("Get post by id ");
+
             }
 
             @Override

@@ -3,6 +3,7 @@ package ltdd.doan.mangxahoi.ui.view.fragment;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -13,7 +14,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.bumptech.glide.Glide;
+
 import java.util.Iterator;
+import java.util.Objects;
 
 import dagger.hilt.android.AndroidEntryPoint;
 import ltdd.doan.mangxahoi.R;
@@ -31,6 +35,7 @@ public class PostDetailsFragment extends Fragment {
 
     private PostDetailsViewModel mViewModel;
 
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,13 +50,29 @@ public class PostDetailsFragment extends Fragment {
 
         String post_id = getArguments().getString("post_id");
 
+        mViewModel.getPostDetailsById(post_id);
         binding.frgPostDetailsSwipeRefresh.setOnRefreshListener(() -> {
+            System.out.println("Before get post by id ");
             mViewModel.getPostDetailsById(post_id);
+
             binding.frgPostDetailsSwipeRefresh.setRefreshing(false);
         });
 
         mViewModel.getPost().observe(getViewLifecycleOwner(), post -> {
-            binding.setPost(post);
+            if (!Objects.equals(post.getPhoto() , "none image")){
+                Glide.with(requireContext())
+                        .load(post.getPhoto())
+                        .into(binding.frgPostDetailsImgPostImage);
+            }
+            else {
+                binding.frgPostDetailsImgPostImage.setVisibility(View.GONE);
+            }
+
+            if (!Objects.equals(post.getOwnerData().getAvatar() , "none image") && !Objects.equals(post.getOwnerData().getAvatar() , "")){
+                Glide.with(requireContext())
+                        .load(post.getOwnerData().getAvatar())
+                        .into(binding.frgPostDetailsUserAVT);
+            }
 
             // TODO: 4/18/2023 ảnh
 
@@ -61,6 +82,8 @@ public class PostDetailsFragment extends Fragment {
             // TODO: 4/18/2023 comment cart + adapter
 //            CommentAdapter commentAdapter = new CommentAdapter(requireContext(), (MainActivity) requireActivity(), post.getComments(), mViewModel);
 //            binding.setCommentAdapter(commentAdapter);
+            binding.setPost(post);
+
         });
 
 
@@ -86,11 +109,11 @@ public class PostDetailsFragment extends Fragment {
 
         if (post.getLikers() == null) return false;
 
-        for (String u : post.getLikers()) {
-            if (u.equals(Session.ACTIVE_USER.getId())) {
-                return true;
-            }
-        }
+//        for (String u : post.getLikers()) {
+//            if (u.equals(Session.ACTIVE_USER.getId())) {
+//                return true;
+//            }
+//        }
         return false;
     }
 

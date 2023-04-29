@@ -16,6 +16,7 @@ import ltdd.doan.mangxahoi.data.dto.request.RegisterRequest;
 import ltdd.doan.mangxahoi.data.dto.response.SuccessfullResponse;
 import ltdd.doan.mangxahoi.data.model.User;
 import ltdd.doan.mangxahoi.interfaces.OnFilterUserResult;
+import ltdd.doan.mangxahoi.interfaces.OnGetCheckIsFollowUserResult;
 import ltdd.doan.mangxahoi.interfaces.OnGetUserDetailResult;
 import ltdd.doan.mangxahoi.interfaces.OnLoggedInResult;
 import ltdd.doan.mangxahoi.interfaces.OnRegisterResult;
@@ -161,6 +162,27 @@ public class UserRepository {
     public void updateUser(User user_update){
     }
 
+    public void checkIsFollowUser(String user_id, OnGetCheckIsFollowUserResult onGetCheckIsFollowUserResult){
+        String accountUser = Session.getSharedPreference(context, "user_id", "");
+        apiService.isFollowUser(user_id,new FollowUserRequest(accountUser)).enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                if(response.isSuccessful()) {
+
+                    onGetCheckIsFollowUserResult.onSuccess(response.body());
+                }else {
+                    Log.d("onGetCheckIsFollowUserResult", response.message());
+                    onGetCheckIsFollowUserResult.onError(response.message());
+                }
+            }
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+                onGetCheckIsFollowUserResult.onError(t.getMessage());
+
+            }
+        });
+    }
+
 
 
     // TODO: 4/18/2023
@@ -170,6 +192,7 @@ public class UserRepository {
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
                 if(response.isSuccessful()) {
+
                     onToogleFollowResult.onSuccess(response.body());
                 }else {
                     Log.d("ToogleFollow", response.message());

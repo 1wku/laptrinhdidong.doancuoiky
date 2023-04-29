@@ -41,6 +41,8 @@ public interface ApiInterface {
     Call<String> deleteUser(@Path("id") String id);
     @PUT("api/users/{id}/follow")
     Call<String> followUser(@Path("id") String id, @Body FollowUserRequest request);
+    @POST("api/users/{id}/checkIsFollowUser")
+    Call<String> isFollowUser(@Path("id") String id, @Body FollowUserRequest request);
 
     // post--------------------------------------------------------------------------------------------------------
     @POST("api/posts")
@@ -58,6 +60,6 @@ public interface ApiInterface {
     @GET("api/posts/all/{userId}")
     Call<SuccessfullResponse<List<Post>>> getPostsByUserId(@Path("userId") String userId);
     @GET("api/posts/timeline/{userId}")
-    Call<ListFeedResponse> getPostTimelineByUser(@Path("userId") String userId);
+    Call<ListFeedResponse> getPostTimelineByUser(@Path("userId") String userId , @Query("page") Integer page, @Query("limit") Integer limit );
 
 }

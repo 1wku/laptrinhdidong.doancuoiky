@@ -18,6 +18,8 @@ public class Post  {
     private String owner;
     @SerializedName("img")
     private String photo;
+    @SerializedName("ownerData")
+    private User ownerData;
     @Expose
     private String content;
     @SerializedName("likes")
@@ -57,9 +59,19 @@ public class Post  {
     }
 
     // TODO: 4/18/2023
-    public User getOwner() {
-        User owner = new User(this.owner,Utils.randomS(10),null,null,Utils.randomS(10),null,null,null,null,null,null,null);
-        return owner;
+    public String getOwner() {
+        return this.owner;
+    }
+
+    public User getOwnerData(){
+        return this.ownerData;
+
+    }
+
+
+
+    public void setOwnerData(User user){
+        this.ownerData = user ;
     }
 
     public void setOwner(String owner) {

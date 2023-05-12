@@ -116,7 +116,7 @@ public class PostAdapterFeed extends RecyclerView.Adapter<PostAdapterFeed.PostVi
                     .into(holder.binding.cardPostPostImg);
         }
 
-        if (!Objects.equals(post.getOwnerData().getAvatar() , "none image")){
+        if (!Objects.equals(post.getOwnerData().getAvatar() , "")){
             Glide.with(context)
                     .load(post.getOwnerData().getAvatar())
                     .into(holder.binding.cardPostUserImg);

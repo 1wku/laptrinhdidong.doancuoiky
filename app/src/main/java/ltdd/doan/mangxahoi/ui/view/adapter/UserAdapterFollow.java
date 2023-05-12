@@ -59,7 +59,7 @@ public class UserAdapterFollow extends RecyclerView.Adapter<UserAdapterFollow.Us
         holder.binding.setUser(user);
 
         // TODO: 4/21/2023 ảnh
-        if (  user.getAvatar() != "none image" && !Objects.equals(user.getAvatar() , "")){
+        if ( !Objects.equals(user.getAvatar() , "")){
             Glide.with(context)
                     .load(user.getAvatar())
                     .into(holder.binding.cardUserImgUserPhoto);

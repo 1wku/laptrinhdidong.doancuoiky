@@ -80,11 +80,8 @@ public class ProfileFragment extends Fragment {
             mViewModel.onCheckIsFollowUser(user_id, new OnGetCheckIsFollowUserResult() {
                 @Override
                 public void onSuccess(String result) {
-                    System.out.println(result);
-
                     if ( Objects.equals(result,"YES"))  binding.frgProfileBtnFollow.setText("UNFOLLOW");
                     else  binding.frgProfileBtnFollow.setText("FOLLOW");
-
                 }
                 @Override
                 public void onError(String error) {

@@ -142,10 +142,4 @@ public class User {
         this.followings = following;
     }
 
-    public User getEx(){
-        return new User("0", Utils.randomS(), Utils.randomS(), Utils.randomS(), Utils.randomS(),null,null,null,null,null,null,null);
-    }
-    public User getEx(String id){
-        return new User(id, Utils.randomS(), Utils.randomS(), Utils.randomS(), Utils.randomS(),null,null,null,null,null,null,null);
-    }
 }

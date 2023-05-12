@@ -70,7 +70,7 @@
                         android:layout_height="wrap_content"
                         android:text="@{post.ownerData.email}"
                         android:onClick="@{() -> postAdapterFeed.navToPostOwnersProfile(cardPostUserImg, post.ownerData.id)}"
-                        android:textSize="20sp"
+                        android:textSize="16sp"
                         android:textStyle="bold" />
                     <!--thời gian tạo-->
                     <TextView
@@ -87,8 +87,8 @@
                 <!--TODO add onclick event-->
                 <ImageView
                     android:id="@+id/cardPostPopupMenu"
-                    android:layout_width="36dp"
-                    android:layout_height="36dp"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
@@ -162,8 +162,8 @@
                 <!--bình luận-->
                 <ImageView
                     android:id="@+id/cardPostPostCmt"
-                    android:layout_width="36dp"
-                    android:layout_height="36dp"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
                     android:onClick="@{() -> postAdapterFeed.navToPostDetails(cardPostPostCmt, post.id)}"
                     android:src="@drawable/ic_comment"
                     app:layout_constraintBottom_toBottomOf="parent"

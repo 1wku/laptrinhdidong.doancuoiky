@@ -20,7 +20,7 @@
     </data>
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/frgPostDetailsSwipeRefresh"
-        android:background="#FAE7E9"
+        android:background="#FFF"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -103,23 +103,6 @@
                             app:layout_constraintVertical_bias="0.5"
                             app:srcCompat="@drawable/ic_popup_menu" />
                     </androidx.constraintlayout.widget.ConstraintLayout>
-                    <!--content -->
-
-                    <TextView
-                        android:id="@+id/frgPostDetailsLblPostDescription"
-                        android:textSize="16sp"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text='@{post.content}' />
-                    <!--ảnh và content-->
-                    <ImageView
-                        android:id="@+id/frgPostDetailsImgPostImage"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:adjustViewBounds="true"
-                        android:maxHeight="600dp"
-                        android:scaleType="fitXY"
-                        android:src="@drawable/content_img2"/>
 
 
 
@@ -129,7 +112,24 @@
                         android:orientation="vertical"
                         android:paddingHorizontal="8dp">
 
+                        <!--ảnh và content-->
+                        <ImageView
+                            android:id="@+id/frgPostDetailsImgPostImage"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:adjustViewBounds="true"
+                            android:maxHeight="600dp"
+                            android:scaleType="fitXY"
+                            android:src="@drawable/content_img2"/>
 
+                        <!--content -->
+
+                        <TextView
+                            android:id="@+id/frgPostDetailsLblPostDescription"
+                            android:textSize="16sp"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text='@{post.content}' />
 
                         <!--thống kê lượt like-->
                         <TextView

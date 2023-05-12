@@ -69,7 +69,7 @@ public class ProfileFragment extends Fragment {
         mViewModel.getUser().observe(getViewLifecycleOwner(), user -> {
             binding.setUser(user);
             // TODO: 4/18/2023 ảnh
-            if (!Objects.equals(user.getAvatar() , "none image")){
+            if (!Objects.equals(user.getAvatar() , "")){
                 Glide.with(requireContext())
                         .load(user.getAvatar() )
                         .into(binding.frgProfileUserAvatar);

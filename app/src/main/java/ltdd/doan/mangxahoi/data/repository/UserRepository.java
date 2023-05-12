@@ -160,6 +160,21 @@ public class UserRepository {
 
     // TODO: 4/18/2023
     public void updateUser(User user_update){
+        apiService.updateUser(user_update.getId()).enqueue(new Callback<SuccessfullResponse<User>>() {
+            @Override
+            public void onResponse(Call<SuccessfullResponse<User>> call, Response<SuccessfullResponse<User>> response) {
+                if (response.isSuccessful()){
+                    Log.e("Update user", "Successful");
+                }
+                else {
+                    Log.e("Update user", "Fail");
+                }
+            }
+            @Override
+            public void onFailure(Call<SuccessfullResponse<User>> call, Throwable t) {
+                Log.e("Error update user", t.getMessage());
+            }
+        });
     }
 
     public void checkIsFollowUser(String user_id, OnGetCheckIsFollowUserResult onGetCheckIsFollowUserResult){

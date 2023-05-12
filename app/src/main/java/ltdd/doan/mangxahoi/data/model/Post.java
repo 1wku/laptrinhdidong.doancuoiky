@@ -36,7 +36,23 @@ public class Post  {
     private String updated_at;
 
     public String getUpdated_at() {
-        return updated_at;
+        try{
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+            LocalDateTime dateTime = LocalDateTime.parse(this.updated_at, formatter);
+
+            LocalDateTime now = LocalDateTime.now();
+            Duration duration = Duration.between(dateTime, now);
+            long  date = duration.toDays();
+            long year = date/365 ;
+            date = date - year*355 ;
+            long month = date/30;
+            date = date-month*365;
+            if (year > 0 ) return year + " năm trước";
+            if (month > 0 ) return month + " tháng trước";
+            return date + " ngày trước";
+        }catch (Exception error ){
+            return error.getMessage();
+        }
     }
 
     public void setUpdated_at(String updated_at) {

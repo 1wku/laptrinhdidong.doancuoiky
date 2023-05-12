@@ -46,11 +46,11 @@ public interface ApiInterface {
 
     // post--------------------------------------------------------------------------------------------------------
     @POST("api/posts")
-    Call<Post> createPost(@Body Post request);
+    Call<SuccessfullResponse<Post>> createPost(@Body Post request);
     @GET("api/posts/{id}")
     Call<SuccessfullResponse<Post>> getPost(@Path("id") String id);
     @POST("api/posts/{id}")
-    Call<Post> updatePost( @Body Post request,@Path("id") String id);
+    Call<SuccessfullResponse<Post>> updatePost( @Body Post request,@Path("id") String id);
     @DELETE("api/posts/{id}")
     Call<String> deletePost(@Path("id") String id);
     @PUT("api/posts/{id}/like")

@@ -40,7 +40,12 @@ public class PostAdapterFeed extends RecyclerView.Adapter<PostAdapterFeed.PostVi
             super(binding.getRoot());
             this.binding = binding;
         }
+
     }
+
+    private final int VIEW_TYPE_ITEM = 0;
+    private final int VIEW_TYPE_LOADING = 1;
+
     private Context context;
     private MainActivity mainActivity;
     private List<Post> posts;
@@ -53,6 +58,10 @@ public class PostAdapterFeed extends RecyclerView.Adapter<PostAdapterFeed.PostVi
         this.viewModel = viewModel;
     }
 
+    @Override
+    public int getItemViewType(int position) {
+        return posts.get(position) == null ? VIEW_TYPE_LOADING : VIEW_TYPE_ITEM;
+    }
     public void navToPostOwnersProfile(View view, String user_id){
         Bundle bundle = new Bundle();
         bundle.putString("user_id",user_id);
@@ -106,8 +115,6 @@ public class PostAdapterFeed extends RecyclerView.Adapter<PostAdapterFeed.PostVi
     @Override
     public void onBindViewHolder(@NonNull PostViewHolder holder, int position) {
         Post post = posts.get(position);
-
-
         holder.binding.setPostAdapterFeed(this);
         holder.binding.setPost(post);
         if (!Objects.equals(post.getPhoto() , "none image")){

@@ -17,8 +17,10 @@ import ltdd.doan.mangxahoi.data.model.Comment;
 import ltdd.doan.mangxahoi.data.model.Post;
 import ltdd.doan.mangxahoi.data.model.User;
 import ltdd.doan.mangxahoi.data.repository.PostRepository;
+import ltdd.doan.mangxahoi.interfaces.OnDeletePostResult;
 import ltdd.doan.mangxahoi.interfaces.OnGetPostByIdResult;
 import ltdd.doan.mangxahoi.interfaces.OnLikePostResult;
+import ltdd.doan.mangxahoi.interfaces.OnUpdatePostResult;
 
 @HiltViewModel
 public class PostDetailsViewModel extends ViewModel {
@@ -65,11 +67,31 @@ public class PostDetailsViewModel extends ViewModel {
     }
 
     public void updatePost(Post post) {
-        pRepo.updatePost(post);
+        pRepo.updatePost(post, new OnUpdatePostResult() {
+            @Override
+            public void onSuccess(Post result) {
+
+            }
+
+            @Override
+            public void onError(String error) {
+
+            }
+        });
     }
 
     public void deletePost(String post_id) {
-        pRepo.deletePost(post_id);
+        pRepo.deletePost(post_id, new OnDeletePostResult() {
+            @Override
+            public void onSuccess(String result) {
+
+            }
+
+            @Override
+            public void onError(String error) {
+
+            }
+        });
     }
 
     public void like(String post_id) {

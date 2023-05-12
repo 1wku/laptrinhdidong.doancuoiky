@@ -8,11 +8,15 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
+
+import java.util.ArrayList;
 
 import dagger.hilt.android.AndroidEntryPoint;
 import ltdd.doan.mangxahoi.R;
@@ -25,6 +29,7 @@ public class FeedFragment extends Fragment {
 
     private FeedViewModel mViewModel;
     public FragmentFeedBinding binding;
+    boolean isLoading = false;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -36,13 +41,43 @@ public class FeedFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater,R.layout.fragment_feed,container,false);
-
+        mViewModel.setPage(1);
         mViewModel.getFeed();
 
+
+
         binding.frgFeedRecyclerViewSwipeRefresh.setOnRefreshListener(() -> {
+                  mViewModel.setPage(1);
             mViewModel.getFeed();
             binding.frgFeedRecyclerViewSwipeRefresh.setRefreshing(false);
         });
+
+        binding.frgFeedRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+
+            }
+
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                LinearLayoutManager linearLayoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
+
+                if (!isLoading) {
+                    if (mViewModel.getPosts().getValue()!= null){
+                        if (linearLayoutManager != null && linearLayoutManager.findLastCompletelyVisibleItemPosition() >= mViewModel.getPosts().getValue().size()-2) {
+                            //bottom of list!
+                            isLoading = true;
+                            mViewModel.getFeed();
+                            isLoading = false ;
+                        }
+                    }
+
+                }
+            }
+        });
+
 
         mViewModel.getPosts().observe(getViewLifecycleOwner(), posts -> {
             PostAdapterFeed postAdapter = new PostAdapterFeed(requireContext(), (MainActivity) requireActivity(), posts, mViewModel);
@@ -59,6 +94,9 @@ public class FeedFragment extends Fragment {
 
         return binding.getRoot();
     }
+
+
+
 
 
 

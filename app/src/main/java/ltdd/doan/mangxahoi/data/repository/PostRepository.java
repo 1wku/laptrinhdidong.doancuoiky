@@ -4,6 +4,7 @@ import android.content.Context;
 
 import androidx.lifecycle.MutableLiveData;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import ltdd.doan.mangxahoi.api.ApiInterface;
@@ -13,10 +14,13 @@ import ltdd.doan.mangxahoi.data.dto.response.ListFeedResponse;
 import ltdd.doan.mangxahoi.data.dto.response.SuccessfullResponse;
 import ltdd.doan.mangxahoi.data.model.Comment;
 import ltdd.doan.mangxahoi.data.model.Post;
+import ltdd.doan.mangxahoi.interfaces.OnCreatePostResult;
+import ltdd.doan.mangxahoi.interfaces.OnDeletePostResult;
 import ltdd.doan.mangxahoi.interfaces.OnGetPostByIdResult;
 import ltdd.doan.mangxahoi.interfaces.OnGetPostResult;
 import ltdd.doan.mangxahoi.interfaces.OnGetPostsByUserResult;
 import ltdd.doan.mangxahoi.interfaces.OnLikePostResult;
+import ltdd.doan.mangxahoi.interfaces.OnUpdatePostResult;
 import ltdd.doan.mangxahoi.session.Session;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -40,34 +44,35 @@ public class PostRepository {
         userRepository = new UserRepository(context, apiService);
     }
     public MutableLiveData<List<Post>> getPosts() {
-        posts = new MutableLiveData<>();
         return posts;
     }
     public MutableLiveData<Post> getPost() {
-        post = new MutableLiveData<>();
         return post;
     }
 
     public MutableLiveData<String> getMessage() {
-        message = new MutableLiveData<>();
         return message;
     }
 
     public MutableLiveData<Boolean> getStatus() {
-        status = new MutableLiveData<>();
         return status;
     }
 
+
+
     // TODO: 4/18/2023
-    public void getFeed( Integer page , Integer limit ,OnGetPostResult onGetPostResult){
+    public void getFeed(  Integer page , Integer limit ,OnGetPostResult onGetPostResult){
         String userId = Session.getSharedPreference(context, "user_id", "");
-        apiService.getPostTimelineByUser(userId,page,limit ).enqueue(new Callback<ListFeedResponse>() {
+        apiService.getPostTimelineByUser(userId, page, limit ).enqueue(new Callback<ListFeedResponse>() {
             @Override
             public void onResponse(Call<ListFeedResponse> call, Response<ListFeedResponse> response) {
-                System.out.println(response);
-
                 if(response.code()==200) {
-                    posts.setValue(response.body().timeline);
+                    if (response.body().timeline == null ) return;
+                    if (posts.getValue()!= null){
+                        posts.getValue().addAll(response.body().timeline);
+                    }else {
+                        posts.setValue(response.body().timeline);
+                    }
                     onGetPostResult.onSuccess();
                 }
                 else onGetPostResult.onError();
@@ -117,18 +122,57 @@ public class PostRepository {
     }
 
     // TODO: 4/18/2023
-    public void createPost(){
-
+    public void createPost(Post post, OnCreatePostResult onCreatePostResult){
+        apiService.createPost(post).enqueue(new Callback<SuccessfullResponse<Post>>() {
+            @Override
+            public void onResponse(Call<SuccessfullResponse<Post>> call, Response<SuccessfullResponse<Post>> response) {
+                if(response.code()==200) {
+                    onCreatePostResult.onSuccess(response.body().data);
+                }
+                else onCreatePostResult.onError(response.message());
+            }
+            @Override
+            public void onFailure(Call<SuccessfullResponse<Post>> call, Throwable t) {
+                System.out.println(t.getMessage());
+                onCreatePostResult.onError(t.getMessage());
+            }
+        });
     }
 
     // TODO: 4/18/2023
-    public void updatePost(Post post){
-
+    public void updatePost(Post post, OnUpdatePostResult onUpdatePostResult){
+        apiService.updatePost(post,post.getId()).enqueue(new Callback<SuccessfullResponse<Post>>() {
+            @Override
+            public void onResponse(Call<SuccessfullResponse<Post>> call, Response<SuccessfullResponse<Post>> response) {
+                if(response.code()==200) {
+                    onUpdatePostResult.onSuccess(response.body().data);
+                }
+                else onUpdatePostResult.onError(response.message());
+            }
+            @Override
+            public void onFailure(Call<SuccessfullResponse<Post>> call, Throwable t) {
+                System.out.println(t.getMessage());
+                onUpdatePostResult.onError(t.getMessage());
+            }
+        });
     }
 
     // TODO: 4/18/2023
-    public void deletePost(String post_id){
-
+    public void deletePost(String post_id, OnDeletePostResult onDeletePostResult){
+        apiService.deletePost(post_id).enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                if(response.code()==200) {
+                    onDeletePostResult.onSuccess(response.body());
+                }
+                else onDeletePostResult.onError(response.message());
+            }
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+                System.out.println(t.getMessage());
+                onDeletePostResult.onError(t.getMessage());
+            }
+        });
     }
 
     // TODO: 4/18/2023

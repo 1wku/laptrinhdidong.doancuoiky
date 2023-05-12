@@ -1,6 +1,7 @@
 package ltdd.doan.mangxahoi.data.repository;
 
 import android.content.Context;
+import android.util.Log;
 
 import androidx.lifecycle.MutableLiveData;
 
@@ -114,8 +115,22 @@ public class PostRepository {
     }
 
     // TODO: 4/18/2023
-    public void createPost(){
-
+    public void createPost(Post newPost){
+            apiService.createPost(newPost).enqueue(new Callback<Post>() {
+                @Override
+                public void onResponse(Call<Post> call, Response<Post> response) {
+                    if (response.isSuccessful()){
+                        Log.e("Create new post", "Succesful");
+                    }
+                    else {
+                        Log.e("Create new post", "Fail");
+                    }
+                }
+                @Override
+                public void onFailure(Call<Post> call, Throwable t) {
+                        Log.e("Error create new post", t.getMessage());
+                }
+            });
     }
 
     // TODO: 4/18/2023

@@ -9,24 +9,30 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.bumptech.glide.Glide;
+import com.google.android.material.textfield.TextInputEditText;
 
 import java.util.Iterator;
 import java.util.Objects;
 
 import dagger.hilt.android.AndroidEntryPoint;
 import ltdd.doan.mangxahoi.R;
+import ltdd.doan.mangxahoi.data.model.Comment;
 import ltdd.doan.mangxahoi.data.model.Post;
 import ltdd.doan.mangxahoi.databinding.FragmentPostDetailsBinding;
+import ltdd.doan.mangxahoi.interfaces.OnCreateCommentResult;
 import ltdd.doan.mangxahoi.interfaces.OnGetPostByIdResult;
 import ltdd.doan.mangxahoi.session.Session;
 import ltdd.doan.mangxahoi.ui.view.activity.MainActivity;
 import ltdd.doan.mangxahoi.ui.view.adapter.CommentAdapter;
+import ltdd.doan.mangxahoi.ui.view.adapter.PostAdapterProfile;
 import ltdd.doan.mangxahoi.ui.viewmodel.PostDetailsViewModel;
 @AndroidEntryPoint
 public class PostDetailsFragment extends Fragment {
@@ -50,10 +56,11 @@ public class PostDetailsFragment extends Fragment {
 
         String post_id = getArguments().getString("post_id");
 
-        mViewModel.getPostDetailsById(post_id);
+
         binding.frgPostDetailsSwipeRefresh.setOnRefreshListener(() -> {
             System.out.println("Before get post by id ");
             mViewModel.getPostDetailsById(post_id);
+            mViewModel.getCommentsByPost(post_id);
 
             binding.frgPostDetailsSwipeRefresh.setRefreshing(false);
         });
@@ -76,15 +83,22 @@ public class PostDetailsFragment extends Fragment {
 
             // TODO: 4/18/2023 ảnh
 
-            if (isPostLiked(post)) binding.frgPostDetailsImgLike.setImageDrawable(requireContext().getDrawable(R.drawable.ic_liked));
-            else binding.frgPostDetailsImgLike.setImageDrawable(requireContext().getDrawable(R.drawable.ic_like));
+            if (isPostLiked(post)) binding.frgPostDetailsImgLike.setImageDrawable(requireContext().getDrawable(R.drawable.ic_heart_red));
+            else binding.frgPostDetailsImgLike.setImageDrawable(requireContext().getDrawable(R.drawable.ic_heart));
 
-            // TODO: 4/18/2023 comment cart + adapter
-//            CommentAdapter commentAdapter = new CommentAdapter(requireContext(), (MainActivity) requireActivity(), post.getComments(), mViewModel);
-//            binding.setCommentAdapter(commentAdapter);
             binding.setPost(post);
 
         });
+        // TODO: 4/18/2023 comment cart + adapter
+
+        mViewModel.getComments().observe(getViewLifecycleOwner(), comments -> {
+            CommentAdapter commentAdapter = new CommentAdapter(requireContext(),comments );
+            binding.frgCommentRecyclerView.setLayoutManager( new LinearLayoutManager(requireContext()));
+            binding.setCommentAdapter(commentAdapter);
+        });
+
+        mViewModel.getPostDetailsById(post_id);
+        mViewModel.getCommentsByPost(post_id);
 
 
 
@@ -93,29 +107,41 @@ public class PostDetailsFragment extends Fragment {
 
     public void likePost(String post_id) {
         mViewModel.like(post_id);
-
         // update ui
         mViewModel.getPostDetailsById(post_id);
     }
 
-    public void unlikePost(String post_id) {
-        mViewModel.unlike(post_id);
-
-        // update ui
-        mViewModel.getPostDetailsById(post_id);
-    }
 
     public boolean isPostLiked(Post post) {
 
         if (post.getLikers() == null) return false;
 
-//        for (String u : post.getLikers()) {
-//            if (u.equals(Session.ACTIVE_USER.getId())) {
-//                return true;
-//            }
-//        }
+        for (String u : post.getLikers()) {
+            if (u != null){
+                if (u.equals(Session.getSharedPreference(requireContext(),"user_id",""))) {
+                    return true;
+                }
+            }
+
+        }
         return false;
     }
 
+    public void commentPost(String post_id){
+        String comment = binding.frgPostDetailsTxtComment.getText().toString();
+        mViewModel.createComment(post_id, comment, new OnCreateCommentResult() {
+            @Override
+            public void onSuccess(Comment data) {
+                mViewModel.getCommentsByPost(post_id);
+                binding.frgPostDetailsTxtComment.setText("");
+            }
+
+            @Override
+            public void onError(String error) {
+
+            }
+        });
+
+    }
 
 }

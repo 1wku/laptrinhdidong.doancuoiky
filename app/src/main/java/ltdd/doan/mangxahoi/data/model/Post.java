@@ -3,7 +3,11 @@ package ltdd.doan.mangxahoi.data.model;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.text.SimpleDateFormat;
+import java.time.Duration;
 import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
 
@@ -25,11 +29,30 @@ public class Post  {
     @SerializedName("likes")
     private List<String> likers;
     private List<String> comments;
+
+    @SerializedName("createdAt")
     private String created_at;
+    @SerializedName("updatedAt")
     private String updated_at;
 
     public String getUpdated_at() {
-        return updated_at;
+        try{
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+            LocalDateTime dateTime = LocalDateTime.parse(this.updated_at, formatter);
+
+            LocalDateTime now = LocalDateTime.now();
+            Duration duration = Duration.between(dateTime, now);
+            long  date = duration.toDays();
+            long year = date/365 ;
+            date = date - year*355 ;
+            long month = date/30;
+            date = date-month*365;
+            if (year > 0 ) return year + " năm trước";
+            if (month > 0 ) return month + " tháng trước";
+            return date + " ngày trước";
+        }catch (Exception error ){
+            return error.getMessage();
+        }
     }
 
     public void setUpdated_at(String updated_at) {
@@ -65,6 +88,18 @@ public class Post  {
 
     public User getOwnerData(){
         return this.ownerData;
+
+    }
+
+    public String getDateCreate(String date){
+        try{
+            Date date1=new SimpleDateFormat("dd/MM/yyyy").parse(date);
+            return date1.toString();
+
+        }catch (Exception error ){
+            System.out.println(error);
+            return "";
+        }
 
     }
 
@@ -111,7 +146,23 @@ public class Post  {
     }
 
     public String getCreated_at() {
-        return created_at;
+        try{
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+            LocalDateTime dateTime = LocalDateTime.parse(this.created_at, formatter);
+
+            LocalDateTime now = LocalDateTime.now();
+            Duration duration = Duration.between(dateTime, now);
+            long  date = duration.toDays();
+            long year = date/365 ;
+            date = date - year*355 ;
+            long month = date/30;
+            date = date-month*365;
+            if (year > 0 ) return year + " năm trước";
+            if (month > 0 ) return month + " tháng trước";
+            return date + " ngày trước";
+        }catch (Exception error ){
+            return error.getMessage();
+        }
     }
 
     public void setCreated_at(String created_at) {

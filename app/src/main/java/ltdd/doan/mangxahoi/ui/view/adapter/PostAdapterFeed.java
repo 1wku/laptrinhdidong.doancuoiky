@@ -19,11 +19,13 @@ import java.util.List;
 import java.util.Objects;
 
 import ltdd.doan.mangxahoi.R;
+import ltdd.doan.mangxahoi.data.dto.response.LikePostResponse;
 import ltdd.doan.mangxahoi.data.model.Post;
 import ltdd.doan.mangxahoi.data.model.User;
 import ltdd.doan.mangxahoi.data.repository.UserRepository;
 import ltdd.doan.mangxahoi.databinding.CardPostBinding;
 import ltdd.doan.mangxahoi.interfaces.OnGetPostResult;
+import ltdd.doan.mangxahoi.interfaces.OnLikePostResult;
 import ltdd.doan.mangxahoi.session.Session;
 import ltdd.doan.mangxahoi.ui.view.activity.MainActivity;
 import ltdd.doan.mangxahoi.ui.view.fragment.FeedFragmentDirections;
@@ -38,7 +40,12 @@ public class PostAdapterFeed extends RecyclerView.Adapter<PostAdapterFeed.PostVi
             super(binding.getRoot());
             this.binding = binding;
         }
+
     }
+
+    private final int VIEW_TYPE_ITEM = 0;
+    private final int VIEW_TYPE_LOADING = 1;
+
     private Context context;
     private MainActivity mainActivity;
     private List<Post> posts;
@@ -51,6 +58,10 @@ public class PostAdapterFeed extends RecyclerView.Adapter<PostAdapterFeed.PostVi
         this.viewModel = viewModel;
     }
 
+    @Override
+    public int getItemViewType(int position) {
+        return posts.get(position) == null ? VIEW_TYPE_LOADING : VIEW_TYPE_ITEM;
+    }
     public void navToPostOwnersProfile(View view, String user_id){
         Bundle bundle = new Bundle();
         bundle.putString("user_id",user_id);
@@ -63,28 +74,34 @@ public class PostAdapterFeed extends RecyclerView.Adapter<PostAdapterFeed.PostVi
         Navigation.findNavController(view).navigate(FeedFragmentDirections.feedToPostDetails().getActionId(), bundle);
     }
 
-    public void likePost(String post_id) {
-        viewModel.like(post_id);
+    public void toggleLikePost(String post_id) {
+        viewModel.like(post_id, new OnLikePostResult() {
+            @Override
+            public void onSuccess(LikePostResponse result) {
+                System.out.println(result.likes);
 
+            }
+
+            @Override
+            public void onError(String error) {
+                System.out.println(error);
+
+            }
+        });
         // update ui
-        viewModel.getFeed();
     }
 
-    public void unlikePost(String post_id) {
-        viewModel.unlike(post_id);
-
-        // update ui
-        viewModel.getFeed();
-
-    }
     public boolean isPostLiked(Post post) {
 
         if (post.getLikers() == null) return false;
 
         for (String u : post.getLikers()) {
-            if (u.equals(Session.ACTIVE_USER.getId())) {
-                return true;
+            if (u != null ){
+                if (u.equals(Session.getSharedPreference(context,"user_id",""))) {
+                    return true;
+                }
             }
+
         }
         return false;
     }
@@ -101,8 +118,6 @@ public class PostAdapterFeed extends RecyclerView.Adapter<PostAdapterFeed.PostVi
     @Override
     public void onBindViewHolder(@NonNull PostViewHolder holder, int position) {
         Post post = posts.get(position);
-
-
         holder.binding.setPostAdapterFeed(this);
         holder.binding.setPost(post);
         if (!Objects.equals(post.getPhoto() , "none image")){
@@ -111,7 +126,7 @@ public class PostAdapterFeed extends RecyclerView.Adapter<PostAdapterFeed.PostVi
                     .into(holder.binding.cardPostPostImg);
         }
 
-        if (!Objects.equals(post.getOwnerData().getAvatar() , "none image")){
+        if (!Objects.equals(post.getOwnerData().getAvatar() , "")){
             Glide.with(context)
                     .load(post.getOwnerData().getAvatar())
                     .into(holder.binding.cardPostUserImg);

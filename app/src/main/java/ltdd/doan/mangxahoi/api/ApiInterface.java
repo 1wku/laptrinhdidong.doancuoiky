@@ -9,6 +9,8 @@ import ltdd.doan.mangxahoi.data.dto.request.RegisterRequest;
 import ltdd.doan.mangxahoi.data.dto.response.LikePostResponse;
 import ltdd.doan.mangxahoi.data.dto.response.ListFeedResponse;
 import ltdd.doan.mangxahoi.data.dto.response.SuccessfullResponse;
+import ltdd.doan.mangxahoi.data.model.Comment;
+import ltdd.doan.mangxahoi.data.model.Conversation;
 import ltdd.doan.mangxahoi.data.model.Post;
 import ltdd.doan.mangxahoi.data.model.User;
 import retrofit2.Call;
@@ -46,11 +48,11 @@ public interface ApiInterface {
 
     // post--------------------------------------------------------------------------------------------------------
     @POST("api/posts")
-    Call<Post> createPost(@Body Post request);
+    Call<SuccessfullResponse<Post>> createPost(@Body Post request);
     @GET("api/posts/{id}")
     Call<SuccessfullResponse<Post>> getPost(@Path("id") String id);
     @POST("api/posts/{id}")
-    Call<Post> updatePost( @Body Post request,@Path("id") String id);
+    Call<SuccessfullResponse<Post>> updatePost( @Body Post request,@Path("id") String id);
     @DELETE("api/posts/{id}")
     Call<String> deletePost(@Path("id") String id);
     @PUT("api/posts/{id}/like")
@@ -61,5 +63,19 @@ public interface ApiInterface {
     Call<SuccessfullResponse<List<Post>>> getPostsByUserId(@Path("userId") String userId);
     @GET("api/posts/timeline/{userId}")
     Call<ListFeedResponse> getPostTimelineByUser(@Path("userId") String userId , @Query("page") Integer page, @Query("limit") Integer limit );
+
+    // Message
+    @GET("api/conversations/{id}")
+    Call<List<Conversation>> getAllConversation(@Path("id") String userId );
+
+    @POST("api/comments")
+    Call<SuccessfullResponse<Comment>> createComment(@Body Comment request);
+    @GET("api/comments")
+    Call<SuccessfullResponse<List<Comment>>> getComment(@Query("postId") String postId );
+    @DELETE("api/comments/{id}")
+    Call<String> deleteComment(@Path("id") String id);
+
+    // Comment
+
 
 }

@@ -22,10 +22,10 @@ public class LoginViewModel extends ViewModel {
     }
 
     public void getLastSessionUser(OnLoggedInResult onLoggedInResult) {
-          uRepo.getLastSessionUser(onLoggedInResult);
+        uRepo.getLastSessionUser(onLoggedInResult);
     }
 
     public void login(String email, String user_password, OnLoggedInResult onLoggedInResult) {
-          uRepo.login(email, user_password,onLoggedInResult);
+        uRepo.login(email, user_password,onLoggedInResult);
     }
 }

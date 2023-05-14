@@ -28,7 +28,7 @@ public class LoginFragment extends Fragment {
 
     private FragmentLoginBinding binding;
     private LoginViewModel mViewModel;
-    
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,18 +40,18 @@ public class LoginFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater,R.layout.fragment_login, container, false);
         binding.setLoginFragment(this);
-       mViewModel.getLastSessionUser(new OnLoggedInResult() {
-           @Override
-           public void onSuccess() {
-               Intent intent = new Intent(requireContext(), MainActivity.class);
-               startActivity(intent);
-               requireActivity().finish();
-           }
-           @Override
-           public void onError() {
+        mViewModel.getLastSessionUser(new OnLoggedInResult() {
+            @Override
+            public void onSuccess() {
+                Intent intent = new Intent(requireContext(), MainActivity.class);
+                startActivity(intent);
+                requireActivity().finish();
+            }
+            @Override
+            public void onError() {
 
-           }
-       });
+            }
+        });
         return binding.getRoot();
     }
 
@@ -59,21 +59,21 @@ public class LoginFragment extends Fragment {
         String email = binding.frgLoginTxtMail.getEditableText().toString();
         String password = (String) binding.frgLoginTxtUserPassword.getEditableText().toString();
         if (email.isEmpty()||password.isEmpty())
-            Toast.makeText(requireContext(), "Vui lòng điền dầy đủ thông tin", Toast.LENGTH_SHORT).show();
+            Toast.makeText(requireContext(), "Vui lòng điền đầy thông tin", Toast.LENGTH_SHORT).show();
         else {
-             mViewModel.login(email, password, new OnLoggedInResult() {
-                 @Override
-                 public void onSuccess() {
-                     Intent intent = new Intent(requireContext(), MainActivity.class);
-                     startActivity(intent);
-                     requireActivity().finish();
-                     Toast.makeText(requireContext(), "Đăng nhập thành công.", Toast.LENGTH_SHORT).show();
-                 }
-                 @Override
-                 public void onError() {
-                     Toast.makeText(requireContext(), "Email hoặc mật khẩu không tồn tại. Vui lòng thử lại sau.", Toast.LENGTH_SHORT).show();
-                 }
-             });
+            mViewModel.login(email, password, new OnLoggedInResult() {
+                @Override
+                public void onSuccess() {
+                    Intent intent = new Intent(requireContext(), MainActivity.class);
+                    startActivity(intent);
+                    requireActivity().finish();
+                    Toast.makeText(requireContext(), "Đăng nhập thành công.", Toast.LENGTH_SHORT).show();
+                }
+                @Override
+                public void onError() {
+                    Toast.makeText(requireContext(), "Email hoặc mật khẩu không tồn tại. Vui lòng thử lại sau.", Toast.LENGTH_SHORT).show();
+                }
+            });
         }
     }
 

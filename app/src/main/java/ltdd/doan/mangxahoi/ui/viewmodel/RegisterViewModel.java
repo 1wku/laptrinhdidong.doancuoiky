@@ -21,7 +21,7 @@ public class RegisterViewModel extends ViewModel {
     }
 
     public void register(String user_name, String user_password, String user_mail, OnRegisterResult onRegisterResult) {
-         uRepo.register(user_name, user_password,user_mail,onRegisterResult);
+        uRepo.register(user_name, user_password,user_mail,onRegisterResult);
     }
 
 }

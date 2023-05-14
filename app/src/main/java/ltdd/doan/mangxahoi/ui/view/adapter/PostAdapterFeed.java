@@ -79,7 +79,7 @@ public class PostAdapterFeed extends RecyclerView.Adapter<PostAdapterFeed.PostVi
             @Override
             public void onSuccess(LikePostResponse result) {
                 System.out.println(result.likes);
-                viewModel.getFeed();
+
             }
 
             @Override
@@ -96,9 +96,12 @@ public class PostAdapterFeed extends RecyclerView.Adapter<PostAdapterFeed.PostVi
         if (post.getLikers() == null) return false;
 
         for (String u : post.getLikers()) {
-            if (u.equals(Session.getSharedPreference(context,"user_id",""))) {
-                return true;
+            if (u != null ){
+                if (u.equals(Session.getSharedPreference(context,"user_id",""))) {
+                    return true;
+                }
             }
+
         }
         return false;
     }

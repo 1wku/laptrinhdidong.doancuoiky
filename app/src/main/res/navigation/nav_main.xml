@@ -49,6 +49,9 @@
         android:id="@+id/postDetailsFragment"
         android:name="ltdd.doan.mangxahoi.ui.view.fragment.PostDetailsFragment"
         tools:layout="PostDetailsFragment">
+        <action
+            android:id="@+id/followToProfile"
+            app:destination="@id/profileFragment" />
     </fragment>
     <fragment
         android:id="@+id/followFragment"
@@ -58,5 +61,26 @@
         <action
             android:id="@+id/followToProfile"
             app:destination="@id/profileFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/conversationFragment"
+        android:name="ltdd.doan.mangxahoi.ui.view.fragment.ConversationFragment"
+        android:label="ConversationFragment"
+        tools:layout="@layout/fragment_conversation"
+        >
+        <action
+            android:id="@+id/conversationToChat"
+            app:destination="@+id/chatFragment"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/chatFragment"
+        android:name="ltdd.doan.mangxahoi.ui.view.fragment.ChatFragment"
+        android:label="ChatFragment"
+        tools:layout="@layout/fragment_chat"
+        >
+        <action
+            android:id="@+id/chatToProfile"
+            app:destination="@+id/profileFragment"/>
     </fragment>
 </navigation>

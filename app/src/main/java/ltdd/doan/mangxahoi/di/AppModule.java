@@ -11,6 +11,8 @@ import dagger.hilt.android.qualifiers.ApplicationContext;
 import dagger.hilt.components.SingletonComponent;
 import ltdd.doan.mangxahoi.api.ApiInterface;
 import ltdd.doan.mangxahoi.api.ApiUtils;
+import ltdd.doan.mangxahoi.data.repository.ChatRepository;
+import ltdd.doan.mangxahoi.data.repository.ConversationRepository;
 import ltdd.doan.mangxahoi.data.repository.NotificationRepository;
 import ltdd.doan.mangxahoi.data.repository.PostRepository;
 import ltdd.doan.mangxahoi.data.repository.UserRepository;
@@ -41,5 +43,16 @@ public class AppModule {
     @Singleton
     public ApiInterface provideApiInterface() {
         return ApiUtils.getApiService();
+    }
+
+    @Provides
+    @Singleton
+    public ChatRepository provideChatRepository(@ApplicationContext Context context,ApiInterface apiService) {
+        return new ChatRepository( context,apiService);
+    }
+    @Provides
+    @Singleton
+    public ConversationRepository provideConversationRepository(@ApplicationContext Context context, ApiInterface apiService) {
+        return new ConversationRepository( context,apiService);
     }
 }

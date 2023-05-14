@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <import type="android.view.View"/>
+
+        <import type="ltdd.doan.mangxahoi.session.Session"/>
+
+        <variable name="chatAdapter"
+            type="ltdd.doan.mangxahoi.ui.view.adapter.ChatAdapter" />
+
+        <variable
+            name="message"
+            type="ltdd.doan.mangxahoi.data.model.Message" />
+    </data>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="8dp">
+
+        <!--todo-->
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/cardUserImgUserPhoto"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:adjustViewBounds="true"
+            android:padding="2dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/avatar_img"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:shapeAppearanceOverlay="@style/ShapeAppearance.App.CircleImageView"
+            app:strokeColor="@color/black"
+            app:strokeWidth="2dp" />
+
+        <LinearLayout
+            android:id="@+id/linearLayout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="8dp"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/cardUserImgUserPhoto"
+            app:layout_constraintTop_toTopOf="parent">
+            <!--todo-->
+            <TextView
+                android:id="@+id/cardUserTxtFullName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@{message.sendBy}"
+                android:textColor="@color/gray"
+                android:textSize="18sp"
+                android:textStyle="italic" />
+            <!--todo-->
+            <TextView
+                android:id="@+id/cardUserTxtUserName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@{message.text}"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+
+
+        </LinearLayout>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

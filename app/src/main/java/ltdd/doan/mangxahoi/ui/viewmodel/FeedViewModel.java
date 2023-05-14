@@ -31,6 +31,11 @@ public class FeedViewModel extends ViewModel {
         this.page = page;
     }
 
+    public void setPosts(List<Post> posts) {
+       pRepo.setPosts(posts);
+       this.posts.setValue(posts);
+    }
+
     @Inject
     public FeedViewModel(PostRepository pRepo) {
         this.pRepo = pRepo;
@@ -48,6 +53,24 @@ public class FeedViewModel extends ViewModel {
         return message;
     }
 
+    public void restartFeed(){
+        page = 1;
+        pRepo.getFeed(page,10,new OnGetPostResult() {
+            @Override
+            public void onSuccess() {
+                page +=1 ;
+                posts = pRepo.getPosts();
+                message.setValue("Đã lấy thành công dữ liệu");
+
+            }
+
+            @Override
+            public void onError() {
+                System.out.println("Error : ");
+                message.setValue("Lõi trong quá trình lấy feed");
+            }
+        });
+    }
 
 
     public void getFeed() {
@@ -57,7 +80,6 @@ public class FeedViewModel extends ViewModel {
                 page +=1 ;
                 posts = pRepo.getPosts();
                 message.setValue("Đã lấy thành công dữ liệu");
-
             }
 
             @Override

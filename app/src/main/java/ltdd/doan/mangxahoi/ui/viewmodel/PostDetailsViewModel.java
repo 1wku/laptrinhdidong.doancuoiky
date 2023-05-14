@@ -17,7 +17,9 @@ import ltdd.doan.mangxahoi.data.model.Comment;
 import ltdd.doan.mangxahoi.data.model.Post;
 import ltdd.doan.mangxahoi.data.model.User;
 import ltdd.doan.mangxahoi.data.repository.PostRepository;
+import ltdd.doan.mangxahoi.interfaces.OnCreateCommentResult;
 import ltdd.doan.mangxahoi.interfaces.OnDeletePostResult;
+import ltdd.doan.mangxahoi.interfaces.OnGetCommentResult;
 import ltdd.doan.mangxahoi.interfaces.OnGetPostByIdResult;
 import ltdd.doan.mangxahoi.interfaces.OnLikePostResult;
 import ltdd.doan.mangxahoi.interfaces.OnUpdatePostResult;
@@ -27,6 +29,7 @@ public class PostDetailsViewModel extends ViewModel {
     private PostRepository pRepo;
 
     private MutableLiveData<Post> post;
+    private MutableLiveData<List<Comment>> comments;
     private MutableLiveData<String> message;
     private MutableLiveData<Boolean> status;
 
@@ -37,13 +40,17 @@ public class PostDetailsViewModel extends ViewModel {
         post = pRepo.getPost();
         message = pRepo.getMessage();
         status = pRepo.getStatus();
+        comments = pRepo.getComments();
     }
-    public MutableLiveData<Post> getPost() {
-        return post;
-    }
-
     public MutableLiveData<String> getMessage() {
         return message;
+    }
+
+    public MutableLiveData<Post> getPost() {
+        return pRepo.getPost();
+    }
+    public MutableLiveData<List<Comment>> getComments() {
+        return pRepo.getComments();
     }
 
     public MutableLiveData<Boolean> getStatus() {
@@ -112,8 +119,35 @@ public class PostDetailsViewModel extends ViewModel {
     }
 
 
-    public void createComment(String post_id, String text) {
-        pRepo.createComment(post_id, text);
+    public void createComment(String post_id, String text, OnCreateCommentResult onCreateCommentResult) {
+        pRepo.createComment(post_id, text, new OnCreateCommentResult() {
+            @Override
+            public void onSuccess(Comment data) {
+               comments.getValue().add(data);
+                List<Comment> newComment =comments.getValue();
+                comments.setValue( newComment);
+                onCreateCommentResult.onSuccess(data);
+            }
+
+            @Override
+            public void onError(String error) {
+
+            }
+        });
+    }
+    public void getCommentsByPost(String post_id) {
+        pRepo.getCommentFromPost(post_id, new OnGetCommentResult() {
+            @Override
+            public void onSuccess(List<Comment> result) {
+                comments.setValue(result);
+            }
+
+            @Override
+            public void onError(String error) {
+                System.out.println(error);
+
+            }
+        });
     }
 
     public void updateComment(Comment comment) {

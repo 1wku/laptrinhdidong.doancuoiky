@@ -68,7 +68,7 @@
                         android:id="@+id/cardPostUserName"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@{post.ownerData.email}"
+                        android:text="@{post.ownerData.username}"
                         android:onClick="@{() -> postAdapterFeed.navToPostOwnersProfile(cardPostUserImg, post.ownerData.id)}"
                         android:textSize="16sp"
                         android:textStyle="bold" />
@@ -104,6 +104,7 @@
                 android:adjustViewBounds="true"
                 android:maxHeight="600dp"
                 android:scaleType="fitXY"
+                android:onClick="@{() -> postAdapterFeed.navToPostDetails(cardPostPostCmt, post.id)}"
                 android:src="@{post.photo}" />
 
             <!--content-->
@@ -114,6 +115,7 @@
                 android:layout_height="wrap_content"
                 android:padding="8dp"
                 android:text="@{post.content}"
+                android:onClick="@{() -> postAdapterFeed.navToPostDetails(cardPostPostCmt, post.id)}"
                 android:textSize="16sp"
                 android:textStyle="bold" />
 

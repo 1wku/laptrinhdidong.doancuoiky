@@ -1,59 +1,40 @@
 package ltdd.doan.mangxahoi.data.model;
 
 
+import com.google.gson.annotations.SerializedName;
+
 import java.time.Instant;
 import java.util.Date;
 
 import ltdd.doan.mangxahoi.data.Utils;
 
 public class Comment {
-    private Integer id;
-    private Integer post_id;
-    private Integer owner;
-    private String  text;
-    private String created_at;
 
-    public Comment(Integer id, Integer post_id, Integer owner, String text, String created_at) {
-        this.id = id;
-        this.post_id = post_id;
-        this.owner = owner;
-        this.text = text;
-        this.created_at = created_at;
-    }
+    @SerializedName("_id")
+    private String id;
 
-    public Comment() {
-    }
-
-    public Integer getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(String id) {
         this.id = id;
     }
 
-    public Integer getPost_id() {
+    public String getPost_id() {
         return post_id;
     }
 
-    public void setPost_id(Integer post_id) {
+    public void setPost_id(String post_id) {
         this.post_id = post_id;
     }
 
-    public Integer getOwner() {
+    public String getOwner() {
         return owner;
     }
 
-    public void setOwner(Integer owner) {
+    public void setOwner(String owner) {
         this.owner = owner;
-    }
-
-    public String getText() {
-        return text;
-    }
-
-    public void setText(String text) {
-        this.text = text;
     }
 
     public String getCreated_at() {
@@ -64,7 +45,65 @@ public class Comment {
         this.created_at = created_at;
     }
 
-    public Comment getEx(int post_id){
-        return new Comment(Utils.random(),post_id,Utils.random(),Utils.randomS(40), Date.from(Instant.now()).toString());
+    public Comment(String post_id, String owner, String content) {
+        this.post_id = post_id;
+        this.owner = owner;
+        this.content = content;
     }
+
+    public Comment(String id, String post_id, String owner, String text, String created_at) {
+        this.id = id;
+        this.post_id = post_id;
+        this.owner = owner;
+        this.content = text;
+        this.created_at = created_at;
+    }
+
+    @SerializedName("postId")
+    private String post_id;
+
+    @SerializedName("createBy")
+    private String owner;
+    private String  content;
+    private String created_at;
+
+    private String createdAt;
+    private String updatedAt;
+
+    public String getContent() {
+        return content;
+    }
+
+    @SerializedName("ownerData")
+    private User ownerData;
+
+    public User getOwnerData() {
+        return ownerData;
+    }
+
+    public void setOwnerData(User ownerData) {
+        this.ownerData = ownerData;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public String getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(String createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public String getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(String updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
+
 }

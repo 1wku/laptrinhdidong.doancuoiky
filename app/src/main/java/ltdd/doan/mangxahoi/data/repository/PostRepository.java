@@ -14,8 +14,10 @@ import ltdd.doan.mangxahoi.data.dto.response.ListFeedResponse;
 import ltdd.doan.mangxahoi.data.dto.response.SuccessfullResponse;
 import ltdd.doan.mangxahoi.data.model.Comment;
 import ltdd.doan.mangxahoi.data.model.Post;
+import ltdd.doan.mangxahoi.interfaces.OnCreateCommentResult;
 import ltdd.doan.mangxahoi.interfaces.OnCreatePostResult;
 import ltdd.doan.mangxahoi.interfaces.OnDeletePostResult;
+import ltdd.doan.mangxahoi.interfaces.OnGetCommentResult;
 import ltdd.doan.mangxahoi.interfaces.OnGetPostByIdResult;
 import ltdd.doan.mangxahoi.interfaces.OnGetPostResult;
 import ltdd.doan.mangxahoi.interfaces.OnGetPostsByUserResult;
@@ -29,6 +31,7 @@ import retrofit2.Response;
 public class PostRepository {
     private final ApiInterface apiService;
     private MutableLiveData<List<Post>> posts;
+    private MutableLiveData<List<Comment>> comments;
     private MutableLiveData<Post> post;
     private final Context context;
     private MutableLiveData<String> message; // messages from response
@@ -41,10 +44,17 @@ public class PostRepository {
         post = new MutableLiveData<>();
         message = new MutableLiveData<>();
         status = new MutableLiveData<>();
+        comments = new MutableLiveData<>();
         userRepository = new UserRepository(context, apiService);
     }
     public MutableLiveData<List<Post>> getPosts() {
         return posts;
+    }
+    public MutableLiveData<List<Comment>> getComments() {
+        return comments;
+    }
+    public void setPosts(List<Post> posts) {
+            this.posts.setValue(posts);
     }
     public MutableLiveData<Post> getPost() {
         return post;
@@ -197,14 +207,46 @@ public class PostRepository {
 
     }
 
-    // TODO: 4/18/2023
-    public void unlike(String post_id){
 
+    public void createComment(String post_id, String text , OnCreateCommentResult onCreateCommentResult){
+        String userId = Session.getSharedPreference(context, "user_id", "");
+        Comment comment = new Comment(post_id, userId,text);
+        apiService.createComment(comment).enqueue(new Callback<SuccessfullResponse<Comment>>() {
+            @Override
+            public void onResponse(Call<SuccessfullResponse<Comment>> call, Response<SuccessfullResponse<Comment>> response) {
+                if(response.code()==200) {
+                    System.out.println(response.body());
+                    onCreateCommentResult.onSuccess(response.body().data);
+                }
+                else onCreateCommentResult.onError(response.message());
+            }
+            @Override
+            public void onFailure(Call<SuccessfullResponse<Comment>> call, Throwable t) {
+                System.out.println(t.getMessage());
+                onCreateCommentResult.onError(t.getMessage());
+            }
+        });
     }
 
-    // TODO: 4/18/2023
-    public void createComment(String post_id, String text){
+    public void getCommentFromPost(String postId, OnGetCommentResult onGetCommentResult){
+        String userId = Session.getSharedPreference(context, "user_id", "");
+        apiService.getComment(postId).enqueue(new Callback<SuccessfullResponse<List<Comment>>>() {
+            @Override
+            public void onResponse(Call<SuccessfullResponse<List<Comment>>> call, Response<SuccessfullResponse<List<Comment>>> response) {
+                if(response.code()==200) {
+                    System.out.println(response.body().data);
+                    comments.setValue(response.body().data);
+                    onGetCommentResult.onSuccess(response.body().data);
+                }
+                else   onGetCommentResult.onError(response.message());
+            }
+            @Override
+            public void onFailure(Call<SuccessfullResponse<List<Comment>>> call, Throwable t) {
+                System.out.println(t.getMessage());
+                onGetCommentResult.onError(t.getMessage());
 
+            }
+        });
     }
 
     // TODO: 4/18/2023

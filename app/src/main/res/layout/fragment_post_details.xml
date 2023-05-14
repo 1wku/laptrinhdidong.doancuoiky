@@ -9,7 +9,7 @@
         <variable
             name="postDetailsFragment"
             type="ltdd.doan.mangxahoi.ui.view.fragment.PostDetailsFragment" />
-        
+
         <variable
             name="post"
             type="ltdd.doan.mangxahoi.data.model.Post" />
@@ -32,19 +32,22 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+
                 android:orientation="vertical">
 
                 <!--phần thông tin bài post-->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:background="#FFF"
                     android:orientation="vertical">
 
                     <!-- header -->
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:padding="8dp">
+                        android:padding="8dp"
+                       >
 
                         <!--avatar-->
                         <!--todo onclick-->
@@ -82,7 +85,7 @@
                                 android:textStyle="bold"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text="@{post.ownerData.email}" />
+                                android:text="@{post.ownerData.username}" />
 
                             <TextView
                                 android:id="@+id/frgPostDetailsLblPostDate"
@@ -110,9 +113,22 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
-                        android:paddingHorizontal="8dp">
+                        >
 
                         <!--ảnh và content-->
+
+                        <!--content -->
+
+                        <TextView
+                            android:id="@+id/frgPostDetailsLblPostDescription"
+                            android:textSize="16sp"
+                            android:paddingTop="8dp"
+                            android:paddingBottom="8dp"
+                            android:paddingHorizontal="8dp"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text='@{post.content}' />
+
                         <ImageView
                             android:id="@+id/frgPostDetailsImgPostImage"
                             android:layout_width="match_parent"
@@ -122,87 +138,66 @@
                             android:scaleType="fitXY"
                             android:src="@drawable/content_img2"/>
 
-                        <!--content -->
 
-                        <TextView
-                            android:id="@+id/frgPostDetailsLblPostDescription"
-                            android:textSize="16sp"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text='@{post.content}' />
 
-                        <!--thống kê lượt like-->
-                        <TextView
-                            android:id="@+id/frgPostDetailsLblPostLikes"
-                            android:textSize="16sp"
-                            android:textStyle="bold"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="@{@string/card_post_likes(post.likers.size())}" />
 
-                        <androidx.constraintlayout.widget.ConstraintLayout
+
+                        <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:paddingHorizontal="8dp"
+                            android:orientation="horizontal"
+                            android:textAlignment="center"
                             android:paddingTop="8dp">
-
-                            <!--todo onclick-->
+                            <!--thống kê lượt like-->
                             <ImageView
                                 android:id="@+id/frgPostDetailsImgLike"
-                                android:layout_width="36dp"
-                                android:layout_height="36dp"
-                                android:src="@drawable/ic_like"
+                                android:layout_width="24dp"
+                                android:layout_height="24dp"
+                                android:src="@drawable/ic_heart"
+                                android:onClick="@{ () -> postDetailsFragment.likePost(post.id)}"
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toTopOf="parent"
                                 app:layout_constraintVertical_bias="0.5" />
-
-                            <!--todo onclick-->
-                            <ImageView
-                                android:id="@+id/frgPostDetailsImgShare"
-                                android:layout_width="36dp"
-                                android:layout_height="36dp"
-                                android:src="@drawable/ic_share"
+                            <TextView
+                                android:id="@+id/frgPostDetailsLblPostLikes"
+                                android:textSize="16sp"
+                                android:textStyle="bold"
+                                android:layout_width="100dp"
+                                android:layout_height="wrap_content"
                                 app:layout_constraintBottom_toBottomOf="parent"
-                                app:layout_constraintEnd_toEndOf="parent"
-                                app:layout_constraintTop_toTopOf="parent" />
-                        </androidx.constraintlayout.widget.ConstraintLayout>
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:layout_constraintVertical_bias="0.5"
+                                android:text="@{@string/card_post_likes(post.likers.size()) }" />
+                        </LinearLayout>
 
                     </LinearLayout>
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/frgPostDetailsTxtComment"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:drawableRight="@drawable/ic_send"
 
+                        android:hint="Thêm bình luận"
+                        android:onClick="@{()-> postDetailsFragment.commentPost(post.id)}"
+                        android:inputType="text"
+                        android:maxLength="250"
+                        android:maxLines="2"/>
                 </LinearLayout>
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="4dp"
-                    android:layout_marginHorizontal="8dp"
-                    android:layout_marginTop="4dp"
-                    android:background="@color/gray" />
+
+
 
                 <!--comment list -->
+
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/frgPostDetailsRecyclerView"
+                    android:id="@+id/frgCommentRecyclerView"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
-
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="4dp"
-                    android:layout_marginHorizontal="8dp"
-                    android:layout_marginTop="4dp"
-                    android:background="@color/gray" />
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/frgPostDetailsTxtComment"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:drawableRight="@drawable/ic_send"
-                    android:hint="Thêm bình luận"
-                    android:inputType="text"
-                    android:maxLength="250"
-                    android:maxLines="2"/>
+                    android:adapter="@{commentAdapter}"
+                    android:layout_height="match_parent"  />
 
             </LinearLayout>
 

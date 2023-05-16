@@ -26,9 +26,11 @@ import dagger.hilt.android.AndroidEntryPoint;
 import ltdd.doan.mangxahoi.R;
 import ltdd.doan.mangxahoi.data.model.Comment;
 import ltdd.doan.mangxahoi.data.model.Post;
+import ltdd.doan.mangxahoi.data.model.User;
 import ltdd.doan.mangxahoi.databinding.FragmentPostDetailsBinding;
 import ltdd.doan.mangxahoi.interfaces.OnCreateCommentResult;
 import ltdd.doan.mangxahoi.interfaces.OnGetPostByIdResult;
+import ltdd.doan.mangxahoi.interfaces.OnGetUserDetailResult;
 import ltdd.doan.mangxahoi.session.Session;
 import ltdd.doan.mangxahoi.ui.view.activity.MainActivity;
 import ltdd.doan.mangxahoi.ui.view.adapter.CommentAdapter;
@@ -53,6 +55,7 @@ public class PostDetailsFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_post_details, container, false);
         binding.setPostDetailsFragment(this);
+
 
         String post_id = getArguments().getString("post_id");
 
@@ -85,6 +88,8 @@ public class PostDetailsFragment extends Fragment {
 
             if (isPostLiked(post)) binding.frgPostDetailsImgLike.setImageDrawable(requireContext().getDrawable(R.drawable.ic_heart_red));
             else binding.frgPostDetailsImgLike.setImageDrawable(requireContext().getDrawable(R.drawable.ic_heart));
+
+
 
             binding.setPost(post);
 

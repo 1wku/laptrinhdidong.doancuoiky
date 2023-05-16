@@ -8,6 +8,15 @@ public class Message {
     private String conversationId;
     private String sendBy;
     private String text;
+    private Boolean read;
+
+    public Boolean getRead() {
+        return read;
+    }
+
+    public void setRead(Boolean read) {
+        this.read = read;
+    }
 
     public Message(String conversationId, String sendBy, String text) {
         this.conversationId = conversationId;

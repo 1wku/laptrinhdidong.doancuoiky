@@ -17,34 +17,56 @@ import java.util.List;
 import java.util.Objects;
 
 import ltdd.doan.mangxahoi.R;
+import ltdd.doan.mangxahoi.data.model.Conversation;
 import ltdd.doan.mangxahoi.data.model.Message;
 import ltdd.doan.mangxahoi.data.model.User;
+import ltdd.doan.mangxahoi.databinding.CardConversationBinding;
 import ltdd.doan.mangxahoi.databinding.CardMessageBinding;
+import ltdd.doan.mangxahoi.session.Session;
+import ltdd.doan.mangxahoi.ui.view.fragment.FeedFragmentDirections;
 
 public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder> {
     private Context context;
     private List<Message> messages;
+    private User partner;
 
-    public ChatAdapter(Context context, List<Message> messages) {
+    public ChatAdapter(Context context, List<Message> messages,User partner) {
         this.context = context;
         this.messages = messages;
+        this.partner = partner;
     }
 
     @NonNull
     @Override
     public ChatViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return null;
+        CardMessageBinding binding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout.card_message,parent,false);
+        return new ChatAdapter.ChatViewHolder(binding);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ChatViewHolder holder, int position) {
+        Message message = messages.get(position);
+        holder.binding.setChatAdapter(this);
+        holder.binding.setMessage(message);
 
+        if (!Objects.equals(message.getSendBy(), Session.getSharedPreference(context,"user_id",""))){
+            holder.binding.frgFloatingRight.setVisibility(View.GONE);
+            if (!Objects.equals(partner.getAvatar() , "")){
+                Glide.with(context)
+                        .load(partner.getAvatar())
+                        .into(holder.binding.frgCardUserImgUserPhoto);
+            }
+        }
+        else{
+            holder.binding.frgCardUserImgUserPhoto.setVisibility(View.GONE);
+        }
     }
 
     @Override
     public int getItemCount() {
-        return 0;
+        return messages.size();
     }
+
 
     public class ChatViewHolder extends RecyclerView.ViewHolder {
         public CardMessageBinding binding;
@@ -54,6 +76,15 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder
             this.binding = binding;
         }
     }
+
+
+
+    public int getCardColor(String sendBy){
+        if (Objects.equals(sendBy,Session.getSharedPreference(context,"user_id","") )){
+            return R.color.md_blue_50;
+        } else return R.color.white;
+    }
+
 
 
 

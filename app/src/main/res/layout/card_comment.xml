@@ -38,7 +38,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:shapeAppearanceOverlay="@style/ShapeAppearance.App.CircleImageView"
             app:strokeColor="@color/black"
-            app:strokeWidth="2dp" />
+            app:strokeWidth="1dp" />
 
         <LinearLayout
             android:id="@+id/linearLayout"

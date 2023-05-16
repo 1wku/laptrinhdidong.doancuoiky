@@ -20,13 +20,15 @@ import retrofit2.Response;
 
 public class ConversationRepository {
     private final ApiInterface apiService;
+    private final UserRepository uRepo;
     private final Context context;
     private MutableLiveData<List<Message>> messages;
     private MutableLiveData<String> message; // messages from response
 
-    public ConversationRepository(Context context, ApiInterface apiService) {
+    public ConversationRepository(Context context, ApiInterface apiService, UserRepository uRepo) {
         this.apiService = apiService;
         this.context = context ;
+        this.uRepo = uRepo;
         messages = new MutableLiveData<>();
         message = new MutableLiveData<>();
     }

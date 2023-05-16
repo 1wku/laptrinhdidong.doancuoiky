@@ -9,7 +9,7 @@
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:background="#FAE7E9"
+        android:background="#FFF"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".ui.view.fragment.FeedFragment">

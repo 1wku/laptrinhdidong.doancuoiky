@@ -1,4 +1,4 @@
-package ltdd.doan.mangxahoi.di;
+package ltdd.doan.mangxahoi.interfaces.di;
 
 import android.app.Application;
 

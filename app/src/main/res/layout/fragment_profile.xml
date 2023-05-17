@@ -26,6 +26,7 @@
         android:id="@+id/frgProfileSwipeRefresh"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/white"
         tools:context=".ui.view.fragment.ProfileFragment">
 
         <androidx.core.widget.NestedScrollView
@@ -78,10 +79,12 @@
                                 android:layout_height="wrap_content"
                                 android:textSize="22sp"
                                 android:textStyle="bold"
+                                android:textColor="@color/black"
                                 android:text="@{postCount.toString()}"/>
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:textColor="@color/black"
                                 android:text="Post"
                                 android:textSize="16sp"/>
                         </LinearLayout>
@@ -100,11 +103,13 @@
                                 android:layout_height="wrap_content"
                                 android:textSize="22sp"
                                 android:textStyle="bold"
+                                android:textColor="@color/black"
                                 android:text="@{String.valueOf(user.followers.size())}" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:textColor="@color/black"
                                 android:text="Follower"
                                 android:textSize="16sp" />
                         </LinearLayout>
@@ -123,12 +128,14 @@
                                 android:layout_height="wrap_content"
                                 android:textSize="22sp"
                                 android:textStyle="bold"
+                                android:textColor="@color/black"
                                 android:text="@{String.valueOf(user.following.size())}" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:textSize="16sp"
+                                android:textColor="@color/black"
                                 android:text="Following" />
                         </LinearLayout>
 

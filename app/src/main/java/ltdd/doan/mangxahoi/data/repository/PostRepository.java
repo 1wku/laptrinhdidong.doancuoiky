@@ -132,7 +132,10 @@ public class PostRepository {
     }
 
     // TODO: 4/18/2023
-    public void createPost(Post post, OnCreatePostResult onCreatePostResult){
+    public void createPost(String content, String photo, OnCreatePostResult onCreatePostResult){
+        String userId = Session.getSharedPreference(context, "user_id", "");
+        Post post = new Post(userId,photo,content);
+
         apiService.createPost(post).enqueue(new Callback<SuccessfullResponse<Post>>() {
             @Override
             public void onResponse(Call<SuccessfullResponse<Post>> call, Response<SuccessfullResponse<Post>> response) {

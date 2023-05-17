@@ -70,6 +70,12 @@ public class Post  {
         this.updated_at= updated_at;
     }
 
+    public Post(String owner, String photo, String content) {
+        this.owner = owner;
+        this.photo = photo;
+        this.content = content;
+    }
+
     public Post() {
     }
 

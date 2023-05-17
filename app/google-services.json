@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "759638856317",
+    "project_id": "ltdd-doancuoiky-3e234",
+    "storage_bucket": "ltdd-doancuoiky-3e234.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:759638856317:android:82e1a70085700993bbd714",
+        "android_client_info": {
+          "package_name": "ltdd.doan.mangxahoi"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "759638856317-us0l1e81jqptcq6bp8fuvk3hm726lhib.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCh3C-S3P0Ad9mq9gYRWVn0VUWj3s9B2ms"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "759638856317-us0l1e81jqptcq6bp8fuvk3hm726lhib.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

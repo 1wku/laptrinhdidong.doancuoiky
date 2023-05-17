@@ -11,6 +11,7 @@ import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import dagger.hilt.android.AndroidEntryPoint;
 import ltdd.doan.mangxahoi.R;
 import ltdd.doan.mangxahoi.databinding.FragmentConversationBinding;
 import ltdd.doan.mangxahoi.databinding.FragmentFriendBinding;
@@ -20,6 +21,7 @@ import ltdd.doan.mangxahoi.ui.viewmodel.ConversationViewModel;
 import ltdd.doan.mangxahoi.ui.viewmodel.FeedViewModel;
 import ltdd.doan.mangxahoi.ui.viewmodel.SearchViewModel;
 
+@AndroidEntryPoint
 public class ConversationFragment extends Fragment {
 
     private FragmentConversationBinding binding;
@@ -35,16 +37,19 @@ public class ConversationFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_conversation, container, false);
-        binding.setConversationFragment(this);
         mViewModel.getChat();
+
+        binding.frgConversationRecyclerViewSwipeRefresh.setOnRefreshListener(() -> {
+            mViewModel.getChat();
+            binding.frgConversationRecyclerViewSwipeRefresh.setRefreshing(false);
+        });
+
 
         mViewModel.getConversations().observe(getViewLifecycleOwner(), conversations -> {
             ConversationAdapter conversationAdapter = new ConversationAdapter(requireContext(), conversations);
             binding.setConversationAdapter(conversationAdapter);
         });
 
-
-        // TODO: 4/21/2023 chat
 
         return binding.getRoot();
     }

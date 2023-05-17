@@ -16,17 +16,63 @@
         android:layout_height="match_parent"
         tools:context=".ui.view.fragment.ChatFragment">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/frgSearchRecyclerView"
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/frgChatRecyclerViewSwipeRefresh"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:adapter="@{chatAdapter}"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/form"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintVertical_bias="0.5" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.5">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/frgSearchRecyclerView"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:adapter="@{chatAdapter}"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintVertical_bias="0.5" />
+
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+        <LinearLayout
+            android:id="@+id/form"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="16dp"
+            app:layout_constraintBottom_toBottomOf="parent">
+
+
+            <EditText
+                android:id="@+id/frgChatMessage"
+                android:layout_width="252dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.72"
+                android:background="#DCDCDC"
+                android:ems="10"
+                android:hint=""
+                android:maxHeight="80dp"
+                android:padding="8sp"
+                app:boxBackgroundMode="none"
+                app:cardCornerRadius="30dp"
+                app:cardElevation="8dp"
+                app:cardPreventCornerOverlap="false"
+                app:cardUseCompatPadding="true" />
+
+            <ImageView
+                android:id="@+id/btnSendMsg"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:onClick="@{() -> chatFragment.sendMessage()}"
+                android:src="@drawable/ic_send" />
+        </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

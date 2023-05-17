@@ -24,11 +24,15 @@ import java.util.Objects;
 
 import dagger.hilt.android.AndroidEntryPoint;
 import ltdd.doan.mangxahoi.R;
+import ltdd.doan.mangxahoi.data.dto.response.LikePostResponse;
 import ltdd.doan.mangxahoi.data.model.Comment;
 import ltdd.doan.mangxahoi.data.model.Post;
+import ltdd.doan.mangxahoi.data.model.User;
 import ltdd.doan.mangxahoi.databinding.FragmentPostDetailsBinding;
 import ltdd.doan.mangxahoi.interfaces.OnCreateCommentResult;
 import ltdd.doan.mangxahoi.interfaces.OnGetPostByIdResult;
+import ltdd.doan.mangxahoi.interfaces.OnGetUserDetailResult;
+import ltdd.doan.mangxahoi.interfaces.OnLikePostResult;
 import ltdd.doan.mangxahoi.session.Session;
 import ltdd.doan.mangxahoi.ui.view.activity.MainActivity;
 import ltdd.doan.mangxahoi.ui.view.adapter.CommentAdapter;
@@ -47,12 +51,24 @@ public class PostDetailsFragment extends Fragment {
         super.onCreate(savedInstanceState);
         mViewModel = new ViewModelProvider(this).get(PostDetailsViewModel.class);
     }
+    public Boolean isLike(LikePostResponse res){
+        for (String u : res.likes) {
+            if (u != null) {
+                if (u.equals(Session.getSharedPreference(getContext(), "user_id", ""))) {
+                    return true;
+                }
+            }
+
+        }
+        return false;
+    }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_post_details, container, false);
         binding.setPostDetailsFragment(this);
+
 
         String post_id = getArguments().getString("post_id");
 
@@ -86,13 +102,15 @@ public class PostDetailsFragment extends Fragment {
             if (isPostLiked(post)) binding.frgPostDetailsImgLike.setImageDrawable(requireContext().getDrawable(R.drawable.ic_heart_red));
             else binding.frgPostDetailsImgLike.setImageDrawable(requireContext().getDrawable(R.drawable.ic_heart));
 
+
+
             binding.setPost(post);
 
         });
         // TODO: 4/18/2023 comment cart + adapter
 
         mViewModel.getComments().observe(getViewLifecycleOwner(), comments -> {
-            CommentAdapter commentAdapter = new CommentAdapter(requireContext(),comments );
+            CommentAdapter commentAdapter = new CommentAdapter(requireContext(),mViewModel.getComments().getValue() );
             binding.frgCommentRecyclerView.setLayoutManager( new LinearLayoutManager(requireContext()));
             binding.setCommentAdapter(commentAdapter);
         });
@@ -100,16 +118,32 @@ public class PostDetailsFragment extends Fragment {
         mViewModel.getPostDetailsById(post_id);
         mViewModel.getCommentsByPost(post_id);
 
+        binding.frgPostDetailsImgLike.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mViewModel.like(post_id, new OnLikePostResult() {
+                    @Override
+                    public void onSuccess(LikePostResponse result) {
+                        if ( isLike(result)){
+                            binding.frgPostDetailsImgLike.setImageResource(R.drawable.ic_heart_red);
+                        }else{
+                            binding.frgPostDetailsImgLike.setImageResource(R.drawable.ic_heart);
+                        }
+                        binding.frgPostDetailsLblPostLikes.setText(result.likes.size()+ " lượt thích");
+                    }
+
+                    @Override
+                    public void onError(String error) {
+
+                    }
+                });
+            }
+        });
 
 
         return binding.getRoot();
     }
 
-    public void likePost(String post_id) {
-        mViewModel.like(post_id);
-        // update ui
-        mViewModel.getPostDetailsById(post_id);
-    }
 
 
     public boolean isPostLiked(Post post) {
@@ -132,8 +166,9 @@ public class PostDetailsFragment extends Fragment {
         mViewModel.createComment(post_id, comment, new OnCreateCommentResult() {
             @Override
             public void onSuccess(Comment data) {
-                mViewModel.getCommentsByPost(post_id);
                 binding.frgPostDetailsTxtComment.setText("");
+                mViewModel.getCommentsByPost(post_id);
+
             }
 
             @Override

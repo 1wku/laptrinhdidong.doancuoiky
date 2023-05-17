@@ -25,7 +25,14 @@ public class FeedViewModel extends ViewModel {
 
     private MutableLiveData<List<Post>> posts;
     private MutableLiveData<String> message;
+
+    public MutableLiveData<Integer> getLikePost() {
+        return likePost;
+    }
+
+    private MutableLiveData<Integer> likePost;
     private Integer page;
+
 
     public void setPage(Integer page) {
         this.page = page;
@@ -42,6 +49,7 @@ public class FeedViewModel extends ViewModel {
         page = 1 ;
         posts = pRepo.getPosts();
         message = pRepo.getMessage();
+        likePost = new MutableLiveData<>();
     }
 
     public MutableLiveData<List<Post>> getPosts() {
@@ -118,8 +126,8 @@ public class FeedViewModel extends ViewModel {
         });
     }
 
-    public void like(String post_id, OnLikePostResult onLikePostResult) {
-        pRepo.like(post_id,onLikePostResult);
+    public void like(String post_id , OnLikePostResult onLikePostResult ) {
+        pRepo.like(post_id, onLikePostResult);
     }
 
 }

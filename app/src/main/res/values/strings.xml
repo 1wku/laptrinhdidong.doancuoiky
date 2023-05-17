@@ -1,7 +1,7 @@
 <resources>
     <string name="card_post_likes">%1$d lượt thích</string>
     <string name="card_post_comments">%1$d lượt bình luận</string>
-    <string name="app_name">Mang Xa Hoi</string>
+    <string name="app_name">MewSocial</string>
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="hello_blank_fragment">Chào mừng bạn đã đến với mạng xã hội mèo</string>
 </resources>

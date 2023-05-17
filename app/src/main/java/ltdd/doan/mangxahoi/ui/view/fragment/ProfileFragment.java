@@ -74,8 +74,9 @@ public class ProfileFragment extends Fragment {
                         .load(user.getAvatar() )
                         .into(binding.frgProfileUserAvatar);
             }
-            if (user_id == Session.getSharedPreference(getContext(),"user_id","") ){
+            if (( Objects.equals(user_id,Session.getSharedPreference(getContext(),"user_id","")))  ){
                 binding.frgProfileBtnFollow.setVisibility(GONE);
+                binding.frgProfileBtnChat.setVisibility(GONE);
             }
             mViewModel.onCheckIsFollowUser(user_id, new OnGetCheckIsFollowUserResult() {
                 @Override
@@ -110,6 +111,10 @@ public class ProfileFragment extends Fragment {
     // TODO: 4/18/2023
     public void navToFollow(View view, List<User> users) {
     }
+
+    public void navToChat(View view, String user_id) {
+    }
+
 
 
     public void toggleFollow(User user) {

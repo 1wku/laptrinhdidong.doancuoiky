@@ -6,11 +6,14 @@ import ltdd.doan.mangxahoi.data.dto.request.FollowUserRequest;
 import ltdd.doan.mangxahoi.data.dto.request.LikePostRequest;
 import ltdd.doan.mangxahoi.data.dto.request.LoginRequest;
 import ltdd.doan.mangxahoi.data.dto.request.RegisterRequest;
+import ltdd.doan.mangxahoi.data.dto.request.SendMessageRequest;
 import ltdd.doan.mangxahoi.data.dto.response.LikePostResponse;
 import ltdd.doan.mangxahoi.data.dto.response.ListFeedResponse;
+import ltdd.doan.mangxahoi.data.dto.response.ListMessageResponse;
 import ltdd.doan.mangxahoi.data.dto.response.SuccessfullResponse;
 import ltdd.doan.mangxahoi.data.model.Comment;
 import ltdd.doan.mangxahoi.data.model.Conversation;
+import ltdd.doan.mangxahoi.data.model.Message;
 import ltdd.doan.mangxahoi.data.model.Post;
 import ltdd.doan.mangxahoi.data.model.User;
 import retrofit2.Call;
@@ -67,6 +70,16 @@ public interface ApiInterface {
     // Message
     @GET("api/conversations/{id}")
     Call<List<Conversation>> getAllConversation(@Path("id") String userId );
+
+    @GET("api/messages/{id}/")
+    Call<ListMessageResponse> getMessagesFromConversation(@Path("id") String id );
+
+    @POST("api/messages")
+    Call<Message> sendMessage(@Body SendMessageRequest sendMessageRequest);
+
+
+
+
 
     @POST("api/comments")
     Call<SuccessfullResponse<Comment>> createComment(@Body Comment request);

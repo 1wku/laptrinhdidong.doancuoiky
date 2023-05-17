@@ -46,6 +46,11 @@ public class User {
     public User() {
     }
 
+    public User(String avatar, String user_id) {
+        this.avatar = avatar;
+        this.id = user_id;
+    }
+
     public String getId() {
         return id;
     }

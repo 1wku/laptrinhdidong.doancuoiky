@@ -16,8 +16,11 @@
             type="ltdd.doan.mangxahoi.data.model.Conversation" />
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cardConversation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:onClick="@{() -> conversationAdapter.navToChat(cardConversation, conversation.id, conversation.partner)}"
+
         android:padding="8dp">
 
         <!--todo-->
@@ -52,7 +55,7 @@
                 android:id="@+id/cardUserTxtUserName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@{conversation.id}"
+                android:text="@{conversation.partner.username}"
                 android:textColor="@color/black"
                 android:textSize="18sp"
                 android:textStyle="bold" />
@@ -62,7 +65,7 @@
                 android:id="@+id/cardUserTxtFullName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@{conversation.members.size()}"
+                android:text="@{conversation.lastMessage.text}"
                 android:textColor="@color/gray"
                 android:textSize="18sp"
                 android:textStyle="italic" />

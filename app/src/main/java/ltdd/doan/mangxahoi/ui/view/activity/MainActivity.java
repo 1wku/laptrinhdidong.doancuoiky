@@ -44,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
             if (id == R.id.feedFragment) navController.navigate(R.id.feedFragment);
             else if (id == R.id.friendsFragment) navController.navigate(R.id.friendsFragment);
             else if (id == R.id.newPostFragment) navController.navigate(R.id.newPostFragment);
+            else if (id == R.id.conversationFragment) navController.navigate(R.id.conversationFragment);
             else if (id == R.id.notificationsFragment) navController.navigate(R.id.notificationsFragment);
             else if (id == R.id.profileFragment) navController.navigate(R.id.profileFragment);
             else return false;

@@ -157,6 +157,27 @@ public class UserRepository {
             }
         });
     }
+    public void getCurrentUserInfo( OnGetUserDetailResult onGetUserDetailResult){
+        String user_id = Session.getSharedPreference(context, "user_id", "");
+
+        apiService.getUser(user_id).enqueue(new Callback<SuccessfullResponse<User>>() {
+            @Override
+            public void onResponse(Call<SuccessfullResponse<User>> call, Response<SuccessfullResponse<User>> response) {
+                if(response.isSuccessful()) {
+
+                    onGetUserDetailResult.onSuccess(response.body().data);
+                }else {
+                    Log.d("getUserDetailsById", response.message());
+                    onGetUserDetailResult.onError(response.message());
+                }
+            }
+            @Override
+            public void onFailure(Call<SuccessfullResponse<User>> call, Throwable t) {
+                onGetUserDetailResult.onError(t.getMessage());
+
+            }
+        });
+    }
 
     // TODO: 4/18/2023
     public void updateUser(User user_update){

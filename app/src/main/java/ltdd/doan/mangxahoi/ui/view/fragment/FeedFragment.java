@@ -53,6 +53,11 @@ public class FeedFragment extends Fragment {
             binding.frgFeedRecyclerViewSwipeRefresh.setRefreshing(false);
         });
 
+        mViewModel.getLikePost().observe( getViewLifecycleOwner(),(value)->{
+            binding.frgFeedRecyclerView.findViewHolderForAdapterPosition(value);
+
+        });
+
 
         mViewModel.getPosts().observe(getViewLifecycleOwner(), posts -> {
             PostAdapterFeed postAdapter = new PostAdapterFeed(requireContext(), (MainActivity) requireActivity(), posts, mViewModel);
@@ -63,9 +68,6 @@ public class FeedFragment extends Fragment {
 
         });
 
-        mViewModel.getMessage().observe(getViewLifecycleOwner(),message ->{
-            Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
-        });
 
 
         binding.frgFeedRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {

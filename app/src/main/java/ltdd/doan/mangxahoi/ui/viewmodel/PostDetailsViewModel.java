@@ -17,16 +17,19 @@ import ltdd.doan.mangxahoi.data.model.Comment;
 import ltdd.doan.mangxahoi.data.model.Post;
 import ltdd.doan.mangxahoi.data.model.User;
 import ltdd.doan.mangxahoi.data.repository.PostRepository;
+import ltdd.doan.mangxahoi.data.repository.UserRepository;
 import ltdd.doan.mangxahoi.interfaces.OnCreateCommentResult;
 import ltdd.doan.mangxahoi.interfaces.OnDeletePostResult;
 import ltdd.doan.mangxahoi.interfaces.OnGetCommentResult;
 import ltdd.doan.mangxahoi.interfaces.OnGetPostByIdResult;
+import ltdd.doan.mangxahoi.interfaces.OnGetUserDetailResult;
 import ltdd.doan.mangxahoi.interfaces.OnLikePostResult;
 import ltdd.doan.mangxahoi.interfaces.OnUpdatePostResult;
 
 @HiltViewModel
 public class PostDetailsViewModel extends ViewModel {
     private PostRepository pRepo;
+    private UserRepository uRepo;
 
     private MutableLiveData<Post> post;
     private MutableLiveData<List<Comment>> comments;
@@ -34,9 +37,9 @@ public class PostDetailsViewModel extends ViewModel {
     private MutableLiveData<Boolean> status;
 
     @Inject
-    public PostDetailsViewModel(PostRepository pRepo) {
+    public PostDetailsViewModel(PostRepository pRepo, UserRepository uRepo) {
         this.pRepo = pRepo;
-
+        this.uRepo  = uRepo;
         post = pRepo.getPost();
         message = pRepo.getMessage();
         status = pRepo.getStatus();
@@ -52,6 +55,10 @@ public class PostDetailsViewModel extends ViewModel {
     public MutableLiveData<List<Comment>> getComments() {
         return pRepo.getComments();
     }
+
+    public void getCurrentUser(OnGetUserDetailResult onGetUserDetailResult){
+        uRepo.getCurrentUserInfo(onGetUserDetailResult);
+}
 
     public MutableLiveData<Boolean> getStatus() {
         return status;
@@ -101,39 +108,13 @@ public class PostDetailsViewModel extends ViewModel {
         });
     }
 
-    public void like(String post_id) {
-        pRepo.like(post_id, new OnLikePostResult() {
-            @Override
-            public void onSuccess(LikePostResponse result) {
-                System.out.println(result);
-                getPost();
-            }
-
-            @Override
-            public void onError(String error) {
-                System.out.println(error);
-
-
-            }
-        });
+    public void like(String post_id, OnLikePostResult onLikePostResult) {
+        pRepo.like(post_id,onLikePostResult );
     }
 
 
     public void createComment(String post_id, String text, OnCreateCommentResult onCreateCommentResult) {
-        pRepo.createComment(post_id, text, new OnCreateCommentResult() {
-            @Override
-            public void onSuccess(Comment data) {
-               comments.getValue().add(data);
-                List<Comment> newComment =comments.getValue();
-                comments.setValue( newComment);
-                onCreateCommentResult.onSuccess(data);
-            }
-
-            @Override
-            public void onError(String error) {
-
-            }
-        });
+        pRepo.createComment(post_id, text, onCreateCommentResult);
     }
     public void getCommentsByPost(String post_id) {
         pRepo.getCommentFromPost(post_id, new OnGetCommentResult() {

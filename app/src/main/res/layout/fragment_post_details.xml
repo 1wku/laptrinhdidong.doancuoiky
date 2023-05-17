@@ -64,7 +64,8 @@
                             app:layout_constraintVertical_bias="0.5"
                             app:shapeAppearanceOverlay="@style/ShapeAppearance.App.CircleImageView"
                             app:strokeColor="@color/black"
-                            app:strokeWidth="2dp"
+                            app:strokeWidth="1dp"
+
                             android:src="@drawable/avatar_img"/>
 
                         <LinearLayout
@@ -140,13 +141,13 @@
 
 
 
-
-
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:paddingHorizontal="8dp"
+                            android:paddingStart="8dp"
                             android:orientation="horizontal"
+
                             android:textAlignment="center"
                             android:paddingTop="8dp">
                             <!--thống kê lượt like-->
@@ -155,7 +156,6 @@
                                 android:layout_width="24dp"
                                 android:layout_height="24dp"
                                 android:src="@drawable/ic_heart"
-                                android:onClick="@{ () -> postDetailsFragment.likePost(post.id)}"
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toTopOf="parent"
@@ -172,19 +172,47 @@
                                 app:layout_constraintVertical_bias="0.5"
                                 android:text="@{@string/card_post_likes(post.likers.size()) }" />
                         </LinearLayout>
-
+                        <View
+                            android:id="@+id/divider2"
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="@color/gray"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent" />
                     </LinearLayout>
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/frgPostDetailsTxtComment"
+
+                    <LinearLayout
+                        android:id="@+id/form"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:drawableRight="@drawable/ic_send"
+                        android:baselineAligned="false"
+                        android:orientation="horizontal"
+                        android:padding="8dp">
 
-                        android:hint="Thêm bình luận"
-                        android:onClick="@{()-> postDetailsFragment.commentPost(post.id)}"
-                        android:inputType="text"
-                        android:maxLength="250"
-                        android:maxLines="2"/>
+                        <EditText
+                            android:id="@+id/frgPostDetailsTxtComment"
+                            android:layout_width="252dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.72"
+                            android:background="#DCDCDC"
+                            android:ems="10"
+                            android:hint="Thêm bình luận"
+                            android:maxHeight="80dp"
+                            android:padding="8sp"
+                            app:boxBackgroundMode="none"
+                            app:cardCornerRadius="30dp"
+                            app:cardElevation="8dp"
+                            app:cardPreventCornerOverlap="false"
+                            app:cardUseCompatPadding="true" />
+
+                        <ImageView
+                            android:id="@+id/btnSendMsg"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:baselineAlignBottom="true"
+                            android:onClick="@{()-> postDetailsFragment.commentPost(post.id)}"
+                            android:src="@drawable/ic_send" />
+                    </LinearLayout>
                 </LinearLayout>
 
 
@@ -194,10 +222,10 @@
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/frgCommentRecyclerView"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     android:layout_width="match_parent"
+                    android:layout_height="match_parent"
                     android:adapter="@{commentAdapter}"
-                    android:layout_height="match_parent"  />
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
             </LinearLayout>
 

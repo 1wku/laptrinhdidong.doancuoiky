@@ -9,6 +9,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import dagger.hilt.android.lifecycle.HiltViewModel;
 import ltdd.doan.mangxahoi.data.model.Conversation;
 import ltdd.doan.mangxahoi.data.model.User;
 import ltdd.doan.mangxahoi.data.repository.ChatRepository;
@@ -17,6 +18,7 @@ import ltdd.doan.mangxahoi.data.repository.UserRepository;
 import ltdd.doan.mangxahoi.interfaces.OnFilterUserResult;
 import ltdd.doan.mangxahoi.interfaces.OnGetConversationResult;
 
+@HiltViewModel
 public class ConversationViewModel extends ViewModel {
 
     private ConversationRepository cRepo;
@@ -27,7 +29,9 @@ public class ConversationViewModel extends ViewModel {
         this.cRepo = cRepo;
         conversations = new MutableLiveData<List<Conversation>>();
     }
-
+    public void setConversations(MutableLiveData<List<Conversation>> conversations) {
+        this.conversations = conversations;
+    }
 
     public MutableLiveData<List<Conversation>> getConversations() {
        return conversations;
@@ -46,4 +50,6 @@ public class ConversationViewModel extends ViewModel {
             }
         });
     }
+
+
 }

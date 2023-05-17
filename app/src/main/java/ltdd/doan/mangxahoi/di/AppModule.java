@@ -52,7 +52,7 @@ public class AppModule {
     }
     @Provides
     @Singleton
-    public ConversationRepository provideConversationRepository(@ApplicationContext Context context, ApiInterface apiService) {
-        return new ConversationRepository( context,apiService);
+    public ConversationRepository provideConversationRepository(@ApplicationContext Context context, ApiInterface apiService, UserRepository uRepo) {
+        return new ConversationRepository( context,apiService, uRepo);
     }
 }

@@ -29,6 +29,10 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentV
     private Context context;
     private List<Comment> comments;
 
+    public void addComment(Comment c){
+        comments.add(c);
+    }
+
     public CommentAdapter(Context context, List<Comment> comments) {
         this.context = context;
         this.comments = comments;

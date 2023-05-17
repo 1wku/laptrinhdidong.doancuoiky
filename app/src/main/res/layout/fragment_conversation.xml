@@ -15,23 +15,28 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".ui.view.fragment.ConversationFragment">
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/frgSearchRecyclerView"
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/frgConversationRecyclerViewSwipeRefresh"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:adapter="@{conversationAdapter}"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintVertical_bias="0.5" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="Hello" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.5">
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/frgConversationRecyclerView"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:adapter="@{conversationAdapter}"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintVertical_bias="0.5" />
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

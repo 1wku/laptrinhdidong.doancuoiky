@@ -2,6 +2,7 @@ package ltdd.doan.mangxahoi.api;
 
 import java.util.List;
 
+import ltdd.doan.mangxahoi.data.dto.request.CreateConversationRequest;
 import ltdd.doan.mangxahoi.data.dto.request.FollowUserRequest;
 import ltdd.doan.mangxahoi.data.dto.request.LikePostRequest;
 import ltdd.doan.mangxahoi.data.dto.request.LoginRequest;
@@ -45,7 +46,7 @@ public interface ApiInterface {
     @DELETE("api/users/{id}")
     Call<String> deleteUser(@Path("id") String id);
     @PUT("api/users/{id}/follow")
-    Call<String> followUser(@Path("id") String id, @Body FollowUserRequest request);
+    Call<List<String>> followUser(@Path("id") String id, @Body FollowUserRequest request);
     @POST("api/users/{id}/checkIsFollowUser")
     Call<String> isFollowUser(@Path("id") String id, @Body FollowUserRequest request);
 
@@ -57,7 +58,7 @@ public interface ApiInterface {
     @POST("api/posts/{id}")
     Call<SuccessfullResponse<Post>> updatePost( @Body Post request,@Path("id") String id);
     @DELETE("api/posts/{id}")
-    Call<String> deletePost(@Path("id") String id);
+    Call<String> deletePost(  @Path("id") String id);
     @PUT("api/posts/{id}/like")
     Call<LikePostResponse> likePost(@Body LikePostRequest request, @Path("id") String id);
     @GET("api/posts/{id}/save")
@@ -71,11 +72,15 @@ public interface ApiInterface {
     @GET("api/conversations/{id}")
     Call<List<Conversation>> getAllConversation(@Path("id") String userId );
 
+    @POST("api/conversations/")
+    Call<Conversation> getOrCreateConversation(@Body CreateConversationRequest request);
+
+
     @GET("api/messages/{id}/")
     Call<ListMessageResponse> getMessagesFromConversation(@Path("id") String id );
 
     @POST("api/messages")
-    Call<Message> sendMessage(@Body SendMessageRequest sendMessageRequest);
+    Call<Message> sendMessage(@Body SendMessageRequest sendMessageRequest, @Query("page") Integer page, @Query("limit") Integer limit );
 
 
 

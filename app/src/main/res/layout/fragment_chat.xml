@@ -17,6 +17,16 @@
         android:background="@color/white"
         tools:context=".ui.view.fragment.ChatFragment">
 
+
+        <LinearLayout
+            android:id="@+id/fragChatProfile"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+        </LinearLayout>
+
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
             android:id="@+id/frgChatRecyclerViewSwipeRefresh"
             android:layout_width="0dp"
@@ -24,7 +34,7 @@
             app:layout_constraintBottom_toTopOf="@+id/form"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toStartOf="@id/fragChatProfile"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.5">
 
@@ -71,7 +81,6 @@
                 android:id="@+id/btnSendMsg"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
-                android:onClick="@{() -> chatFragment.sendMessage()}"
                 android:src="@drawable/ic_send" />
         </LinearLayout>
 

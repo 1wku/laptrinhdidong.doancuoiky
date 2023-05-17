@@ -59,6 +59,8 @@ public class FeedFragment extends Fragment {
         });
 
 
+
+
         mViewModel.getPosts().observe(getViewLifecycleOwner(), posts -> {
             PostAdapterFeed postAdapter = new PostAdapterFeed(requireContext(), (MainActivity) requireActivity(), posts, mViewModel);
             binding.setPostAdapter(postAdapter);

@@ -44,6 +44,10 @@
         <action
             android:id="@+id/profileToPostDetails"
             app:destination="@id/postDetailsFragment" />
+
+        <action
+            android:id="@+id/profileToChat"
+            app:destination="@id/chatFragment" />
     </fragment>
     <fragment
         android:id="@+id/postDetailsFragment"

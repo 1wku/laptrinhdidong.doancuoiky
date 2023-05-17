@@ -48,8 +48,15 @@ public class ConversationAdapter  extends RecyclerView.Adapter<ConversationAdapt
         conversation.getMembers().forEach(user ->{
             if (!Objects.equals(user.getId(), Session.getSharedPreference(context,"user_id",""))){
                 conversation.setPartner(user);
+                if (!Objects.equals(user.getAvatar() , "")){
+                    Glide.with(context)
+                            .load(user.getAvatar())
+                            .into(holder.binding.cardUserImgUserPhoto);
+                }
+
             }
         });
+
 
         holder.binding.setConversationAdapter(this);
         holder.binding.setConversation(conversation);
@@ -75,6 +82,7 @@ public class ConversationAdapter  extends RecyclerView.Adapter<ConversationAdapt
         bundle.putString("conversation_id",conversation_id);
         bundle.putString("partner_id",partner.getId());
         bundle.putString("partner_avatar",partner.getAvatar());
+        bundle.putString("partner_email",partner.getEmail());
         Navigation.findNavController(view).navigate(ltdd.doan.mangxahoi.ui.view.fragment.ConversationFragmentDirections.conversationToChat().getActionId(), bundle);
     }
 }

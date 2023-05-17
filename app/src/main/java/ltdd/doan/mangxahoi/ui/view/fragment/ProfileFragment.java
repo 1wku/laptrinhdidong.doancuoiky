@@ -100,7 +100,9 @@ public class ProfileFragment extends Fragment {
                         Bundle bundle = new Bundle();
                         bundle.putString("conversation_id",conversation.getId());
                         bundle.putString("partner_id",user_id);
-                        Navigation.findNavController(view).navigate(ltdd.doan.mangxahoi.ui.view.fragment.ProfileFragmentDirections.profileToChat().getActionId(), bundle);
+                        bundle.putString("partner_email",mViewModel.getUser().getValue().getEmail());
+
+                        Navigation.findNavController(binding.frgProfileUserAvatar).navigate(ltdd.doan.mangxahoi.ui.view.fragment.ProfileFragmentDirections.profileToChat().getActionId(), bundle);
                     }
 
                     @Override

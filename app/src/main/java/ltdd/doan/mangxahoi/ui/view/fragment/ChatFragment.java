@@ -56,6 +56,7 @@ public class ChatFragment extends Fragment {
     private MutableLiveData<Message> newMessage;
     private String partnerId ="" ;
     private String partnerAvatar ="" ;
+    private String partnerName ="";
     private String userId="";
     private String conversationId ="" ;
 
@@ -79,6 +80,9 @@ public class ChatFragment extends Fragment {
 
         mViewModel = new ViewModelProvider(this).get(ChatViewModel.class);
     }
+
+
+
 
     private Emitter.Listener onNewMessage = new Emitter.Listener() {
         @Override
@@ -118,9 +122,12 @@ public class ChatFragment extends Fragment {
         Bundle bundle = getArguments();
         String conversationId = bundle.getString("conversation_id") ;
         String partnerId = bundle.getString("partner_id") ;
+        this.partnerName = bundle.getString("partner_email") ;
         this.conversationId = conversationId;
         this.partnerId = partnerId;
 
+
+        getActivity().setTitle(partnerName);
         binding.btnSendMsg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

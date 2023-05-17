@@ -7,11 +7,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -19,7 +21,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import dagger.hilt.android.AndroidEntryPoint;
 import io.socket.client.IO;
@@ -28,11 +32,13 @@ import io.socket.emitter.Emitter;
 import ltdd.doan.mangxahoi.R;
 import ltdd.doan.mangxahoi.api.ApiUtils;
 import ltdd.doan.mangxahoi.data.dto.request.MessageRequest;
+import ltdd.doan.mangxahoi.data.dto.response.ListMessageResponse;
 import ltdd.doan.mangxahoi.data.model.Message;
 import ltdd.doan.mangxahoi.data.model.User;
 import ltdd.doan.mangxahoi.databinding.FragmentChatBinding;
 import ltdd.doan.mangxahoi.databinding.FragmentConversationBinding;
 import ltdd.doan.mangxahoi.databinding.FragmentFeedBinding;
+import ltdd.doan.mangxahoi.interfaces.OnGetMessageResult;
 import ltdd.doan.mangxahoi.interfaces.OnSendMessageResult;
 import ltdd.doan.mangxahoi.session.Session;
 import ltdd.doan.mangxahoi.ui.view.adapter.ChatAdapter;
@@ -45,11 +51,18 @@ import ltdd.doan.mangxahoi.ui.viewmodel.FeedViewModel;
 public class ChatFragment extends Fragment {
     private FragmentChatBinding binding;
     private ChatViewModel mViewModel;
+
+    private MutableLiveData<List<Message>> messages;
+    private MutableLiveData<Message> newMessage;
     private String partnerId ="" ;
     private String partnerAvatar ="" ;
+    private String userId="";
     private String conversationId ="" ;
 
-
+    public ChatFragment(){
+        newMessage = new MutableLiveData<>();
+        messages = new MutableLiveData<>();
+    }
     private Socket mSocket;
     {
         try {
@@ -59,10 +72,11 @@ public class ChatFragment extends Fragment {
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
+        userId = Session.getSharedPreference(getContext(),"user_id","");
         super.onCreate(savedInstanceState);
+        mSocket.on("getMessage", onNewMessage);
         mSocket.connect();
-        mSocket.on("sendMessage", onNewMessage);
-        mSocket.on("getMessage",onGetMessage);
+
         mViewModel = new ViewModelProvider(this).get(ChatViewModel.class);
     }
 
@@ -73,34 +87,33 @@ public class ChatFragment extends Fragment {
                 @Override
                 public void run() {
                     // add the message to view
-
-                   mViewModel.getChatConversation(conversationId);
+                    JSONObject data = (JSONObject) args[0];
+                    String receiverId;
+                    String senderId;
+                    String message;
+                    try {
+                        receiverId = data.getString("receiverId");
+                        senderId = data.getString("senderId");
+                        message = data.getString("message");
+                        if (Objects.equals(Session.getSharedPreference(getContext(),"user_id",""),receiverId)|| Objects.equals(Session.getSharedPreference(getContext(),"user_id",""),senderId)){
+                            newMessage.setValue(new Message(conversationId,senderId,message));
+                        }
+                    } catch (JSONException e) {
+                        return;
+                    }
                 }
             });
         }
     };
 
 
-    private Emitter.Listener onGetMessage = new Emitter.Listener() {
-        @Override
-        public void call(final Object... args) {
-            getActivity().runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    // add the message to view
-                    System.out.println(args);
-
-                    mViewModel.getChatConversation(conversationId);
-                }
-            });
-        }
-    };
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_chat, container, false);
         binding.setChatFragment(this);
+        ChatAdapter chatAdapter = new ChatAdapter(requireContext(), messages.getValue(), new User(partnerAvatar,partnerId));
 
         Bundle bundle = getArguments();
         String conversationId = bundle.getString("conversation_id") ;
@@ -111,17 +124,44 @@ public class ChatFragment extends Fragment {
         this.partnerAvatar = partnerAvatar;
 
         binding.frgChatRecyclerViewSwipeRefresh.setOnRefreshListener(() -> {
-            mViewModel.getChatConversation(conversationId);
+            mViewModel.getChatConversation(conversationId, new OnGetMessageResult() {
+                @Override
+                public void onSuccess(ListMessageResponse result) {
+                    messages.setValue(result.messages);
+                }
+
+                @Override
+                public void onError(String error) {
+                    System.out.println(error);
+
+                }
+            });
             binding.frgChatRecyclerViewSwipeRefresh.setRefreshing(false);
         });
+        newMessage.observe(getViewLifecycleOwner(),message -> {
+            chatAdapter.addMessage(message);
+            binding.frgSearchRecyclerView.smoothScrollToPosition(chatAdapter.getItemCount()-1);
+        });
 
-        mViewModel.getMessages().observe(getViewLifecycleOwner(), messages -> {
-            ChatAdapter chatAdapter = new ChatAdapter(requireContext(), messages, new User(partnerAvatar,partnerId));
+        messages.observe(getViewLifecycleOwner(), messages -> {
+            chatAdapter.setMessages(messages);
+            binding.frgSearchRecyclerView.smoothScrollToPosition(messages.size()-1);
             binding.setChatAdapter(chatAdapter);
         });
 
 
-        mViewModel.getChatConversation(conversationId);
+        mViewModel.getChatConversation(conversationId,new OnGetMessageResult() {
+            @Override
+            public void onSuccess(ListMessageResponse result) {
+                messages.setValue(result.messages);
+            }
+
+            @Override
+            public void onError(String error) {
+                System.out.println(error);
+
+            }
+        });
 
 
         return binding.getRoot();
@@ -134,7 +174,7 @@ public class ChatFragment extends Fragment {
             return;
         }
         binding.frgChatMessage.setText("");
-        String userId =  Session.getSharedPreference(getContext(),"user_id","");
+
 
         mViewModel.sendMessage(conversationId, message, new OnSendMessageResult() {
             @Override
@@ -144,7 +184,6 @@ public class ChatFragment extends Fragment {
                 obj.put("receiverId", partnerId);
                 obj.put("message", message);
                 mSocket.emit("sendMessage", obj);
-                System.out.println(result.getText());
             }
 
             @Override

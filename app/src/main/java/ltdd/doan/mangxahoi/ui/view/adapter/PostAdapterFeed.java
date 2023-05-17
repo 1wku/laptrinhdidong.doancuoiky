@@ -9,6 +9,7 @@ import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.MutableLiveData;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -43,6 +44,8 @@ public class PostAdapterFeed extends RecyclerView.Adapter<PostAdapterFeed.PostVi
 
     }
 
+    private MutableLiveData<Boolean> isLiked;
+
     private final int VIEW_TYPE_ITEM = 0;
     private final int VIEW_TYPE_LOADING = 1;
 
@@ -74,22 +77,7 @@ public class PostAdapterFeed extends RecyclerView.Adapter<PostAdapterFeed.PostVi
         Navigation.findNavController(view).navigate(FeedFragmentDirections.feedToPostDetails().getActionId(), bundle);
     }
 
-    public void toggleLikePost(String post_id) {
-        viewModel.like(post_id, new OnLikePostResult() {
-            @Override
-            public void onSuccess(LikePostResponse result) {
-                System.out.println(result.likes);
 
-            }
-
-            @Override
-            public void onError(String error) {
-                System.out.println(error);
-
-            }
-        });
-        // update ui
-    }
 
     public boolean isPostLiked(Post post) {
 
@@ -98,6 +86,18 @@ public class PostAdapterFeed extends RecyclerView.Adapter<PostAdapterFeed.PostVi
         for (String u : post.getLikers()) {
             if (u != null ){
                 if (u.equals(Session.getSharedPreference(context,"user_id",""))) {
+                    return true;
+                }
+            }
+
+        }
+        return false;
+    }
+
+    public Boolean isLike(LikePostResponse res){
+        for (String u : res.likes) {
+            if (u != null) {
+                if (u.equals(Session.getSharedPreference(context, "user_id", ""))) {
                     return true;
                 }
             }
@@ -131,6 +131,29 @@ public class PostAdapterFeed extends RecyclerView.Adapter<PostAdapterFeed.PostVi
                     .load(post.getOwnerData().getAvatar())
                     .into(holder.binding.cardPostUserImg);
         }
+        holder.binding.cardPostPostlike.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                viewModel.like(post.getId(), new OnLikePostResult() {
+                    @Override
+                    public void onSuccess(LikePostResponse result) {
+                        if ( isLike(result)){
+                            holder.binding.cardPostPostlike.setImageResource(R.drawable.ic_heart_red);
+                        }else{
+                            holder.binding.cardPostPostlike.setImageResource(R.drawable.ic_heart);
+                        }
+                        holder.binding.cardPostPostlikeAmount.setText(result.likes.size()+ " lượt thích");
+                    }
+
+                    @Override
+                    public void onError(String error) {
+
+                    }
+                });
+
+            }
+        });
+
 
     }
 

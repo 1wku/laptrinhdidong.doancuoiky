@@ -8,7 +8,9 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.MutableLiveData;
 import androidx.navigation.Navigation;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -16,6 +18,7 @@ import com.bumptech.glide.Glide;
 import java.util.List;
 import java.util.Objects;
 
+import io.socket.emitter.Emitter;
 import ltdd.doan.mangxahoi.R;
 import ltdd.doan.mangxahoi.data.model.Conversation;
 import ltdd.doan.mangxahoi.data.model.Message;
@@ -28,12 +31,31 @@ import ltdd.doan.mangxahoi.ui.view.fragment.FeedFragmentDirections;
 public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder> {
     private Context context;
     private List<Message> messages;
-    private User partner;
+    private MutableLiveData<Message> message ;
 
-    public ChatAdapter(Context context, List<Message> messages,User partner) {
+    public MutableLiveData<Message> getMessage() {
+        return message;
+    }
+
+    public void setMessage(MutableLiveData<Message> message) {
+        this.message = message;
+    }
+
+    private User partner;
+    private LinearLayoutManager layoutManager;
+
+    public ChatAdapter( Context context, List<Message> messages,User partner) {
         this.context = context;
         this.messages = messages;
         this.partner = partner;
+        layoutManager = new LinearLayoutManager(context);
+    }
+    public void addMessage(Message message) {
+        messages.add(message);
+    }
+
+    public void setMessages(List<Message> messages) {
+        this.messages = messages;
     }
 
     @NonNull
@@ -79,11 +101,6 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder
 
 
 
-    public int getCardColor(String sendBy){
-        if (Objects.equals(sendBy,Session.getSharedPreference(context,"user_id","") )){
-            return R.color.md_blue_50;
-        } else return R.color.white;
-    }
 
 
 

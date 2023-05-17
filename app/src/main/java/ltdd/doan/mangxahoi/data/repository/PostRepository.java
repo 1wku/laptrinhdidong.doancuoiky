@@ -214,8 +214,7 @@ public class PostRepository {
         apiService.createComment(comment).enqueue(new Callback<SuccessfullResponse<Comment>>() {
             @Override
             public void onResponse(Call<SuccessfullResponse<Comment>> call, Response<SuccessfullResponse<Comment>> response) {
-                if(response.code()==200) {
-                    System.out.println(response.body());
+                if(response.code()==200 || response.code()==201 ) {
                     onCreateCommentResult.onSuccess(response.body().data);
                 }
                 else onCreateCommentResult.onError(response.message());

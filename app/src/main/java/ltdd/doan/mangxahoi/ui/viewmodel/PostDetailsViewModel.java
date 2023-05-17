@@ -108,39 +108,13 @@ public class PostDetailsViewModel extends ViewModel {
         });
     }
 
-    public void like(String post_id) {
-        pRepo.like(post_id, new OnLikePostResult() {
-            @Override
-            public void onSuccess(LikePostResponse result) {
-                System.out.println(result);
-                getPost();
-            }
-
-            @Override
-            public void onError(String error) {
-                System.out.println(error);
-
-
-            }
-        });
+    public void like(String post_id, OnLikePostResult onLikePostResult) {
+        pRepo.like(post_id,onLikePostResult );
     }
 
 
     public void createComment(String post_id, String text, OnCreateCommentResult onCreateCommentResult) {
-        pRepo.createComment(post_id, text, new OnCreateCommentResult() {
-            @Override
-            public void onSuccess(Comment data) {
-               comments.getValue().add(data);
-                List<Comment> newComment =comments.getValue();
-                comments.setValue( newComment);
-                onCreateCommentResult.onSuccess(data);
-            }
-
-            @Override
-            public void onError(String error) {
-
-            }
-        });
+        pRepo.createComment(post_id, text, onCreateCommentResult);
     }
     public void getCommentsByPost(String post_id) {
         pRepo.getCommentFromPost(post_id, new OnGetCommentResult() {

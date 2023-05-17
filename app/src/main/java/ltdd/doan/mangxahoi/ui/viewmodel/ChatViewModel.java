@@ -43,25 +43,18 @@ public class ChatViewModel extends ViewModel {
         return messages;
     }
 
+    public void setMessages(MutableLiveData<List<Message>> messages) {
+        this.messages = messages;
+    }
+
     public MutableLiveData<User> getPartners() {
         return partners;
     }
 
 
 
-    public void getChatConversation(String id){
-        cRepo.getMessagesFromConversation(id, new OnGetMessageResult() {
-            @Override
-            public void onSuccess(ListMessageResponse result) {
-                messages.setValue(result.messages);
-            }
-
-            @Override
-            public void onError(String error) {
-                System.out.println(error);
-
-            }
-        });
+    public void getChatConversation(String id, OnGetMessageResult onGetMessageResult){
+        cRepo.getMessagesFromConversation(id,onGetMessageResult);
     }
 
     public void sendMessage(String conversationId, String message , OnSendMessageResult onSendMessageResult){

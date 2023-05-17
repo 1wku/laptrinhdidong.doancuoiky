@@ -209,11 +209,10 @@ public class UserRepository {
     // TODO: 4/18/2023
     public void toggleFollow(String user_id, OnToogleFollowResult onToogleFollowResult){
         String userId = Session.getSharedPreference(context, "user_id", "");
-        apiService.followUser(user_id , new FollowUserRequest(userId)).enqueue(new Callback<String>() {
+        apiService.followUser(user_id , new FollowUserRequest(userId)).enqueue(new Callback<List<String>>() {
             @Override
-            public void onResponse(Call<String> call, Response<String> response) {
+            public void onResponse(Call<List<String>> call, Response<List<String>> response) {
                 if(response.isSuccessful()) {
-
                     onToogleFollowResult.onSuccess(response.body());
                 }else {
                     Log.d("ToogleFollow", response.message());
@@ -221,7 +220,7 @@ public class UserRepository {
                 }
             }
             @Override
-            public void onFailure(Call<String> call, Throwable t) {
+            public void onFailure(Call<List<String>> call, Throwable t) {
                 Log.d("ToogleFollow", t.getMessage());
 
                 onToogleFollowResult.onError(t.getMessage());

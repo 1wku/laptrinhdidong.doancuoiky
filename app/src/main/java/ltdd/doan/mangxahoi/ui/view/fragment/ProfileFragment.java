@@ -25,10 +25,13 @@ import java.util.Objects;
 
 import dagger.hilt.android.AndroidEntryPoint;
 import ltdd.doan.mangxahoi.R;
+import ltdd.doan.mangxahoi.data.dto.response.LikePostResponse;
+import ltdd.doan.mangxahoi.data.model.Conversation;
 import ltdd.doan.mangxahoi.data.model.User;
 import ltdd.doan.mangxahoi.databinding.FragmentPostDetailsBinding;
 import ltdd.doan.mangxahoi.databinding.FragmentProfileBinding;
 import ltdd.doan.mangxahoi.interfaces.OnGetCheckIsFollowUserResult;
+import ltdd.doan.mangxahoi.interfaces.OnGetOneConversationResult;
 import ltdd.doan.mangxahoi.interfaces.OnToogleFollowResult;
 import ltdd.doan.mangxahoi.session.Session;
 import ltdd.doan.mangxahoi.ui.view.adapter.PostAdapterProfile;
@@ -65,6 +68,51 @@ public class ProfileFragment extends Fragment {
             binding.frgProfileSwipeRefresh.setRefreshing(false);
         });
 
+        binding.frgProfileBtnFollow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mViewModel.follow(user_id, new OnToogleFollowResult() {
+                    @Override
+                    public void onSuccess(List<String> result) {
+                        if (! isFollow(result)) {
+                            binding.frgProfileBtnFollow.setText("FOLLOW");
+                        }
+                        else  binding.frgProfileBtnFollow.setText("UNFOLLOW");
+
+                        binding.frgProfileLblFollowers.setText(result.size() + "");
+
+                    }
+                    @Override
+                    public void onError(String error) {
+                        System.out.println(error);
+                    }
+                });
+            }
+        });
+
+        binding.frgProfileBtnChat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mViewModel.goToChatRoom(user_id, new OnGetOneConversationResult() {
+                    @Override
+                    public void onSuccess(Conversation conversation) {
+                        System.out.println(conversation.getId());
+                        Bundle bundle = new Bundle();
+                        bundle.putString("conversation_id",conversation.getId());
+                        bundle.putString("partner_id",user_id);
+                        bundle.putString("partner_email",mViewModel.getUser().getValue().getEmail());
+
+                        Navigation.findNavController(binding.frgProfileUserAvatar).navigate(ltdd.doan.mangxahoi.ui.view.fragment.ProfileFragmentDirections.profileToChat().getActionId(), bundle);
+                    }
+
+                    @Override
+                    public void onError(String error) {
+
+                    }
+                });
+            }
+        });
+
 
         mViewModel.getUser().observe(getViewLifecycleOwner(), user -> {
             binding.setUser(user);
@@ -92,6 +140,7 @@ public class ProfileFragment extends Fragment {
 
         });
 
+
         mViewModel.getPosts().observe(getViewLifecycleOwner(), posts -> {
             binding.setPostCount(posts.size());
 
@@ -115,23 +164,18 @@ public class ProfileFragment extends Fragment {
     public void navToChat(View view, String user_id) {
     }
 
-
-
-    public void toggleFollow(User user) {
-        mViewModel.follow(user.getId(), new OnToogleFollowResult() {
-            @Override
-            public void onSuccess(String result) {
-                if ( Objects.equals(result,"user have been unfollowed"))  binding.frgProfileBtnFollow.setText("FOLLOW");
-                else  binding.frgProfileBtnFollow.setText("UNFOLLOW");
-
+    public Boolean isFollow(List<String> followers){
+        for (String u : followers) {
+            if (u != null) {
+                if (u.equals(Session.getSharedPreference(getContext(), "user_id", ""))) {
+                    return true;
+                }
             }
-            @Override
-            public void onError(String error) {
-                System.out.println(error);
-            }
-        });
-        // update ui
-        mViewModel.getUserDetailsById(user.getId());
+
+        }
+        return false;
     }
+
+
 
 }

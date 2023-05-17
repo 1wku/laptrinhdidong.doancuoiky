@@ -54,7 +54,7 @@ public class ChatRepository {
 
     public void sendMessage( String conversationId,String message, OnSendMessageResult onSendMessageResult){
         String userId = Session.getSharedPreference(context,"user_id","");
-        apiService.sendMessage(new SendMessageRequest(conversationId,userId,message)).enqueue(new Callback<Message>() {
+        apiService.sendMessage(new SendMessageRequest(conversationId,userId,message),1,10).enqueue(new Callback<Message>() {
             @Override
             public void onResponse(Call<Message> call, Response<Message> response) {
                 if(response.code()==200) {

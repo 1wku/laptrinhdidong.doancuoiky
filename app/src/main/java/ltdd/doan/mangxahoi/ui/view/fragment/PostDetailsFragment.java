@@ -9,12 +9,16 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.PopupMenu;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.google.android.material.textfield.TextInputEditText;
@@ -30,6 +34,7 @@ import ltdd.doan.mangxahoi.data.model.Post;
 import ltdd.doan.mangxahoi.data.model.User;
 import ltdd.doan.mangxahoi.databinding.FragmentPostDetailsBinding;
 import ltdd.doan.mangxahoi.interfaces.OnCreateCommentResult;
+import ltdd.doan.mangxahoi.interfaces.OnDeletePostResult;
 import ltdd.doan.mangxahoi.interfaces.OnGetPostByIdResult;
 import ltdd.doan.mangxahoi.interfaces.OnGetUserDetailResult;
 import ltdd.doan.mangxahoi.interfaces.OnLikePostResult;
@@ -44,6 +49,7 @@ public class PostDetailsFragment extends Fragment {
     private FragmentPostDetailsBinding binding;
 
     private PostDetailsViewModel mViewModel;
+
 
 
     @Override
@@ -140,11 +146,57 @@ public class PostDetailsFragment extends Fragment {
             }
         });
 
+        binding.frgPostDetailsImgPopupMenu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                PopupMenu popupMenu = new PopupMenu(requireContext(), binding.frgPostDetailsImgPopupMenu);
+
+                // Inflating popup menu from popup_menu.xml file
+                popupMenu.getMenuInflater().inflate(R.menu.menu_popup_post, popupMenu.getMenu());
+                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem menuItem) {
+
+                        // TODO : delete + edit post
+
+                        CharSequence title = menuItem.getTitle();
+                        if ("Edit Post".equals(title)) {
+                            Toast.makeText(requireContext(), "You Clicked edit " + menuItem.getItemId(), Toast.LENGTH_SHORT).show();
+
+                        } else if ("Delete Post".equals(title)) {
+                            if (mViewModel.getPost().getValue().getOwner().equals(Session.getSharedPreference(getContext(),"user_id",""))){
+                                mViewModel.deletePost(post_id, new OnDeletePostResult() {
+                                    @Override
+                                    public void onSuccess(String result) {
+                                        Toast.makeText(requireContext(), "Xoá bài đăng thành công  ", Toast.LENGTH_SHORT).show();
+                                        navToMyProfile(binding.frgPostDetailsImgPostImage);
+                                    }
+
+                                    @Override
+                                    public void onError(String error) {
+                                        Toast.makeText(requireContext(), error, Toast.LENGTH_SHORT).show();
+
+                                    }
+                                });
+                            }
+                            else Toast.makeText(requireContext(), "Bạn không có quyền xoá bài đăng này", Toast.LENGTH_SHORT).show();
+                        }
+                        return true;
+                    }
+                });
+                popupMenu.show();
+            }
+        });
+
 
         return binding.getRoot();
     }
 
-
+    public void navToMyProfile(View view) {
+        Bundle bundle = new Bundle();
+        bundle.putString("user_id", Session.getSharedPreference(getContext(),"user_id",""));
+        Navigation.findNavController(view).navigate(ltdd.doan.mangxahoi.ui.view.fragment.PostDetailsFragmentDirections.followToProfile().getActionId(), bundle);
+    }
 
     public boolean isPostLiked(Post post) {
 

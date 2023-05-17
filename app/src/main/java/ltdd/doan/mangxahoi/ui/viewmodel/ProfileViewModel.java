@@ -10,9 +10,11 @@ import javax.inject.Inject;
 import dagger.hilt.android.lifecycle.HiltViewModel;
 import ltdd.doan.mangxahoi.data.model.Post;
 import ltdd.doan.mangxahoi.data.model.User;
+import ltdd.doan.mangxahoi.data.repository.ConversationRepository;
 import ltdd.doan.mangxahoi.data.repository.PostRepository;
 import ltdd.doan.mangxahoi.data.repository.UserRepository;
 import ltdd.doan.mangxahoi.interfaces.OnGetCheckIsFollowUserResult;
+import ltdd.doan.mangxahoi.interfaces.OnGetOneConversationResult;
 import ltdd.doan.mangxahoi.interfaces.OnGetPostsByUserResult;
 import ltdd.doan.mangxahoi.interfaces.OnGetUserDetailResult;
 import ltdd.doan.mangxahoi.interfaces.OnToogleFollowResult;
@@ -21,13 +23,15 @@ import ltdd.doan.mangxahoi.interfaces.OnToogleFollowResult;
 public class ProfileViewModel extends ViewModel {
     private UserRepository uRepo;
     private PostRepository pRepo;
+    private ConversationRepository conversationRepository;
     private MutableLiveData<User> user;
     private MutableLiveData<List<Post>> posts;
 
     @Inject
-    public ProfileViewModel(UserRepository uRepo, PostRepository pRepo) {
+    public ProfileViewModel(UserRepository uRepo, PostRepository pRepo, ConversationRepository conversationRepository) {
         this.uRepo = uRepo;
         this.pRepo = pRepo;
+        this.conversationRepository = conversationRepository;
 
         user = uRepo.getUser();
         posts = pRepo.getPosts();
@@ -78,6 +82,12 @@ public class ProfileViewModel extends ViewModel {
 
     public void follow(String user_id, OnToogleFollowResult onToogleFollowResult) {
         uRepo.toggleFollow(user_id,onToogleFollowResult);
+    }
+
+    public void goToChatRoom(String user_id, OnGetOneConversationResult onGetOneConversationResult){
+
+        conversationRepository.getOrCreateConversation(user_id, onGetOneConversationResult);
+
     }
 
 

@@ -129,5 +129,8 @@ public class FeedViewModel extends ViewModel {
     public void like(String post_id , OnLikePostResult onLikePostResult ) {
         pRepo.like(post_id, onLikePostResult);
     }
+    public void deletePost(String post_id, OnDeletePostResult onDeletePostResult) {
+        pRepo.deletePost(post_id,onDeletePostResult);
+    }
 
 }

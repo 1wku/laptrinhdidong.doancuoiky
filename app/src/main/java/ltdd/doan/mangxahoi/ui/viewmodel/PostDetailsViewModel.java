@@ -1,10 +1,13 @@
 package ltdd.doan.mangxahoi.ui.viewmodel;
 
+import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
+import androidx.navigation.Navigation;
 
 import java.io.Closeable;
 import java.util.List;
@@ -25,6 +28,7 @@ import ltdd.doan.mangxahoi.interfaces.OnGetPostByIdResult;
 import ltdd.doan.mangxahoi.interfaces.OnGetUserDetailResult;
 import ltdd.doan.mangxahoi.interfaces.OnLikePostResult;
 import ltdd.doan.mangxahoi.interfaces.OnUpdatePostResult;
+import ltdd.doan.mangxahoi.session.Session;
 
 @HiltViewModel
 public class PostDetailsViewModel extends ViewModel {
@@ -94,18 +98,8 @@ public class PostDetailsViewModel extends ViewModel {
         });
     }
 
-    public void deletePost(String post_id) {
-        pRepo.deletePost(post_id, new OnDeletePostResult() {
-            @Override
-            public void onSuccess(String result) {
-
-            }
-
-            @Override
-            public void onError(String error) {
-
-            }
-        });
+    public void deletePost(String post_id, OnDeletePostResult onDeletePostResult) {
+        pRepo.deletePost(post_id,onDeletePostResult);
     }
 
     public void like(String post_id, OnLikePostResult onLikePostResult) {

@@ -41,14 +41,21 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder
         this.message = message;
     }
 
+
     private User partner;
     private LinearLayoutManager layoutManager;
+    private String userId = "";
 
-    public ChatAdapter( Context context, List<Message> messages,User partner) {
+    public String getUserId() {
+        return userId;
+    }
+
+    public ChatAdapter(Context context, List<Message> messages, User partner) {
         this.context = context;
         this.messages = messages;
         this.partner = partner;
         layoutManager = new LinearLayoutManager(context);
+        userId = Session.getSharedPreference(context,"user_id","");
     }
     public void addMessage(Message message) {
         messages.add(message);
@@ -70,23 +77,14 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder
         Message message = messages.get(position);
         holder.binding.setChatAdapter(this);
         holder.binding.setMessage(message);
-
-        if (!Objects.equals(message.getSendBy(), Session.getSharedPreference(context,"user_id",""))){
+        if (!Objects.equals(message.getSendBy(), userId)) {
             holder.binding.frgFloatingRight.setVisibility(View.GONE);
-            if (!Objects.equals(partner.getAvatar() , "")){
-                Glide.with(context)
-                        .load(partner.getAvatar())
-                        .into(holder.binding.frgCardUserImgUserPhoto);
-            }
-        }
-        else{
-            holder.binding.frgCardUserImgUserPhoto.setVisibility(View.GONE);
         }
     }
 
     @Override
     public int getItemCount() {
-        return messages.size();
+        return messages!= null ?  messages.size() : 0 ;
     }
 
 

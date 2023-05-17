@@ -12,6 +12,7 @@ public class Conversation {
     private String id;
 
     private List<User> members ;
+
     private String created_at;
 
     private Message lastMessage;

@@ -3,9 +3,12 @@ package ltdd.doan.mangxahoi.ui.view.adapter;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.PopupMenu;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
@@ -25,6 +28,7 @@ import ltdd.doan.mangxahoi.data.model.Post;
 import ltdd.doan.mangxahoi.data.model.User;
 import ltdd.doan.mangxahoi.data.repository.UserRepository;
 import ltdd.doan.mangxahoi.databinding.CardPostBinding;
+import ltdd.doan.mangxahoi.interfaces.OnDeletePostResult;
 import ltdd.doan.mangxahoi.interfaces.OnGetPostResult;
 import ltdd.doan.mangxahoi.interfaces.OnLikePostResult;
 import ltdd.doan.mangxahoi.session.Session;
@@ -125,6 +129,51 @@ public class PostAdapterFeed extends RecyclerView.Adapter<PostAdapterFeed.PostVi
                     .load(post.getPhoto())
                     .into(holder.binding.cardPostPostImg);
         }
+
+        holder.binding.cardPostPopupMenu.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        PopupMenu popupMenu = new PopupMenu(context, holder.binding.cardPostPopupMenu);
+
+                        // Inflating popup menu from popup_menu.xml file
+                        popupMenu.getMenuInflater().inflate(R.menu.menu_popup_post, popupMenu.getMenu());
+                        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                            @Override
+                            public boolean onMenuItemClick(MenuItem menuItem) {
+
+                                // TODO : delete + edit post
+
+                                CharSequence title = menuItem.getTitle();
+                                if ("Edit Post".equals(title)) {
+                                    Toast.makeText(context, "You Clicked edit " + menuItem.getItemId(), Toast.LENGTH_SHORT).show();
+
+                                } else if ("Delete Post".equals(title)) {
+                                    if (post.getOwner().equals(Session.getSharedPreference(context,"user_id",""))){
+                                        viewModel.deletePost(post.getId(), new OnDeletePostResult() {
+                                            @Override
+                                            public void onSuccess(String result) {
+                                                Toast.makeText(context, "Xoá bài đăng thành công  ", Toast.LENGTH_SHORT).show();
+                                                navToPostDetails(holder.binding.cardPostPostImg,Session.getSharedPreference(context,"user_id",""));
+                                            }
+
+                                            @Override
+                                            public void onError(String error) {
+                                                Toast.makeText(context, error, Toast.LENGTH_SHORT).show();
+
+                                            }
+                                        });
+                                    }
+                                    else Toast.makeText(context, "Bạn không có quyền xoá bài đăng này", Toast.LENGTH_SHORT).show();
+                                }
+                                return true;
+                            }
+                        });
+                        popupMenu.show();
+                    }
+                }
+        );
+
 
         if (!Objects.equals(post.getOwnerData().getAvatar() , "")){
             Glide.with(context)

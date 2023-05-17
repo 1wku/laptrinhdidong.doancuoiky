@@ -27,20 +27,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <com.google.android.material.imageview.ShapeableImageView
-                android:id="@+id/frgCardUserImgUserPhoto"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:adjustViewBounds="true"
-                android:padding="2dp"
-                android:scaleType="fitXY"
-                android:src="@drawable/avatar_img"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:shapeAppearanceOverlay="@style/ShapeAppearance.App.CircleImageView"
-                app:strokeColor="@color/black"
-                app:strokeWidth="2dp" />
             <View
                 android:id="@+id/frgFloatingRight"
                 android:layout_width="0dp"
@@ -70,20 +56,11 @@
                     android:text="@{message.text}"
                     android:textColor="@color/black"
                     android:textSize="18sp"
-                    android:textStyle="italic"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
             </androidx.cardview.widget.CardView>
-            <!--            <TextView-->
-<!--                android:id="@+id/frgConversationTime"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:text="1 phút trước"-->
-<!--                android:textColor="@color/gray"-->
-<!--                android:textSize="16sp"-->
-<!--                android:textStyle="italic" />-->
 
         </LinearLayout>
 

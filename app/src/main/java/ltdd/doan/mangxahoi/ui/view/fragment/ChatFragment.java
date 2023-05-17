@@ -95,8 +95,9 @@ public class ChatFragment extends Fragment {
                         receiverId = data.getString("receiverId");
                         senderId = data.getString("senderId");
                         message = data.getString("message");
-                        if (Objects.equals(Session.getSharedPreference(getContext(),"user_id",""),receiverId)|| Objects.equals(Session.getSharedPreference(getContext(),"user_id",""),senderId)){
-                            newMessage.setValue(new Message(conversationId,senderId,message));
+                        if (Objects.equals(Session.getSharedPreference(getContext(),"user_id",""),receiverId)){
+                            Message a = new Message(conversationId,senderId,message) ;
+                            newMessage.setValue(a);
                         }
                     } catch (JSONException e) {
                         return;
@@ -113,15 +114,42 @@ public class ChatFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_chat, container, false);
         binding.setChatFragment(this);
-        ChatAdapter chatAdapter = new ChatAdapter(requireContext(), messages.getValue(), new User(partnerAvatar,partnerId));
 
         Bundle bundle = getArguments();
         String conversationId = bundle.getString("conversation_id") ;
         String partnerId = bundle.getString("partner_id") ;
-        String partnerAvatar = bundle.getString("partner_avatar") ;
         this.conversationId = conversationId;
         this.partnerId = partnerId;
-        this.partnerAvatar = partnerAvatar;
+
+        binding.btnSendMsg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                String message = binding.frgChatMessage.getText().toString();
+                if (TextUtils.isEmpty(message)) {
+                    return;
+                }
+                binding.frgChatMessage.setText("");
+
+
+                mViewModel.sendMessage(conversationId, message, new OnSendMessageResult() {
+                    @Override
+                    public void onSuccess(Message result) throws JSONException {
+                        JSONObject obj = new JSONObject();
+                        obj.put("senderId", userId);
+                        obj.put("receiverId", partnerId);
+                        obj.put("message", message);
+                        mSocket.emit("sendMessage", obj);
+                        newMessage.setValue(new Message(conversationId,userId,message));
+                    }
+
+                    @Override
+                    public void onError(String error) {
+
+                    }
+                });
+            }
+        });
 
         binding.frgChatRecyclerViewSwipeRefresh.setOnRefreshListener(() -> {
             mViewModel.getChatConversation(conversationId, new OnGetMessageResult() {
@@ -139,14 +167,23 @@ public class ChatFragment extends Fragment {
             binding.frgChatRecyclerViewSwipeRefresh.setRefreshing(false);
         });
         newMessage.observe(getViewLifecycleOwner(),message -> {
-            chatAdapter.addMessage(message);
-            binding.frgSearchRecyclerView.smoothScrollToPosition(chatAdapter.getItemCount()-1);
+            binding.getChatAdapter().addMessage(message);
+            binding.getChatAdapter().notifyDataSetChanged();
+            binding.frgSearchRecyclerView.smoothScrollToPosition(  binding.getChatAdapter().getItemCount());
+
         });
 
         messages.observe(getViewLifecycleOwner(), messages -> {
-            chatAdapter.setMessages(messages);
-            binding.frgSearchRecyclerView.smoothScrollToPosition(messages.size()-1);
-            binding.setChatAdapter(chatAdapter);
+            if (messages == null){
+                ChatAdapter chatAdapter = new ChatAdapter(requireContext(), new ArrayList<>(), new User(partnerAvatar,partnerId));
+                binding.setChatAdapter(chatAdapter);
+            }
+            else{
+                ChatAdapter chatAdapter = new ChatAdapter(requireContext(), messages, new User(partnerAvatar,partnerId));
+                binding.frgSearchRecyclerView.scrollToPosition(messages.size());
+                binding.setChatAdapter(chatAdapter);
+            }
+
         });
 
 
@@ -167,32 +204,7 @@ public class ChatFragment extends Fragment {
         return binding.getRoot();
     }
 
-    public void sendMessage() {
 
-        String message = binding.frgChatMessage.getText().toString();
-        if (TextUtils.isEmpty(message)) {
-            return;
-        }
-        binding.frgChatMessage.setText("");
-
-
-        mViewModel.sendMessage(conversationId, message, new OnSendMessageResult() {
-            @Override
-            public void onSuccess(Message result) throws JSONException {
-                JSONObject obj = new JSONObject();
-                obj.put("senderId", userId);
-                obj.put("receiverId", partnerId);
-                obj.put("message", message);
-                mSocket.emit("sendMessage", obj);
-            }
-
-            @Override
-            public void onError(String error) {
-
-            }
-        });
-
-    }
     @Override
     public void onDestroy() {
         super.onDestroy();

@@ -5,14 +5,14 @@
 
     <data>
         <import type="android.view.View"/>
-        
-        <variable
-            name="profileFragment"
-            type="ltdd.doan.mangxahoi.ui.view.fragment.ProfileFragment" />
 
         <variable
-            name="postAdapter"
-            type="ltdd.doan.mangxahoi.ui.view.adapter.PostAdapterProfile" />
+            name="settingFragment"
+            type="ltdd.doan.mangxahoi.ui.view.fragment.SettingFragment" />
+
+        <variable
+            name="settingAdapter"
+            type="ltdd.doan.mangxahoi.ui.view.adapter.SettingAdapter" />
 
         <variable
             name="user"
@@ -43,7 +43,7 @@
                     android:orientation="vertical"
                     android:layout_marginHorizontal="16dp"
                     android:layout_marginTop="8dp">
-                    
+
                     <LinearLayout
                         android:id="@+id/frgProfileUserImg"
                         android:layout_width="match_parent"
@@ -189,7 +189,7 @@
                     android:layout_marginTop="8dp"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:adapter="@{postAdapter}" />
+                    android:adapter="@{settingAdapter}" />
 
             </LinearLayout>
 

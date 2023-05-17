@@ -6,11 +6,13 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.MutableLiveData;
 import androidx.navigation.Navigation;
@@ -110,7 +112,27 @@ public class PostAdapterFeed extends RecyclerView.Adapter<PostAdapterFeed.PostVi
         return false;
     }
 
+    private void edit_dialog(Post post){
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        View view = mainActivity.getLayoutInflater().inflate(R.layout.dialog_editpost, null);
+        EditText txtContent = view.findViewById(R.id.dialogEditTextContent);
+        txtContent.setText(post.getContent());
 
+        builder.setView(view);
+        builder.setNegativeButton("Huỷ", null);
+        builder.setPositiveButton("Xác nhận", (dialog, which) -> {
+            String newText = txtContent.getText().toString().trim();
+            if (newText.isEmpty()) Toast.makeText(context, "Nội dung không được để trống", Toast.LENGTH_SHORT).show();
+            else {
+                post.setContent(newText);
+                viewModel.updatePost(post);
+                viewModel.getFeed();
+            }
+        });
+
+        builder.create().show();
+
+    }
 
     @NonNull
     @Override
@@ -146,8 +168,8 @@ public class PostAdapterFeed extends RecyclerView.Adapter<PostAdapterFeed.PostVi
 
                                 CharSequence title = menuItem.getTitle();
                                 if ("Edit Post".equals(title)) {
-                                    Toast.makeText(context, "You Clicked edit " + menuItem.getItemId(), Toast.LENGTH_SHORT).show();
-
+                                    Toast.makeText(context, "You Clicked edit ", Toast.LENGTH_SHORT).show();
+                                    edit_dialog(post);
                                 } else if ("Delete Post".equals(title)) {
                                     if (post.getOwner().equals(Session.getSharedPreference(context,"user_id",""))){
                                         viewModel.deletePost(post.getId(), new OnDeletePostResult() {

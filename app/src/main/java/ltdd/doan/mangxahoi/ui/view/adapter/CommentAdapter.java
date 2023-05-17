@@ -29,10 +29,6 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentV
     private Context context;
     private List<Comment> comments;
 
-    public void addComment(Comment c){
-        comments.add(c);
-    }
-
     public CommentAdapter(Context context, List<Comment> comments) {
         this.context = context;
         this.comments = comments;
@@ -58,7 +54,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentV
         if (!Objects.equals(comment.getOwnerData().getAvatar() , "")){
             Glide.with(context)
                     .load(comment.getOwnerData().getAvatar())
-                    .into(holder.binding.cardUserImgUserPhoto);
+                    .into(holder.binding.cardCommentImgUserPhoto);
         }
 
     }

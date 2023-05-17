@@ -20,7 +20,7 @@
             android:id="@+id/frgLoginTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Mạng Xã Hội =))))"
+            android:text="Well Come To \n     Mewww"
             android:textColor="@color/black"
             android:textSize="36sp"
             android:textStyle="bold"
@@ -28,6 +28,18 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             android:layout_marginTop="64dp"/>
+
+        <ImageView
+            android:id="@+id/frgSignInLogo"
+            android:layout_width="wrap_content"
+            android:layout_height="120dp"
+            android:layout_marginTop="24dp"
+            android:src="@drawable/logooo"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/frgLoginTitle" />
+
         <!--tài khoản: username - email - phoneNo -->
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/textInputLayout"
@@ -38,7 +50,7 @@
             app:hintTextColor="@color/black"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/frgLoginTitle">
+            app:layout_constraintTop_toBottomOf="@+id/frgSignInLogo">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/frgLoginTxtMail"
@@ -129,7 +141,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
-                android:text="Không có tài khoản ?" />
+                android:text="Không có tài khoản ?"
+                android:textColor="@color/black" />
 
 
             <TextView

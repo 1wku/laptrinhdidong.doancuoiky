@@ -84,6 +84,7 @@
                                 android:id="@+id/frgPostDetailsLblUserName"
                                 android:textSize="20sp"
                                 android:textStyle="bold"
+                                android:textColor="@color/black"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:text="@{post.ownerData.username}" />
@@ -91,6 +92,7 @@
                             <TextView
                                 android:id="@+id/frgPostDetailsLblPostDate"
                                 android:textSize="15sp"
+                                android:textColor="@color/black"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:text="@{post.created_at}" />
@@ -101,6 +103,7 @@
                             android:id="@+id/frgPostDetailsImgPopupMenu"
                             android:layout_width="36dp"
                             android:layout_height="36dp"
+                            android:onClick="@{() -> postDetailsFragment.popupMenu(post)}"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
@@ -171,12 +174,14 @@
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toTopOf="parent"
                                 app:layout_constraintVertical_bias="0.5"
+                                android:textColor="@color/black"
                                 android:text="@{@string/card_post_likes(post.likers.size()) }" />
                         </LinearLayout>
                         <View
                             android:id="@+id/divider2"
                             android:layout_width="match_parent"
-                            android:layout_height="1dp"
+                            android:layout_marginTop="8dp"
+                            android:layout_height="2dp"
                             android:background="@color/gray"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent" />
@@ -207,6 +212,8 @@
                             app:cardUseCompatPadding="true" />
 
                         <ImageView
+                            android:layout_marginTop="8dp"
+                            android:layout_marginStart="6dp"
                             android:id="@+id/btnSendMsg"
                             android:layout_width="24dp"
                             android:layout_height="24dp"

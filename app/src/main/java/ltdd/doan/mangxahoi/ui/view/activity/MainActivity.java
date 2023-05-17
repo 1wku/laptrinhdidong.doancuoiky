@@ -1,6 +1,7 @@
 package ltdd.doan.mangxahoi.ui.view.activity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 
@@ -19,6 +20,7 @@ import com.google.android.material.navigation.NavigationBarView;
 import dagger.hilt.android.AndroidEntryPoint;
 import ltdd.doan.mangxahoi.R;
 import ltdd.doan.mangxahoi.databinding.ActivityMainBinding;
+import ltdd.doan.mangxahoi.session.Session;
 import ltdd.doan.mangxahoi.ui.viewmodel.MainViewModel;
 
 @AndroidEntryPoint
@@ -36,6 +38,21 @@ public class MainActivity extends AppCompatActivity {
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
 
+        binding.toolbar.setOnMenuItemClickListener(item -> {
+
+            if (item.getItemId() == R.id.logout) {
+                Session.ACTIVE_USER = null;
+                mainViewModel.removeSessionUser();
+
+                Intent intent = new Intent(context, LoginActivity.class);
+                startActivity(intent);
+                finish();
+
+            }
+
+            return true;
+        });
+
         NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.navHostFragment);
         NavController navController = navHostFragment.getNavController();
         binding.bottomNavigationView.setOnItemSelectedListener(item -> {
@@ -52,4 +69,5 @@ public class MainActivity extends AppCompatActivity {
             return true;
         });
     }
+
 }

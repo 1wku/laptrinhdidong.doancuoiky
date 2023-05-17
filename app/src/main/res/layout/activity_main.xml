@@ -11,14 +11,21 @@
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
-            app:title="MANG XA HOI"
-            android:background="#FFF"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:background="@color/md_pink_100"
+            android:elevation="8dp"
+            android:minHeight="?attr/actionBarSize"
+            android:theme="?attr/actionBarTheme"
+            app:contentInsetLeft="10dp"
+            app:contentInsetStart="10dp"
+            app:contentInsetStartWithNavigation="0dp"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
+            app:layout_constraintTop_toTopOf="parent"
+            app:title="@string/app_name"
+            app:menu="@menu/menu_toolbar"/>
 
         <androidx.fragment.app.FragmentContainerView
             android:id="@+id/navHostFragment"

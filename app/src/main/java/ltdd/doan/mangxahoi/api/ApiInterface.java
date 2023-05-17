@@ -55,7 +55,7 @@ public interface ApiInterface {
     Call<SuccessfullResponse<Post>> createPost(@Body Post request);
     @GET("api/posts/{id}")
     Call<SuccessfullResponse<Post>> getPost(@Path("id") String id);
-    @POST("api/posts/{id}")
+    @PUT("api/posts/{id}")
     Call<SuccessfullResponse<Post>> updatePost( @Body Post request,@Path("id") String id);
     @DELETE("api/posts/{id}")
     Call<String> deletePost(  @Path("id") String id);

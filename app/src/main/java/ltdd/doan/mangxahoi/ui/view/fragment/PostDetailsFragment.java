@@ -1,5 +1,6 @@
 package ltdd.doan.mangxahoi.ui.view.fragment;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -17,6 +18,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.PopupMenu;
 import android.widget.Toast;
 
@@ -68,6 +70,7 @@ public class PostDetailsFragment extends Fragment {
         }
         return false;
     }
+
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -146,50 +149,68 @@ public class PostDetailsFragment extends Fragment {
             }
         });
 
-        binding.frgPostDetailsImgPopupMenu.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                PopupMenu popupMenu = new PopupMenu(requireContext(), binding.frgPostDetailsImgPopupMenu);
-
-                // Inflating popup menu from popup_menu.xml file
-                popupMenu.getMenuInflater().inflate(R.menu.menu_popup_post, popupMenu.getMenu());
-                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                    @Override
-                    public boolean onMenuItemClick(MenuItem menuItem) {
-
-                        // TODO : delete + edit post
-
-                        CharSequence title = menuItem.getTitle();
-                        if ("Edit Post".equals(title)) {
-                            Toast.makeText(requireContext(), "You Clicked edit " + menuItem.getItemId(), Toast.LENGTH_SHORT).show();
-
-                        } else if ("Delete Post".equals(title)) {
-                            if (mViewModel.getPost().getValue().getOwner().equals(Session.getSharedPreference(getContext(),"user_id",""))){
-                                mViewModel.deletePost(post_id, new OnDeletePostResult() {
-                                    @Override
-                                    public void onSuccess(String result) {
-                                        Toast.makeText(requireContext(), "Xoá bài đăng thành công  ", Toast.LENGTH_SHORT).show();
-                                        navToMyProfile(binding.frgPostDetailsImgPostImage);
-                                    }
-
-                                    @Override
-                                    public void onError(String error) {
-                                        Toast.makeText(requireContext(), error, Toast.LENGTH_SHORT).show();
-
-                                    }
-                                });
-                            }
-                            else Toast.makeText(requireContext(), "Bạn không có quyền xoá bài đăng này", Toast.LENGTH_SHORT).show();
-                        }
-                        return true;
-                    }
-                });
-                popupMenu.show();
-            }
-        });
-
 
         return binding.getRoot();
+    }
+
+    public void popupMenu(Post post){
+        PopupMenu popupMenu = new PopupMenu(requireContext(), binding.frgPostDetailsImgPopupMenu);
+
+        // Inflating popup menu from popup_menu.xml file
+        popupMenu.getMenuInflater().inflate(R.menu.menu_popup_post, popupMenu.getMenu());
+        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem menuItem) {
+
+                // TODO : delete + edit post
+
+                CharSequence title = menuItem.getTitle();
+                if ("Edit Post".equals(title)) {
+                    Toast.makeText(requireContext(), "You Clicked edit " , Toast.LENGTH_SHORT).show();
+                    edit_dialog(post);
+                } else if ("Delete Post".equals(title)) {
+                    if (mViewModel.getPost().getValue().getOwner().equals(Session.getSharedPreference(getContext(),"user_id",""))){
+                        mViewModel.deletePost(post.getId(), new OnDeletePostResult() {
+                            @Override
+                            public void onSuccess(String result) {
+                                Toast.makeText(requireContext(), "Xoá bài đăng thành công  ", Toast.LENGTH_SHORT).show();
+                                navToMyProfile(binding.frgPostDetailsImgPostImage);
+                            }
+
+                            @Override
+                            public void onError(String error) {
+                                Toast.makeText(requireContext(), error, Toast.LENGTH_SHORT).show();
+
+                            }
+                        });
+                    }
+                    else Toast.makeText(requireContext(), "Bạn không có quyền xoá bài đăng này", Toast.LENGTH_SHORT).show();
+                }
+                return true;
+            }
+        });
+        popupMenu.show();
+    }
+
+    private void edit_dialog(Post post){
+        AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
+        View view = requireActivity().getLayoutInflater().inflate(R.layout.dialog_editpost, null);
+        EditText txtContent = view.findViewById(R.id.dialogEditTextContent);
+        txtContent.setText(post.getContent());
+
+        builder.setView(view);
+        builder.setNegativeButton("Huỷ", null);
+        builder.setPositiveButton("Xác nhận", (dialog, which) -> {
+            String newText = txtContent.getText().toString().trim();
+            if (newText.isEmpty()) Toast.makeText(requireContext(), "Nội dung không được để trống", Toast.LENGTH_SHORT).show();
+            else {
+                post.setContent(newText);
+                mViewModel.updatePost(post);
+                mViewModel.getPostDetailsById(post.getId());
+            }
+        });
+        builder.create().show();
+
     }
 
     public void navToMyProfile(View view) {

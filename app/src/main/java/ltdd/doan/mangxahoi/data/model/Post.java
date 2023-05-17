@@ -35,6 +35,12 @@ public class Post  {
     @SerializedName("updatedAt")
     private String updated_at;
 
+    public Post(String owner, String photo, String content) {
+        this.owner = owner;
+        this.photo = photo;
+        this.content = content;
+    }
+
     public String getUpdated_at() {
         try{
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
@@ -68,12 +74,6 @@ public class Post  {
         this.comments = comments;
         this.created_at = created_at;
         this.updated_at= updated_at;
-    }
-
-    public Post(String owner, String photo, String content) {
-        this.owner = owner;
-        this.photo = photo;
-        this.content = content;
     }
 
     public Post() {

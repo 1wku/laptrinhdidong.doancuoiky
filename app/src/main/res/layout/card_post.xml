@@ -71,6 +71,7 @@
                         android:text="@{post.ownerData.username}"
                         android:onClick="@{() -> postAdapterFeed.navToPostOwnersProfile(cardPostUserImg, post.ownerData.id)}"
                         android:textSize="16sp"
+                        android:textColor="@color/black"
                         android:textStyle="bold" />
                     <!--thời gian tạo-->
                     <TextView
@@ -115,6 +116,7 @@
                 android:layout_height="wrap_content"
                 android:padding="8dp"
                 android:text="@{post.content}"
+                android:textColor="@color/black"
                 android:onClick="@{() -> postAdapterFeed.navToPostDetails(cardPostPostCmt, post.id)}"
                 android:textSize="16sp"
                 android:textStyle="bold" />
@@ -145,6 +147,7 @@
                     android:paddingStart="8dp"
                     android:text="@{@string/card_post_likes(post.likers.size())}"
                     android:textSize="16sp"
+                    android:textColor="@color/black"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/cardPostPostlike"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -156,6 +159,7 @@
                     android:layout_height="39dp"
                     android:padding="8dp"
                     android:text="@{@string/card_post_comments(post.comments.size())}"
+                    android:textColor="@color/black"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/cardPostPostCmt"
                     app:layout_constraintTop_toTopOf="parent" />

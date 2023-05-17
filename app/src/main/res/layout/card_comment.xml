@@ -26,12 +26,12 @@
 
         <!--todo-->
         <com.google.android.material.imageview.ShapeableImageView
-            android:id="@+id/cardUserImgUserPhoto"
+            android:id="@+id/cardCommentImgUserPhoto"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:adjustViewBounds="true"
             android:padding="2dp"
-            android:onClick="@{() -> commentAdapter.navToUserProfile(cardUserImgUserPhoto,comment.owner)}"
+            android:onClick="@{() -> commentAdapter.navToUserProfile(cardCommentImgUserPhoto,comment.owner)}"
             android:scaleType="fitXY"
             android:src="@drawable/avatar_img"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -49,26 +49,34 @@
             android:orientation="vertical"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/cardUserImgUserPhoto"
+            app:layout_constraintStart_toEndOf="@+id/cardCommentImgUserPhoto"
             app:layout_constraintTop_toTopOf="parent">
 
             <!--todo-->
             <TextView
-                android:id="@+id/cardUserTxtUserName"
+                android:id="@+id/cardCommentLblUserName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@{comment.ownerData.username}"
                 android:textColor="@color/black"
-                android:textSize="16sp"
+                android:textSize="18sp"
                 android:textStyle="bold" />
+
+<!--            <TextView-->
+<!--                android:id="@+id/cardCommentLblCommentDate"-->
+<!--                android:textSize="12sp"-->
+<!--                android:textColor="@color/gray"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text='@{comment.created_at}' />-->
 
             <!--todo-->
             <TextView
-                android:id="@+id/cardUserTxtFullName"
+                android:id="@+id/cardCommentLblCommentText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@{comment.content}"
-                android:textColor="@color/gray"
+                android:textColor="@color/black"
                 android:textSize="16sp"
                 android:textStyle="italic" />
 

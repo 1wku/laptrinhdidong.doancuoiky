@@ -81,7 +81,7 @@ public class UserRepository {
         Session.setSharedPreference(context, "user_id", user_id);
         Session.setSharedPreference(context, "user_password", user_password);
     }
-    private  void removeSessionUser(){
+    public void removeSessionUser(){
         Session.removeSharedPreference(context,"user_email");
         Session.removeSharedPreference(context,"user_id");
         Session.removeSharedPreference(context,"user_password");
